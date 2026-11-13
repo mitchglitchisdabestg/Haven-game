@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnjc7jbpfdh2a"]
+
+[ext_resource type="Texture2D" uid="uid://bu330wxhlr0p2" path="res://Resources/Prototype/Orange/texture_02.png" id="1_cw8j7"]
+[ext_resource type="PackedScene" uid="uid://s5knk7obedau" path="res://Scenes/player.tscn" id="2_rqcs4"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rqcs4"]
+
+[node name="basic_world" type="StaticBody2D"]
+
+[node name="world_boundary" type="CollisionShape2D" parent="."]
+shape = SubResource("WorldBoundaryShape2D_rqcs4")
+
+[node name="world_boundary_texture" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(0, 17)
+scale = Vector2(1, 0.095)
+texture = ExtResource("1_cw8j7")
+region_enabled = true
+region_rect = Rect2(-56575.324, 0, 94397.91, 338.90234)
+
+[node name="player" parent="." instance=ExtResource("2_rqcs4")]
+position = Vector2(0, -75)

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://y3mj4f706aia"]
+
+[ext_resource type="Script" uid="uid://jhi3ou224wr3" path="res://Scripts/fps.gd" id="1_rgkm5"]
+
+[node name="fps" type="Label"]
+offset_right = 1.0
+offset_bottom = 27.0
+text = "FPS: 0000"
+script = ExtResource("1_rgkm5")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0n1jlecf0u43"]
+
+[ext_resource type="Script" uid="uid://bh2ny8e8mw6v0" path="res://Scripts/player_ui.gd" id="1_ohrjl"]
+[ext_resource type="PackedScene" uid="uid://y3mj4f706aia" path="res://Scenes/fps.tscn" id="2_dxtgh"]
+
+[node name="player_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ohrjl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="fps" parent="MarginContainer/Control" instance=ExtResource("2_dxtgh")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -37.0
+offset_right = 0.0
+offset_bottom = 23.0
+grow_horizontal = 0
+horizontal_alignment = 2
+
+[node name="debug" type="Control" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="text_cont" type="VBoxContainer" parent="MarginContainer/debug"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="velocity" type="Label" parent="MarginContainer/debug/text_cont"]
+layout_mode = 2
+text = "velocity x = 
+velocity y = 
+crouching = 
+player_sprite pos y = "
+
+[node name="delta" type="Label" parent="MarginContainer/debug/text_cont"]
+layout_mode = 2
+text = "delta = "

@@ -18,3 +18,6 @@ ball deteriorates more the more it rolls around need to keep bouncing
 
 ball in clouds needs to bounce in time or else they fall off the cloud
 
+progression system
+
+certain amount of coins unlock new orb skins
