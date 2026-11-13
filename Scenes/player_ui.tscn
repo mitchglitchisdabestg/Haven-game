@@ -48,7 +48,8 @@ offset_bottom = 40.0
 
 [node name="velocity" type="Label" parent="MarginContainer/debug/text_cont"]
 layout_mode = 2
-text = "velocity x = 
+text = "gravity = 
+velocity x = 
 velocity y = 
 crouching = 
 player_sprite pos y = "

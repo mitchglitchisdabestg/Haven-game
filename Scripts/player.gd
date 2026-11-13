@@ -2,8 +2,10 @@ extends CharacterBody2D
 
 
 const SPEED: float = 500.0
-const JUMP_VELOCITY: float = -400.0
-const CHARGED_JUMP_MULT: float = 2.0
+const JUMP_VELOCITY: float = -600.0
+const CHARGED_JUMP_MULT: float = 1.3
+
+@export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 
 @onready var player_sprite: Sprite2D = $proto_player_texture
 
@@ -28,6 +30,10 @@ func _process(delta: float) -> void:
 
 
 func crouch_anim() -> void:
+	if not is_on_floor():
+		crouching = false
+		return
+	
 	if crouching_tween and crouching_tween.is_running():
 		crouching_tween.kill()
 	
@@ -38,12 +44,14 @@ func crouch_anim() -> void:
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
-
+		velocity += gravity * delta
+	
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		if crouching:
 			velocity.y = JUMP_VELOCITY * CHARGED_JUMP_MULT #if holding crouch and jump do charged
+			crouching = false
+			crouch_anim()
 			return
 		velocity.y = JUMP_VELOCITY
 

@@ -9,9 +9,10 @@ var player_parent: CharacterBody2D
 func _process(delta: float) -> void:
 	if not player_parent: return
 	
-	d_velocity.text = "velocity x = %d
+	d_velocity.text = "gravity = %s
+	velocity x = %d
 	velocity y = %d
 	crouching = %s
-	player_sprite pos y = %.2f" % [player_parent.velocity.x, player_parent.velocity.y, str(player_parent.crouching), player_parent.player_sprite.position.y]
+	player_sprite pos y = %.2f" % [str(player_parent.gravity), player_parent.velocity.x, player_parent.velocity.y, str(player_parent.crouching), player_parent.player_sprite.position.y]
 	
 	d_delta.text = "delta = " + str(delta)

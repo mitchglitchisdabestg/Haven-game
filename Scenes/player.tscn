@@ -18,6 +18,8 @@ texture = ExtResource("2_cvnsp")
 shape = SubResource("CircleShape2D_6t5aa")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 2.135
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
