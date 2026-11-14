@@ -1,8 +1,25 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b7sfq206tqyr7"]
 
-[ext_resource type="Script" path="res://Scripts/death_screen.gd" id="1_death"]
+[ext_resource type="Script" uid="uid://3i1uqnka7tys" path="res://Scripts/death_screen.gd" id="1_death"]
+[ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="2_rwas2"]
 
-[node name="DeathScreen" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tseak"]
+bg_color = Color(0.123473026, 0.12347307, 0.123472966, 1)
+border_color = Color(0.0013967261, 0.0013967265, 0.0013967243, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_amiou"]
+bg_color = Color(0.12591082, 0.12591085, 0.12591076, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
+
+[node name="DeathScreen" type="Control" unique_id=1727689445]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_death")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=422480329]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +37,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.72)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2070011160]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,38 +45,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=148706952]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer" unique_id=2100277818]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=283007236]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tseak")
 text = "You Died"
 horizontal_alignment = 1
 
-[node name="Stats" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Stats" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1503959798]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_amiou")
 text = "Collectibles"
 horizontal_alignment = 1
 
-[node name="MainMenuButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="MainMenuButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1058457710]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_amiou")
 text = "Main Menu"
 
-[node name="LevelSelectButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="LevelSelectButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1241018163]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_amiou")
 text = "Level Select"
 
-[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1425735934]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_amiou")
 text = "Restart Level"
 
-[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1178489584]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_rwas2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_amiou")
 text = "Quit Game"
 
 [connection signal="pressed" from="CenterContainer/PanelContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
