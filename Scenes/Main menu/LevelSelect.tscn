@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://buyx1lhug0bpr"]
+
+[ext_resource type="Script" uid="uid://b6wc8iteh18yq" path="res://Scenes/Main menu/LevelSelect.gd" id="1_ae5x7"]
+[ext_resource type="Texture2D" uid="uid://i0p7d356akmr" path="res://Resources/Prototype/Green/texture_12.png" id="2_ae5x7"]
+[ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_ae5x7"]
+[ext_resource type="Script" uid="uid://d4j2v5ahr42lu" path="res://Scripts/Menu/menumusic.gd" id="3_o363i"]
+[ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_o363i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8qtwp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dy7ct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0o4t1"]
+
+[node name="Level select" type="Control" unique_id=520495004]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ae5x7")
+
+[node name="PeakMenuMusic" type="AudioStreamPlayer" parent="." unique_id=768283682]
+autoplay = true
+
+[node name="Background" type="TextureRect" parent="." unique_id=420134897]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -602.0
+offset_top = -481.0
+offset_right = 627.0
+offset_bottom = 543.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ae5x7")
+stretch_mode = 6
+
+[node name="Background2" type="TextureRect" parent="." unique_id=491794387]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 49.0
+offset_top = 76.0
+offset_right = 769.0
+offset_bottom = 380.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_ae5x7")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
+layout_mode = 0
+offset_left = 406.0
+offset_top = 5.0
+offset_right = 860.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 50
+text = "Level Select"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=4046111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 318.0
+offset_top = 111.0
+offset_right = -357.0
+offset_bottom = -127.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1990260065]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1802320571]
+script = ExtResource("3_o363i")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 638.0
+offset_right = 1219.0
+offset_bottom = 687.0
+offset_transform_enabled = true
+theme_override_constants/separation = 900
+
+[node name="Locker" type="Button" parent="HBoxContainer" unique_id=1361054276]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/line_spacing = 500
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
+text = "Locker"
+
+[node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1296841661]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/line_spacing = 500
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
+text = "Return"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1885574687]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 176.0
+offset_right = 1213.0
+offset_bottom = 225.0
+offset_transform_enabled = true
+theme_override_constants/separation = 30
+
+[node name="Level 1" type="TextureButton" parent="HBoxContainer2" unique_id=818902951]
+layout_mode = 2
+texture_normal = ExtResource("5_o363i")
+
+[node name="Level 2" type="TextureButton" parent="HBoxContainer2" unique_id=961715493]
+layout_mode = 2
+texture_normal = ExtResource("5_o363i")
+
+[connection signal="mouse_entered" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="focus_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]
+[connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="HBoxContainer2/Level 1" to="." method="_on_level_1_pressed"]
+[connection signal="pressed" from="HBoxContainer2/Level 2" to="." method="_on_level_2_pressed"]
