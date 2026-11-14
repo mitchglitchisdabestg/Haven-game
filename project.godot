@@ -19,6 +19,7 @@ run/main_scene="uid://dnjc7jbpfdh2a"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/image="uid://33d3at85x75"
 config/icon="uid://dgjpbrxlpsg4n"
+boot_splash/minimum_display_time=100
 
 [autoload]
 

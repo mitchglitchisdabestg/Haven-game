@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgjpbrxlpsg4n"
-path="res://.godot/imported/HAVEN (1).png-7862b7ba074127c1a61bde8b7b3b299a.ctex"
+uid="uid://boncrud5w7bkj"
+path="res://.godot/imported/zorbdefault.png-7d901ad2425cf49f4e82672be514f4e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Images/HAVEN (1).png"
-dest_files=["res://.godot/imported/HAVEN (1).png-7862b7ba074127c1a61bde8b7b3b299a.ctex"]
+source_file="res://Resources/Images/zorbdefault.png"
+dest_files=["res://.godot/imported/zorbdefault.png-7d901ad2425cf49f4e82672be514f4e6.ctex"]
 
 [params]
 
