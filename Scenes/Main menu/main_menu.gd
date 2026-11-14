@@ -6,6 +6,7 @@ var start_position : Vector2
 
 @onready var new_game_button: Button = $MarginContainer/VBoxContainer/NewGameButton
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/QuitButton
+@onready var locker_button: Button = $MarginContainer/VBoxContainer/Locker
 @onready var settings_button: Button = $MarginContainer/VBoxContainer/SettingsButton
 
 # Called when the node enters the scene tree for the first time.
@@ -33,6 +34,12 @@ func _on_new_game_button_mouse_entered() -> void:
 func _on_new_game_button_mouse_exited() -> void:
 	new_game_button.text = "New Game"
 
+func _on_locker_button_mouse_entered() -> void:
+	locker_button.text = ">> Locker"
+
+func _on_locker_button_mouse_exited() -> void:
+	locker_button.text = "Locker"
+
 func _on_settings_button_mouse_entered() -> void:
 	settings_button.text = ">> Settings"
 
@@ -44,6 +51,4 @@ func _on_quit_button_mouse_entered() -> void:
 
 func _on_quit_button_mouse_exited() -> void:
 	quit_button.text = "Quit"
-	
-	
 	
