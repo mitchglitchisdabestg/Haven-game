@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://s5knk7obedau"]
+[gd_scene format=3 uid="uid://s5knk7obedau"]
 
 [ext_resource type="Script" uid="uid://c40hht5pad3au" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://xkn871gfb3cm" path="res://Resources/Prototype/Green/texture_11.png" id="2_cvnsp"]
@@ -8,31 +8,32 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_6t5aa"]
 radius = 51.009804
 
-[node name="player" type="CharacterBody2D"]
+[node name="player" type="CharacterBody2D" unique_id=1887962406]
 script = ExtResource("1_cvnsp")
 acceleration = 4500.0
 friction = 2500.0
+fall_gravity_multiplier = 1.65
 
-[node name="sprite_parent" type="Sprite2D" parent="."]
+[node name="sprite_parent" type="Sprite2D" parent="." unique_id=1827462053]
 clip_children = 2
 scale = Vector2(0.159, 0.159)
 texture = ExtResource("2_vgqql")
 
-[node name="circle_mask" type="Sprite2D" parent="sprite_parent"]
+[node name="circle_mask" type="Sprite2D" parent="sprite_parent" unique_id=1415873267]
 texture = ExtResource("2_vgqql")
 
-[node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask"]
+[node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask" unique_id=1656293334]
 clip_children = 2
 scale = Vector2(0.6274511, 0.6274511)
 texture = ExtResource("2_cvnsp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1207525321]
 shape = SubResource("CircleShape2D_6t5aa")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1471862222]
 position_smoothing_enabled = true
 position_smoothing_speed = 2.135
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=919148663]
 
-[node name="player_ui" parent="CanvasLayer" instance=ExtResource("3_6t5aa")]
+[node name="player_ui" parent="CanvasLayer" unique_id=1265858261 instance=ExtResource("3_6t5aa")]
