@@ -1,11 +1,14 @@
 extends CharacterBody2D
 
 
-const SPEED: float = 1000.0
+var speed: float = 650.0
 @export var acceleration: float = 800.0
 @export var friction: float = 1000.0
-const JUMP_VELOCITY: float = -600.0
+var jump_velocity: float = -600.0
 const CHARGED_JUMP_MULT: float = 1.3
+var sprint_speed_mult: float = 1.02
+var max_speed: float = 1800.0
+var min_speed: float = 650.0
 
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 
@@ -13,6 +16,8 @@ const CHARGED_JUMP_MULT: float = 1.3
 @onready var player_sprite: Sprite2D = $sprite_parent/circle_mask
 
 @onready var ball_radius: float = $CollisionShape2D.shape.radius
+
+var sprinting: bool = false
 
 var crouching: bool = false
 var crouching_sprite_scale_y: float = 0.1
@@ -31,6 +36,14 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("crouch"): 
 		crouching = false
 		crouch_anim()
+	
+	if Input.is_action_just_pressed("sprint"): 
+		sprinting = true
+		#crouch_anim()
+	
+	if Input.is_action_just_released("sprint"): 
+		sprinting = false
+		#crouch_anim()
 
 
 func crouch_anim() -> void:
@@ -53,17 +66,23 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		if crouching:
-			velocity.y = JUMP_VELOCITY * CHARGED_JUMP_MULT #if holding crouch and jump do charged
+			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
 			return
-		velocity.y = JUMP_VELOCITY
-
+		velocity.y = jump_velocity
+	
+	if sprinting and is_on_floor():
+		speed = clampf(speed * sprint_speed_mult, min_speed, max_speed)
+		jump_velocity = -clampf(speed * sprint_speed_mult, min_speed, max_speed) * 0.3
+	else:
+		speed = min_speed
+		jump_velocity = -600.0
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if direction:
-		velocity.x = move_toward(velocity.x, direction * SPEED, acceleration * delta)
+		velocity.x = move_toward(velocity.x, direction * speed, acceleration * delta)
 		#if direction > 0.1: player_sprite.flip_h = true
 		#else: player_sprite.flip_h = false
 	else:
