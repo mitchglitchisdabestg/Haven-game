@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="2_vgqql"]
 [ext_resource type="PackedScene" uid="uid://c0n1jlecf0u43" path="res://Scenes/player_ui.tscn" id="3_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://dfqj7pcpub4ca" path="res://Resources/Images/circle-shadow-overlay-free-png.webp" id="3_fkybt"]
-[ext_resource type="Texture2D" uid="uid://boncrud5w7bkj" path="res://Resources/Images/zorbdefault.png" id="4_fkybt"]
-[ext_resource type="PackedScene" path="res://Scenes/death_screen.tscn" id="6_x3wgy"]
+[ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="4_x3wgy"]
+[ext_resource type="PackedScene" uid="uid://b7sfq206tqyr7" path="res://Scenes/death_screen.tscn" id="6_x3wgy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6t5aa"]
 radius = 51.009804
@@ -38,7 +38,7 @@ texture = ExtResource("2_vgqql")
 [node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask/circle_mask_2" unique_id=900488016]
 position = Vector2(-0.8966976, -10.304047)
 scale = Vector2(0.5420069, 0.55760026)
-texture = ExtResource("4_fkybt")
+texture = ExtResource("4_x3wgy")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1471862222]
 position_smoothing_enabled = true
@@ -49,3 +49,78 @@ position_smoothing_speed = 2.135
 [node name="player_ui" parent="CanvasLayer" unique_id=962825389 instance=ExtResource("3_6t5aa")]
 
 [node name="death_ui" parent="CanvasLayer" unique_id=1576469355 instance=ExtResource("6_x3wgy")]
+visible = false
+
+[node name="complete" type="Control" parent="CanvasLayer" unique_id=1875930439]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/complete" unique_id=2142834030]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85882354)
+
+[node name="complete_lbl" type="RichTextLabel" parent="CanvasLayer/complete" unique_id=4099770]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.5
+offset_top = 110.0
+offset_right = 84.5
+offset_bottom = 177.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 48
+text = "Level Complete!"
+fit_content = true
+autowrap_mode = 0
+
+[node name="stats" type="RichTextLabel" parent="CanvasLayer/complete" unique_id=375123267]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -184.5
+offset_top = 169.0
+offset_right = 184.5
+offset_bottom = 236.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Stats:
+Coins: 00 | Deaths: 00"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/complete" unique_id=79937400]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 263.0
+offset_right = 689.0
+offset_bottom = 493.0
+theme_override_constants/separation = 12
+
+[node name="main_menu" type="Button" parent="CanvasLayer/complete/VBoxContainer" unique_id=174343613]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="back_to_lvl_select" type="Button" parent="CanvasLayer/complete/VBoxContainer" unique_id=1870308357]
+layout_mode = 2
+text = "Level Select"
+
+[node name="restart" type="Button" parent="CanvasLayer/complete/VBoxContainer" unique_id=1839054423]
+layout_mode = 2
+text = "Restart Level"
+
+[connection signal="pressed" from="CanvasLayer/complete/VBoxContainer/main_menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/complete/VBoxContainer/back_to_lvl_select" to="." method="_on_back_to_lvl_select_pressed"]
+[connection signal="pressed" from="CanvasLayer/complete/VBoxContainer/restart" to="." method="_on_restart_pressed"]

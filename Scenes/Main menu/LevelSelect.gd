@@ -31,7 +31,9 @@ func _process(_delta: float) -> void:
 
 func _on_level_1_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/basic_world.tscn")
+	Constants.deaths = 0
 
 
 func _on_level_2_pressed() -> void:
-		get_tree().change_scene_to_file("res://Scenes/basic_platforms.tscn")
+	get_tree().change_scene_to_file("res://Scenes/basic_platforms.tscn")
+	Constants.deaths = 0
