@@ -138,6 +138,7 @@ script = ExtResource("3_7d32k")
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/Locker" to="." method="_on_locker_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/Locker" to="." method="_on_locker_button_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Locker" to="." method="_on_locker_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_mouse_exited"]
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]

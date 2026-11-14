@@ -153,6 +153,7 @@ texture_normal = ExtResource("5_o363i")
 
 [connection signal="mouse_entered" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/Locker" to="." method="_on_locker_pressed"]
 [connection signal="focus_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]
 [connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]

@@ -68,7 +68,7 @@ offset_right = 860.0
 offset_bottom = 74.0
 theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 50
-text = "Level Select"
+text = "Locker"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=4046111]
@@ -98,29 +98,31 @@ script = ExtResource("4_17rfx")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 638.0
-offset_right = 1219.0
-offset_bottom = 687.0
+offset_left = 66.0
+offset_top = 642.0
+offset_right = 1277.0
+offset_bottom = 691.0
 offset_transform_enabled = true
-theme_override_constants/separation = 900
+theme_override_constants/separation = 850
 
-[node name="Locker" type="Button" parent="HBoxContainer" unique_id=1361054276]
+[node name="LevelSelect" type="Button" parent="HBoxContainer" unique_id=1361054276]
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
-theme_override_font_sizes/font_size = 35
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
-text = "Locker"
+text = "Level select"
 
 [node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1296841661]
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
-theme_override_font_sizes/font_size = 35
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
@@ -195,8 +197,9 @@ theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 30
 text = "skin 4"
 
-[connection signal="mouse_entered" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_entered"]
-[connection signal="mouse_exited" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/LevelSelect" to="." method="_on_level_select_pressed"]
 [connection signal="focus_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]
 [connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]

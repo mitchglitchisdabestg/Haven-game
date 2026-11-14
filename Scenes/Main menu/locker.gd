@@ -20,6 +20,9 @@ func _ready() -> void:
 func _on_quit_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
 
+func _on_level_select_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED

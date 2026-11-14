@@ -16,9 +16,12 @@ func _ready() -> void:
 	
 func _on_new_game_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")
+	
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -52,3 +55,7 @@ func _on_quit_button_mouse_entered() -> void:
 func _on_quit_button_mouse_exited() -> void:
 	quit_button.text = "Quit"
 	
+
+
+func _on_locker_pressed() -> void:
+		get_tree().change_scene_to_file("res://Scenes/Main menu/Locker.tscn")
