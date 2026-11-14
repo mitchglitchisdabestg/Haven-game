@@ -29,10 +29,10 @@ func _process(_delta: float) -> void:
 
 
 func _on_new_game_button_mouse_entered() -> void:
-	new_game_button.text = ">> New Game"
+	new_game_button.text = ">> Level Select"
 
 func _on_new_game_button_mouse_exited() -> void:
-	new_game_button.text = "New Game"
+	new_game_button.text = "Level Select"
 
 func _on_locker_button_mouse_entered() -> void:
 	locker_button.text = ">> Locker"

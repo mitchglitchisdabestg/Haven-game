@@ -124,18 +124,26 @@ text = "Return"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1885574687]
 layout_mode = 0
-offset_left = 84.0
-offset_top = 176.0
-offset_right = 1213.0
-offset_bottom = 225.0
+offset_left = 242.0
+offset_top = 323.0
+offset_right = 1371.0
+offset_bottom = 451.0
 offset_transform_enabled = true
-theme_override_constants/separation = 30
+theme_override_constants/separation = 100
 
 [node name="Level 1" type="TextureButton" parent="HBoxContainer2" unique_id=818902951]
 layout_mode = 2
 texture_normal = ExtResource("5_o363i")
 
 [node name="Level 2" type="TextureButton" parent="HBoxContainer2" unique_id=961715493]
+layout_mode = 2
+texture_normal = ExtResource("5_o363i")
+
+[node name="Level 3" type="TextureButton" parent="HBoxContainer2" unique_id=1910999664]
+layout_mode = 2
+texture_normal = ExtResource("5_o363i")
+
+[node name="Level 4" type="TextureButton" parent="HBoxContainer2" unique_id=70877221]
 layout_mode = 2
 texture_normal = ExtResource("5_o363i")
 
