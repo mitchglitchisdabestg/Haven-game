@@ -5,13 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://cb8syerojevpy" path="res://Scenes/wall_jump_area.tscn" id="3_t6d03"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_usgnq"]
-size = Vector2(256, 100)
+size = Vector2(456, 297)
 
 [node name="StaticBody2D" type="StaticBody2D" unique_id=181026950]
 script = ExtResource("1_q7hxk")
+size_x = 456
+size_y = 297
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=123445188]
-scale = Vector2(0.25, 0.09765625)
+scale = Vector2(0.4453125, 0.29003906)
 texture = ExtResource("1_abi2v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2092970980]

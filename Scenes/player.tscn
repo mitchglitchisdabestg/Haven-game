@@ -30,7 +30,11 @@ texture = ExtResource("3_fkybt")
 [node name="circle_mask" type="Sprite2D" parent="sprite_parent" unique_id=1415873267]
 texture = ExtResource("2_vgqql")
 
-[node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask" unique_id=1656293334]
+[node name="circle_mask_2" type="Sprite2D" parent="sprite_parent/circle_mask" unique_id=1500329099]
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_vgqql")
+
+[node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask/circle_mask_2" unique_id=900488016]
 position = Vector2(6.2893066, 18.86792)
 scale = Vector2(1.9981657, 1.9981657)
 texture = ExtResource("3_vgqql")

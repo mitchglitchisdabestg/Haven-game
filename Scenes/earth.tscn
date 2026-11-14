@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://bf2m5ak5grdre"]
+
+[ext_resource type="PackedScene" uid="uid://chqyu0y7vnci0" path="res://Scenes/basic_platform.tscn" id="1_ngbl3"]
+[ext_resource type="PackedScene" uid="uid://d2wg6ekgco54d" path="res://Scenes/jump_pad_area.tscn" id="2_8nujt"]
+
+[node name="earth" type="Node2D" unique_id=1902116238]
+
+[node name="StaticBody2D" parent="." unique_id=181026950 instance=ExtResource("1_ngbl3")]
+position = Vector2(323, -845)
+size_x = 288
+size_y = 1691
+
+[node name="StaticBody2D2" parent="." unique_id=376297896 instance=ExtResource("1_ngbl3")]
+position = Vector2(-805, -812)
+size_y = 1636
+
+[node name="StaticBody2D3" parent="." unique_id=4099404 instance=ExtResource("1_ngbl3")]
+position = Vector2(1348, -2520)
+size_x = 540
+size_y = 5027
+
+[node name="StaticBody2D4" parent="." unique_id=1113730142 instance=ExtResource("1_ngbl3")]
+position = Vector2(295, -3249)
+size_x = 229
+size_y = 1722
+
+[node name="StaticBody2D6" parent="." unique_id=517461739 instance=ExtResource("1_ngbl3")]
+position = Vector2(-778, -2557)
+size_x = 50
+size_y = 830
+
+[node name="StaticBody2D7" parent="." unique_id=1708583559 instance=ExtResource("1_ngbl3")]
+position = Vector2(-778, -3709)
+size_x = 50
+size_y = 830
+
+[node name="StaticBody2D5" parent="." unique_id=1637959075 instance=ExtResource("1_ngbl3")]
+position = Vector2(-609, -5255)
+size_x = 498
+size_y = 1722
+
+[node name="jump_pad_area" parent="." unique_id=1367776173 instance=ExtResource("2_8nujt")]
+position = Vector2(-331, -313)
+
+[node name="jump_pad_area2" parent="." unique_id=1699861456 instance=ExtResource("2_8nujt")]
+position = Vector2(-30, -471)
+jump_pad_type = 1
+
+[node name="jump_pad_area3" parent="." unique_id=1352935983 instance=ExtResource("2_8nujt")]
+position = Vector2(-207, -684)
+jump_pad_type = 2

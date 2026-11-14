@@ -52,6 +52,7 @@ theme_override_colors/font_color = Color(0.49768078, 0.81229275, 0.7770982, 1)
 text = "gravity = 
 velocity x = 
 velocity y = 
+direction = 
 crouching = 
 player_sprite pos y = "
 

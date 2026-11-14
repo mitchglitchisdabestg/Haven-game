@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d2wg6ekgco54d"]
+
+[ext_resource type="Script" uid="uid://lo3i1cardbj5" path="res://Scripts/jump_pad_area.gd" id="1_m4v3l"]
+[ext_resource type="Texture2D" uid="uid://cvwpx45oedtx4" path="res://Resources/Prototype/Purple/texture_01.png" id="2_ao3o6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eg8xt"]
+size = Vector2(72, 14)
+
+[node name="jump_pad_area" type="Area2D" unique_id=1367776173]
+script = ExtResource("1_m4v3l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1560025289]
+shape = SubResource("RectangleShape2D_eg8xt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1894314037]
+scale = Vector2(0.0703125, 0.013671876)
+texture = ExtResource("2_ao3o6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

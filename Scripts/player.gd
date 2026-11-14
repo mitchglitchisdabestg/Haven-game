@@ -6,6 +6,7 @@ var speed: float = 650.0
 @export var friction: float = 1000.0
 var jump_velocity: float = -600.0
 const CHARGED_JUMP_MULT: float = 1.3
+var direction: float
 @export var fall_gravity_multiplier: float = 1.8
 var sprint_speed_mult: float = 1.02
 var max_speed: float = 1800.0
@@ -15,6 +16,7 @@ var min_speed: float = 650.0
 
 @onready var player_sprite_parent: Node2D = $sprite_parent
 @onready var player_sprite: Sprite2D = $sprite_parent/circle_mask
+@onready var player_sprite_child: Sprite2D = $sprite_parent/circle_mask/circle_mask_2
 
 @onready var ball_radius: float = $CollisionShape2D.shape.radius
 
@@ -77,6 +79,10 @@ func _physics_process(delta: float) -> void:
 			crouch_anim()
 			return
 		velocity.y = jump_velocity
+		can_wall_jump = false
+		
+		var t = create_tween()
+		t.tween_property(player_sprite_child, "rotation_degrees", player_sprite_child.rotation_degrees + 90.0 * direction, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
 	if sprinting and is_on_floor():
 		speed = clampf(speed * sprint_speed_mult, min_speed, max_speed)
@@ -86,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		jump_velocity = -600.0
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("left", "right")
+	direction = Input.get_axis("left", "right")
 	if direction:
 		velocity.x = move_toward(velocity.x, direction * speed, acceleration * delta)
 		#if direction > 0.1: player_sprite.flip_h = true

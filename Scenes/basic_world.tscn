@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bu330wxhlr0p2" path="res://Resources/Prototype/Orange/texture_02.png" id="1_cw8j7"]
 [ext_resource type="PackedScene" uid="uid://s5knk7obedau" path="res://Scenes/player.tscn" id="2_rqcs4"]
-[ext_resource type="PackedScene" uid="uid://bd36srvcbnt82" path="res://Scenes/basic_platforms.tscn" id="3_dfxwm"]
+[ext_resource type="PackedScene" uid="uid://bf2m5ak5grdre" path="res://Scenes/earth.tscn" id="3_dfxwm"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rqcs4"]
 
@@ -22,4 +22,4 @@ region_rect = Rect2(-56575.324, 0, 94397.91, 338.90234)
 [node name="player" parent="." unique_id=1185885422 instance=ExtResource("2_rqcs4")]
 position = Vector2(0, -75)
 
-[node name="basic_platforms" parent="." unique_id=1095278997 instance=ExtResource("3_dfxwm")]
+[node name="earth" parent="." unique_id=1902116238 instance=ExtResource("3_dfxwm")]

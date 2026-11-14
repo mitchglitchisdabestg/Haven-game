@@ -12,6 +12,7 @@ func _process(delta: float) -> void:
 	d_velocity.text = "gravity = %s
 	velocity x = %d
 	velocity y = %d
+	direction = %d
 	jump velocity = %.2f
 	can wall jump = %s
 	acceleration = %.2f
@@ -20,6 +21,7 @@ func _process(delta: float) -> void:
 	player_sprite pos y = %.2f" %                                               \
 	[str(player_parent.gravity),                                                \
 	player_parent.velocity.x, player_parent.velocity.y,                         \
+	player_parent.direction,                                                    \
 	player_parent.jump_velocity, str(player_parent.can_wall_jump),              \
 	player_parent.acceleration, player_parent.friction,                         \
 	str(player_parent.crouching), player_parent.player_sprite.position.y]
