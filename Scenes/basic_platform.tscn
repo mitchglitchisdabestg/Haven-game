@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cb8syerojevpy" path="res://Scenes/wall_jump_area.tscn" id="3_t6d03"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_usgnq"]
-size = Vector2(274, 98)
+size = Vector2(256, 100)
 
 [node name="StaticBody2D" type="StaticBody2D" unique_id=181026950]
 script = ExtResource("1_q7hxk")
