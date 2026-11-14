@@ -1,0 +1,628 @@
+[gd_scene format=3 uid="uid://bpb4fnp7ve8te"]
+
+[ext_resource type="PackedScene" uid="uid://d4bik70fwevov" path="res://Scenes/jump_orb_area.tscn" id="1_feyax"]
+[ext_resource type="PackedScene" uid="uid://chqyu0y7vnci0" path="res://Scenes/basic_platform.tscn" id="2_omtrn"]
+[ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="3_omtrn"]
+[ext_resource type="PackedScene" uid="uid://d2wg6ekgco54d" path="res://Scenes/jump_pad_area.tscn" id="4_i6t4g"]
+[ext_resource type="PackedScene" uid="uid://21us1w2ajlnl" path="res://Scenes/collectible.tscn" id="5_p8jf4"]
+
+[node name="tutorial" type="Node2D" unique_id=198061394]
+
+[node name="jump_orb_area" parent="." unique_id=1910929881 instance=ExtResource("1_feyax")]
+position = Vector2(744, -257)
+
+[node name="StaticBody2D" parent="." unique_id=181026950 instance=ExtResource("2_omtrn")]
+position = Vector2(1303, -124)
+size_y = 250
+
+[node name="StaticBody2D4" parent="." unique_id=2111540708 instance=ExtResource("2_omtrn")]
+position = Vector2(2382, -176)
+size_x = 1104
+size_y = 61
+
+[node name="StaticBody2D5" parent="." unique_id=135118663 instance=ExtResource("2_omtrn")]
+position = Vector2(3127, -367)
+size_x = 250
+size_y = 732
+
+[node name="StaticBody2D6" parent="." unique_id=1732209506 instance=ExtResource("2_omtrn")]
+position = Vector2(3127, -3548)
+size_x = 250
+size_y = 5000
+
+[node name="StaticBody2D15" parent="." unique_id=314134812 instance=ExtResource("2_omtrn")]
+position = Vector2(4332, -5744)
+size_x = 250
+size_y = 5000
+
+[node name="StaticBody2D2" parent="." unique_id=1145495810 instance=ExtResource("2_omtrn")]
+position = Vector2(-1112, -1688)
+size_y = 3386
+
+[node name="StaticBody2D3" parent="." unique_id=693556294 instance=ExtResource("2_omtrn")]
+position = Vector2(1055, -1098)
+size_x = 3927
+size_y = 100
+
+[node name="StaticBody2D9" parent="." unique_id=1634619809 instance=ExtResource("2_omtrn")]
+position = Vector2(3728, -1436)
+size_x = 970
+size_y = 100
+
+[node name="StaticBody2D16" parent="." unique_id=2003772233 instance=ExtResource("2_omtrn")]
+position = Vector2(4165, -2897)
+size_x = 1833
+size_y = 100
+
+[node name="StaticBody2D17" parent="." unique_id=1581488463 instance=ExtResource("2_omtrn")]
+position = Vector2(5154, -3296)
+size_x = 1833
+size_y = 100
+
+[node name="StaticBody2D12" parent="." unique_id=612559982 instance=ExtResource("2_omtrn")]
+position = Vector2(5174, -1749)
+size_x = 354
+size_y = 100
+
+[node name="StaticBody2D14" parent="." unique_id=877937648 instance=ExtResource("2_omtrn")]
+position = Vector2(5714, -2440)
+size_x = 293
+size_y = 100
+
+[node name="StaticBody2D7" parent="." unique_id=905896462 instance=ExtResource("2_omtrn")]
+position = Vector2(4332, -367)
+size_x = 250
+size_y = 732
+
+[node name="StaticBody2D8" parent="." unique_id=151051502 instance=ExtResource("2_omtrn")]
+position = Vector2(4332, -2011)
+size_x = 250
+size_y = 1873
+
+[node name="StaticBody2D10" parent="." unique_id=1251549857 instance=ExtResource("2_omtrn")]
+position = Vector2(4883, -899)
+size_x = 250
+size_y = 1800
+
+[node name="StaticBody2D11" parent="." unique_id=566333107 instance=ExtResource("2_omtrn")]
+position = Vector2(5456, -1828)
+size_x = 250
+size_y = 1324
+
+[node name="StaticBody2D13" parent="." unique_id=1575549002 instance=ExtResource("2_omtrn")]
+position = Vector2(5963, -2657)
+size_x = 250
+size_y = 1324
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=376077285]
+offset_left = -197.0
+offset_top = -381.0
+offset_right = 233.0
+offset_bottom = -341.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+text = "Welcome to Zorb-scencion!"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="." unique_id=861197732]
+offset_left = -197.0
+offset_top = -331.0
+offset_right = 233.0
+offset_bottom = -271.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+text = "Your objective is to get to
+the highest point in the world"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="." unique_id=1084779827]
+offset_left = 410.0
+offset_top = -190.0
+offset_right = 907.0
+offset_bottom = -97.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "This is a small jump orb.
+Press [b]space[/b] inside it to jump again."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="." unique_id=296847892]
+offset_left = 1154.0
+offset_top = -480.0
+offset_right = 1651.0
+offset_bottom = -387.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "This is a small jump pad.
+Walk to it to be launched upwards."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="." unique_id=983282226]
+offset_left = 1849.0
+offset_top = -356.0
+offset_right = 2346.0
+offset_bottom = -263.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "These are coins.
+Collect them to unlock zorb skins."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="." unique_id=136928516]
+offset_left = 2397.0
+offset_top = -356.0
+offset_right = 2894.0
+offset_bottom = -263.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "This is helium.
+Collect it to gain lower gravity for 2 seconds."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel9" type="RichTextLabel" parent="." unique_id=1528847921]
+offset_left = 2760.0
+offset_top = -931.0
+offset_right = 3316.0
+offset_bottom = -838.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 35
+bbcode_enabled = true
+text = "You can press [b]ctrl[/b] to crouch.
+You can also jump while crouching to do a charged jump.
+Try to get across this big gap with a charged jump."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="." unique_id=1327533657]
+offset_left = 3979.0
+offset_top = -931.0
+offset_right = 4679.0
+offset_bottom = -822.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 35
+bbcode_enabled = true
+text = "You can do wall jumps.
+try to use the wall on the right and the wall on top
+and jump between them to get on the top."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel21" type="RichTextLabel" parent="." unique_id=1949078721]
+offset_left = 4825.0
+offset_top = -2047.0
+offset_right = 5525.0
+offset_bottom = -1938.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 35
+bbcode_enabled = true
+text = "You can also wall jump
+on the same wall repeatedly.
+after wall jumping
+move away and back from the wall
+to regain a wall jump."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel32" type="RichTextLabel" parent="." unique_id=497244696]
+offset_left = 5277.0
+offset_top = -2821.0
+offset_right = 5977.0
+offset_bottom = -2671.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 35
+bbcode_enabled = true
+text = "you can do a charged wall jump.
+Hug a wall, Press [b]ctrl[/b], jump
+and then go to opposite ways."
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel36" type="RichTextLabel" parent="." unique_id=359258798]
+offset_left = 3500.0
+offset_top = -3398.0
+offset_right = 3934.0
+offset_bottom = -3319.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 35
+bbcode_enabled = true
+text = "This is the [b]END[/b] orb. Jump inside it
+to complete the level!"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="." unique_id=1000443513]
+offset_left = 2783.0
+offset_top = -489.0
+offset_right = 2945.0
+offset_bottom = -459.0
+rotation = -1.5707964
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>>>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="." unique_id=1208180042]
+offset_left = 3665.0
+offset_top = -919.0
+offset_right = 3827.0
+offset_bottom = -889.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>>>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel12" type="RichTextLabel" parent="." unique_id=921138407]
+offset_left = 4634.0
+offset_top = -949.0
+offset_right = 4715.0
+offset_bottom = -919.0
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel13" type="RichTextLabel" parent="." unique_id=507752162]
+offset_left = 4509.0
+offset_top = -1144.0001
+offset_right = 4593.0
+offset_bottom = -1114.0001
+rotation = 0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<<<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel14" type="RichTextLabel" parent="." unique_id=1072544104]
+offset_left = 4634.0
+offset_top = -1250.9999
+offset_right = 4715.0
+offset_bottom = -1220.9999
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel15" type="RichTextLabel" parent="." unique_id=1488979105]
+offset_left = 4509.0
+offset_top = -1446.0
+offset_right = 4593.0
+offset_bottom = -1416.0
+rotation = 0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<<<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel16" type="RichTextLabel" parent="." unique_id=1650844959]
+offset_left = 4634.0
+offset_top = -1540.9999
+offset_right = 4715.0
+offset_bottom = -1510.9999
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel22" type="RichTextLabel" parent="." unique_id=157030463]
+offset_left = 5224.9995
+offset_top = -2033.0
+offset_right = 5305.9995
+offset_bottom = -2003.0
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel23" type="RichTextLabel" parent="." unique_id=1144998637]
+offset_left = 5224.9995
+offset_top = -2146.0
+offset_right = 5305.9995
+offset_bottom = -2116.0
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel24" type="RichTextLabel" parent="." unique_id=333534676]
+offset_left = 5243.9995
+offset_top = -2095.8286
+offset_right = 5277.9995
+offset_bottom = -2065.8286
+rotation = 0.10471976
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel25" type="RichTextLabel" parent="." unique_id=1685177859]
+offset_left = 5237.0
+offset_top = -2106.8289
+offset_right = 5271.0
+offset_bottom = -2076.8289
+rotation = -0.4956735
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel26" type="RichTextLabel" parent="." unique_id=698111962]
+offset_left = 5224.9995
+offset_top = -2260.7014
+offset_right = 5305.9995
+offset_bottom = -2230.7014
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel27" type="RichTextLabel" parent="." unique_id=1658971994]
+offset_left = 5243.9995
+offset_top = -2210.53
+offset_right = 5277.9995
+offset_bottom = -2180.53
+rotation = 0.10471976
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel28" type="RichTextLabel" parent="." unique_id=1026737588]
+offset_left = 5237.0
+offset_top = -2221.5303
+offset_right = 5271.0
+offset_bottom = -2191.5303
+rotation = -0.4956735
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel29" type="RichTextLabel" parent="." unique_id=491742360]
+offset_left = 5224.9995
+offset_top = -2374.7014
+offset_right = 5305.9995
+offset_bottom = -2344.7014
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel33" type="RichTextLabel" parent="." unique_id=1051720333]
+offset_left = 5729.0
+offset_top = -2820.0002
+offset_right = 5835.0
+offset_bottom = -2783.0002
+rotation = 0.6370452
+theme_override_colors/default_color = Color(1, 1, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 38
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<<<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel35" type="RichTextLabel" parent="." unique_id=660995338]
+offset_left = 5115.0
+offset_top = -3022.0
+offset_right = 5221.0
+offset_bottom = -2985.0
+rotation = -0.36651915
+theme_override_colors/default_color = Color(1, 1, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 38
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<<<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel34" type="RichTextLabel" parent="." unique_id=793370274]
+offset_left = 5767.0
+offset_top = -2652.0
+offset_right = 5816.0
+offset_bottom = -2622.0
+rotation = -0.30543262
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel30" type="RichTextLabel" parent="." unique_id=765861014]
+offset_left = 5243.9995
+offset_top = -2324.53
+offset_right = 5277.9995
+offset_bottom = -2294.53
+rotation = 0.10471976
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel31" type="RichTextLabel" parent="." unique_id=962814970]
+offset_left = 5237.0
+offset_top = -2335.5303
+offset_right = 5271.0
+offset_bottom = -2305.5303
+rotation = -0.4956735
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel18" type="RichTextLabel" parent="." unique_id=195290705]
+offset_left = 4602.0
+offset_top = -1889.0
+offset_right = 4683.0
+offset_bottom = -1859.0
+rotation = -0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel19" type="RichTextLabel" parent="." unique_id=1314894890]
+offset_left = 4695.9995
+offset_top = -1920.0
+offset_right = 4776.9995
+offset_bottom = -1890.0
+rotation = 0.23561946
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel20" type="RichTextLabel" parent="." unique_id=1942768266]
+offset_left = 4789.0
+offset_top = -1894.0
+offset_right = 4870.0
+offset_bottom = -1864.0
+rotation = 0.72431165
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = ">>>>>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel17" type="RichTextLabel" parent="." unique_id=1922683989]
+offset_left = 4509.0
+offset_top = -1736.0
+offset_right = 4593.0
+offset_bottom = -1706.0
+rotation = 0.41015238
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 45
+bbcode_enabled = true
+text = "<<<<<"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="." unique_id=1508022123]
+offset_left = -686.0
+offset_top = -183.0
+offset_right = 227.0
+offset_bottom = -3.0
+theme_override_fonts/normal_font = ExtResource("3_omtrn")
+theme_override_font_sizes/normal_font_size = 30
+text = "You lose HP by
+rolling around surfaces too much.
+Rolling around a floor deteriorates it at 1x rate.
+Rolling around the side of a wall deteriorates it at 0.5x rate
+You gain hp in the air, and by standing still in a floor."
+fit_content = true
+autowrap_mode = 0
+
+[node name="jump_pad_area" parent="." unique_id=1367776173 instance=ExtResource("4_i6t4g")]
+position = Vector2(1458, -256)
+
+[node name="collectible" parent="." unique_id=1045126076 instance=ExtResource("5_p8jf4")]
+position = Vector2(1885, -254)
+
+[node name="collectible2" parent="." unique_id=1311537795 instance=ExtResource("5_p8jf4")]
+position = Vector2(1981, -254)
+
+[node name="collectible3" parent="." unique_id=2110799714 instance=ExtResource("5_p8jf4")]
+position = Vector2(2071, -254)
+
+[node name="collectible4" parent="." unique_id=1980815864 instance=ExtResource("5_p8jf4")]
+position = Vector2(2239, -254)
+
+[node name="collectible6" parent="." unique_id=580987903 instance=ExtResource("5_p8jf4")]
+position = Vector2(2158, -254)
+
+[node name="collectible5" parent="." unique_id=968047132 instance=ExtResource("5_p8jf4")]
+position = Vector2(2654, -259)
+collectible_type = 1
+
+[node name="jump_orb_area2" parent="." unique_id=795001206 instance=ExtResource("1_feyax")]
+position = Vector2(3721, -3211)
+jump_orb_type = 3

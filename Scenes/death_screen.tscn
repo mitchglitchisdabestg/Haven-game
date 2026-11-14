@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b7sfq206tqyr7"]
 
-[ext_resource type="Script" path="res://Scripts/death_screen.gd" id="1_death"]
+[ext_resource type="Script" uid="uid://3i1uqnka7tys" path="res://Scripts/death_screen.gd" id="1_death"]
 
-[node name="DeathScreen" type="Control"]
+[node name="DeathScreen" type="Control" unique_id=1679673096]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_death")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1616325007]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.72)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2085308085]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,37 +28,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=1516153943]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer" unique_id=2119145184]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=579244107]
 layout_mode = 2
 text = "You Died"
 horizontal_alignment = 1
 
-[node name="Stats" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="Stats" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1279548678]
 layout_mode = 2
 text = "Collectibles"
 horizontal_alignment = 1
 
-[node name="MainMenuButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="MainMenuButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1455251413]
 layout_mode = 2
 text = "Main Menu"
 
-[node name="LevelSelectButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="LevelSelectButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1582302965]
 layout_mode = 2
 text = "Level Select"
 
-[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=1536959581]
 layout_mode = 2
 text = "Restart Level"
 
-[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer" unique_id=47092852]
 layout_mode = 2
 text = "Quit Game"
 

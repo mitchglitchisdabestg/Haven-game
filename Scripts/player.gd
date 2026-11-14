@@ -50,6 +50,8 @@ var hp: float = 100.0:
 	set(value):
 		hp = clampf(value, 0.0, 100.0)
 
+var can_complete_with_orb: bool = false
+
 var is_dead: bool = false
 
 func _ready() -> void:
@@ -104,6 +106,11 @@ func _physics_process(delta: float) -> void:
 
 	# Buffer jump presses until player reaches a surface or releases the keybind
 	if Input.is_action_just_pressed("jump"):
+		
+		
+		if can_complete_with_orb: 
+			complete()
+			return
 		jump_buffered = true
 	# Activate buffered crouching when player reaches a surface
 	_activate_crouch_buffer()
@@ -119,6 +126,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Handle jump.
 	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
+		
 		jump_buffered = false
 		jump_buffer_used = Input.is_action_pressed("jump")
 		if jump_orb_velocity != 0.0:
@@ -237,3 +245,24 @@ func die() -> void:
 	set_process(false)
 	set_physics_process(false)
 	$CanvasLayer/death_ui.show_death_screen(collectible_stats)
+	Constants.deaths += 1
+
+func complete() -> void:
+	print("completing %s" % str(can_complete_with_orb))
+	if is_dead or not can_complete_with_orb: return
+	
+	set_process(false)
+	set_physics_process(false)
+	
+	$CanvasLayer/complete.show()
+	$CanvasLayer/complete/stats.text = "Stats:
+	Coins: %d | Helium cans collected: %d | Deaths: %d" % [collectible_stats["Coins"], collectible_stats["Helium"], Constants.deaths]
+
+func _on_main_menu_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
+
+func _on_restart_pressed() -> void:
+	get_tree().reload_current_scene()
+
+func _on_back_to_lvl_select_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")

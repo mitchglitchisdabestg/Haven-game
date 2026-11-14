@@ -12,6 +12,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ohrjl")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=186695144]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.73333335)
+
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=785907215]
 layout_mode = 1
 anchors_preset = 15
@@ -50,7 +60,7 @@ offset_bottom = 81.0
 grow_horizontal = 0
 value = 100.0
 
-[node name="coins" type="Label" parent="MarginContainer/Control"]
+[node name="coins" type="Label" parent="MarginContainer/Control" unique_id=1520703331]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -63,19 +73,77 @@ layout_mode = 2
 
 [node name="text_cont" type="VBoxContainer" parent="MarginContainer/debug" unique_id=1593596982]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = 37.0
+offset_right = 162.0
+offset_bottom = 217.0
 
 [node name="velocity" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1423133567]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.49768078, 0.81229275, 0.7770982, 1)
+theme_override_font_sizes/font_size = 12
 text = "gravity = 
 velocity x = 
 velocity y = 
 direction = 
 crouching = 
-player_sprite pos y = "
+player_sprite pos y = 
+can complete with orb = "
 
 [node name="delta" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1953319714]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "delta = "
+
+[node name="pause" type="Control" parent="MarginContainer" unique_id=310085563]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/pause" unique_id=1077496293]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.5
+offset_top = 110.0
+offset_right = 84.5
+offset_bottom = 177.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 48
+text = "Paused"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/pause" unique_id=333821339]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 230.0
+offset_right = 689.0
+offset_bottom = 460.0
+theme_override_constants/separation = 12
+
+[node name="main_menu" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=483167293]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="back_to_lvl_select" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=161336582]
+layout_mode = 2
+text = "Level Select"
+
+[node name="restart" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=1524957934]
+layout_mode = 2
+text = "Restart Level"
+
+[node name="quit" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=1747233385]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="unpause" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=997438141]
+layout_mode = 2
+text = "Unpause"
+
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/main_menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/back_to_lvl_select" to="." method="_on_back_to_lvl_select_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/unpause" to="." method="_on_unpause_pressed"]
