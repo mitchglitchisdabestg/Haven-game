@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boncrud5w7bkj"
-path="res://.godot/imported/zorbdefault.png-7d901ad2425cf49f4e82672be514f4e6.ctex"
+uid="uid://c7ap7nq2vp6ha"
+path="res://.godot/imported/zorbdefaulttest (1).png-81ccdde8d6645026fefdf71956e604af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Images/zorbdefault.png"
-dest_files=["res://.godot/imported/zorbdefault.png-7d901ad2425cf49f4e82672be514f4e6.ctex"]
+source_file="res://Resources/Images/zorbdefaulttest (1).png"
+dest_files=["res://.godot/imported/zorbdefaulttest (1).png-81ccdde8d6645026fefdf71956e604af.ctex"]
 
 [params]
 
