@@ -38,6 +38,18 @@ offset_bottom = 23.0
 grow_horizontal = 0
 horizontal_alignment = 2
 
+[node name="hp" type="ProgressBar" parent="MarginContainer/Control" unique_id=1683704746]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -272.0
+offset_top = 32.0
+offset_right = -1.0
+offset_bottom = 81.0
+grow_horizontal = 0
+value = 100.0
+
 [node name="debug" type="Control" parent="MarginContainer" unique_id=610157372]
 layout_mode = 2
 
