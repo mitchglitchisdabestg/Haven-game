@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bd36srvcbnt82"]
+
+[ext_resource type="PackedScene" uid="uid://chqyu0y7vnci0" path="res://Scenes/basic_platform.tscn" id="1_7qcoo"]
+
+[node name="basic_platforms" type="Node2D" unique_id=1095278997]
+
+[node name="StaticBody2D" parent="." unique_id=181026950 instance=ExtResource("1_7qcoo")]
+position = Vector2(258, -143)
+
+[node name="StaticBody2D2" parent="." unique_id=894018516 instance=ExtResource("1_7qcoo")]
+position = Vector2(-154, -344)
+
+[node name="StaticBody2D3" parent="." unique_id=934537979 instance=ExtResource("1_7qcoo")]
+position = Vector2(343, -511)
+
+[node name="StaticBody2D4" parent="." unique_id=229532849 instance=ExtResource("1_7qcoo")]
+position = Vector2(812, -603)
+
+[node name="StaticBody2D5" parent="." unique_id=1049894739 instance=ExtResource("1_7qcoo")]
+position = Vector2(1377, -834)
+
+[node name="StaticBody2D6" parent="." unique_id=2025550451 instance=ExtResource("1_7qcoo")]
+position = Vector2(1809, -1080)
