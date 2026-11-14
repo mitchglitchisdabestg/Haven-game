@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c0n1jlecf0u43" path="res://Scenes/player_ui.tscn" id="3_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://dfqj7pcpub4ca" path="res://Resources/Images/circle-shadow-overlay-free-png.webp" id="3_fkybt"]
 [ext_resource type="Texture2D" uid="uid://boncrud5w7bkj" path="res://Resources/Images/zorbdefault.png" id="4_fkybt"]
+[ext_resource type="PackedScene" path="res://Scenes/death_screen.tscn" id="6_x3wgy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6t5aa"]
 radius = 51.009804
@@ -46,3 +47,5 @@ position_smoothing_speed = 2.135
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=919148663]
 
 [node name="player_ui" parent="CanvasLayer" unique_id=962825389 instance=ExtResource("3_6t5aa")]
+
+[node name="death_ui" parent="CanvasLayer" unique_id=1576469355 instance=ExtResource("6_x3wgy")]

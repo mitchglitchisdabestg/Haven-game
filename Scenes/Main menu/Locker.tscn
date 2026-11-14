@@ -26,9 +26,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ynqhe")
 
-[node name="PeakMenuMusic" type="AudioStreamPlayer" parent="." unique_id=768283682]
-autoplay = true
-
 [node name="Background" type="TextureRect" parent="." unique_id=420134897]
 layout_mode = 1
 anchors_preset = 8

@@ -23,6 +23,7 @@ boot_splash/minimum_display_time=100
 
 [autoload]
 
+SettingsManager="*res://Globals/settings.gd"
 Constants="*res://Globals/constants.gd"
 
 [display]

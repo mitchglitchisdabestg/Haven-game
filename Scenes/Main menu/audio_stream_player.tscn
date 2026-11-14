@@ -6,5 +6,6 @@
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" unique_id=89513051]
 stream = ExtResource("1_ngxtg")
 script = ExtResource("2_uacig")
+bus = "Music"
 
 [connection signal="finished" from="." to="." method="_on_finished"]

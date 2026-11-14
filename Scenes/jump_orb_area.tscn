@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://d4bik70fwevov"]
+
+[ext_resource type="Script" uid="uid://d2sq6yxbmr1o2" path="res://Scripts/jump_orb_area.gd" id="1_orb"]
+[ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="2_orb_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_orb"]
+radius = 48.0
+
+[node name="jump_orb_area" type="Area2D" unique_id=1910929881]
+script = ExtResource("1_orb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=544897908]
+shape = SubResource("CircleShape2D_orb")
+
+[node name="orb" type="Sprite2D" parent="." unique_id=1492445433]
+modulate = Color(0.65, 0.3, 1, 1)
+scale = Vector2(0.09375, 0.09375)
+texture = ExtResource("2_orb_texture")
+
+[node name="orb_center" type="Sprite2D" parent="." unique_id=565387957]
+modulate = Color(0.85, 0.68, 1, 1)
+scale = Vector2(0.04375, 0.04375)
+texture = ExtResource("2_orb_texture")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

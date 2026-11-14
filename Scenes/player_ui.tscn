@@ -50,6 +50,14 @@ offset_bottom = 81.0
 grow_horizontal = 0
 value = 100.0
 
+[node name="coins" type="Label" parent="MarginContainer/Control"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 40.0
+text = "Coins: 0"
+
 [node name="debug" type="Control" parent="MarginContainer" unique_id=610157372]
 layout_mode = 2
 

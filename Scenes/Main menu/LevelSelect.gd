@@ -15,7 +15,6 @@ var start_position : Vector2
 func _ready() -> void:
 	screen_center = get_viewport_rect().size / 2.0
 	start_position = background.position
-	
 
 func _on_quit_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
@@ -25,7 +24,6 @@ func _on_locker_pressed() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	var mouse_pos = get_viewport().get_mouse_position()
 	var offset = (mouse_pos - screen_center) * sway_speed
 	background.position = start_position - offset

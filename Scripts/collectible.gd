@@ -2,14 +2,14 @@ extends Area2D
 
 @export_enum("Coins", "Helium") var collectible_type: int = 0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var collected: bool = false
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.has_method("crouch_anim"):
-		match collectible_type:
-			0: body.coins +=1
-			1: body.apply_helium()
-		queue_free()
+	if collected or not body.has_method("collect"):
+		return
+
+	# Apply one collectible effect and remove the item
+	body.call("collect", collectible_type)
+	collected = true
+	queue_free()

@@ -27,24 +27,55 @@ var crouching_sprite_scale_y: float = 0.1
 var sprite_scale_y: float = 0.159
 var crouching_sprite_y_pos: float = 19.0
 var crouching_tween: Tween
+var crouch_buffered: bool = false
+var jump_buffered: bool = false
+var crouch_buffer_used: bool = false
+var jump_buffer_used: bool = false
 
 var can_wall_jump: bool = false
+var is_in_wall_jump_area: bool = false
+var wall_jump_direction: float = 0.0
+var jump_orb_velocity: float = 0.0
 
-var hp: float = 100.0
+# Track coins helium and run totals
+var coins: int = 0
+var collectible_stats: Dictionary = {}
+var helium_time_remaining: float = 0.0
+
+const helium_duration: float = 2.0
+const HELIUM_GRAVITY_MULTIPLIER: float = 0.1
+
+# Keep player health within its range
+var hp: float = 100.0:
+	set(value):
+		hp = clampf(value, 0.0, 100.0)
+
+var is_dead: bool = false
 
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
 
 func _process(delta: float) -> void:
+	# Heal over time and expire helium
 	hp += 2.0 * delta
+	helium_time_remaining = maxf(helium_time_remaining - delta, 0.0)
+	if hp <= 0.0:
+		die()
+		return
 	
-	if Input.is_action_just_pressed("crouch"): 
-		crouching = true
-		crouch_anim()
+	if Input.is_action_just_pressed("crouch"):
+		crouch_buffered = true
 	
-	if Input.is_action_just_released("crouch"): 
-		crouching = false
-		crouch_anim()
+	if Input.is_action_just_released("crouch"):
+		crouch_buffered = false
+		crouch_buffer_used = false
+		if crouching:
+			crouching = false
+			crouch_anim()
+
+	if Input.is_action_just_released("jump"):
+		jump_buffered = false
+		jump_buffer_used = false
 	
 	if Input.is_action_just_pressed("sprint"): 
 		sprinting = true
@@ -56,9 +87,8 @@ func _process(delta: float) -> void:
 
 
 func crouch_anim() -> void:
-	if not is_on_floor():
+	if crouching and not (is_on_floor() or can_wall_jump):
 		crouching = false
-		return
 	
 	if crouching_tween and crouching_tween.is_running():
 		crouching_tween.kill()
@@ -70,21 +100,46 @@ func crouch_anim() -> void:
 var deteriorate_amount_mult: float = 1.0
 
 func _physics_process(delta: float) -> void:
+	var crouch_wall_jump := false
+
+	# Buffer jump presses until player reaches a surface or releases the keybind
+	if Input.is_action_just_pressed("jump"):
+		jump_buffered = true
+	# Activate buffered crouching when player reaches a surface
+	_activate_crouch_buffer()
+
 	# Add the gravity.
 	var current_gravity = gravity
+	if helium_time_remaining > 0.0:
+		current_gravity *= HELIUM_GRAVITY_MULTIPLIER
 	if velocity.y > 0:
 		current_gravity *= fall_gravity_multiplier
 		
 	velocity.y += current_gravity.y * delta
 	
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor() or Input.is_action_just_pressed("jump") and can_wall_jump:
-		if crouching:
+	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
+		jump_buffered = false
+		jump_buffer_used = Input.is_action_pressed("jump")
+		if jump_orb_velocity != 0.0:
+			velocity.y = jump_orb_velocity
+			crouching = false
+			if is_on_floor():
+				crouch_anim()
+		elif can_wall_jump and crouching:
+			# Launch away from the wall with a stronger jump
+			velocity.y = jump_velocity * CHARGED_JUMP_MULT
+			velocity.x = wall_jump_direction * speed
+			crouching = false
+			crouch_anim()
+			crouch_wall_jump = true
+		elif crouching:
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
 			return
-		velocity.y = jump_velocity
+		else:
+			velocity.y = jump_velocity
 		can_wall_jump = false
 		
 		var t = create_tween()
@@ -93,31 +148,92 @@ func _physics_process(delta: float) -> void:
 	if sprinting and is_on_floor():
 		speed = clampf(speed * sprint_speed_mult, min_speed, max_speed)
 		jump_velocity = -clampf(speed * sprint_speed_mult, min_speed, max_speed) * 0.3
-		deteriorate_amount_mult = 1.5
 	else:
 		speed = min_speed
 		jump_velocity = -600.0
-		deteriorate_amount_mult = 1.0
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_axis("left", "right")
-	if direction:
-		velocity.x = move_toward(velocity.x, direction * speed, acceleration * delta)
+	# Slow down crouching movement on a floor
+	var movement_speed := speed * 0.7 if crouching and is_on_floor() else speed
+	if crouch_wall_jump:
+		pass
+	elif direction:
+		velocity.x = move_toward(velocity.x, direction * movement_speed, acceleration * delta)
 		#if direction > 0.1: player_sprite.flip_h = true
 		#else: player_sprite.flip_h = false
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
-		deteriorate_amount_mult = 0.0
 
 	move_and_slide()
+
+	_activate_crouch_buffer()
+	if crouching and not (is_on_floor() or can_wall_jump):
+		crouching = false
+		crouch_anim()
+
+	# Apply wear based on movement and nearby surfaces
+	if is_in_wall_jump_area:
+		deteriorate_amount_mult = 0.5
+	elif is_zero_approx(direction):
+		deteriorate_amount_mult = 0.0
+	elif is_on_floor():
+		if sprinting and crouching:
+			deteriorate_amount_mult = 1.4
+		elif sprinting:
+			deteriorate_amount_mult = 1.5
+		elif crouching:
+			deteriorate_amount_mult = 0.9
+		else:
+			deteriorate_amount_mult = 1.0
+	else:
+		deteriorate_amount_mult = 0.0
 	
 	# 4. Smooth Rolling Rotation
 	apply_roll_rotation(delta)
 	
-	if is_on_floor(): hp -= (10.0 * delta) * deteriorate_amount_mult
+	if deteriorate_amount_mult > 0.0:
+		hp -= (10.0 * delta) * deteriorate_amount_mult
+		if hp <= 0.0:
+			die()
+
+func _activate_crouch_buffer() -> void:
+	if not crouch_buffered or not (is_on_floor() or can_wall_jump):
+		return
+
+	# Consume one crouch press on contact
+	crouch_buffered = false
+	crouching = true
+	crouch_buffer_used = Input.is_action_pressed("crouch")
+	crouch_anim()
 
 func apply_roll_rotation(delta: float) -> void:
 	# Angular velocity (radians/sec) = linear velocity / radius
 	var angular_velocity: float = velocity.x / ball_radius
 	player_sprite.rotation += angular_velocity * delta
+
+func collect(collectible_type: int) -> void:
+	# Apply collectible effects and record run totals
+	var collectible_name: String
+	match collectible_type:
+		0:
+			coins += 1
+			collectible_name = "Coins"
+		1:
+			helium_time_remaining = helium_duration
+			collectible_name = "Helium"
+		_:
+			return
+
+	collectible_stats[collectible_name] = collectible_stats.get(collectible_name, 0) + 1
+
+func die() -> void:
+	if is_dead:
+		return
+
+	# Stop play and show the collected run totals
+	is_dead = true
+	set_process(false)
+	set_physics_process(false)
+	$CanvasLayer/death_ui.show_death_screen(collectible_stats)

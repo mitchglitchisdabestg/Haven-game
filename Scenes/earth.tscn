@@ -2,16 +2,18 @@
 
 [ext_resource type="PackedScene" uid="uid://chqyu0y7vnci0" path="res://Scenes/basic_platform.tscn" id="1_ngbl3"]
 [ext_resource type="PackedScene" uid="uid://d2wg6ekgco54d" path="res://Scenes/jump_pad_area.tscn" id="2_8nujt"]
+[ext_resource type="PackedScene" path="res://Scenes/jump_orb_area.tscn" id="3_i8j47"]
+[ext_resource type="PackedScene" uid="uid://21us1w2ajlnl" path="res://Scenes/collectible.tscn" id="4_k5h48"]
 
 [node name="earth" type="Node2D" unique_id=1902116238]
 
 [node name="StaticBody2D" parent="." unique_id=181026950 instance=ExtResource("1_ngbl3")]
-position = Vector2(323, -845)
+position = Vector2(540, -845)
 size_x = 288
 size_y = 1691
 
 [node name="StaticBody2D2" parent="." unique_id=376297896 instance=ExtResource("1_ngbl3")]
-position = Vector2(-805, -812)
+position = Vector2(-1122, -812)
 size_y = 1636
 
 [node name="StaticBody2D3" parent="." unique_id=4099404 instance=ExtResource("1_ngbl3")]
@@ -39,9 +41,6 @@ position = Vector2(-609, -5255)
 size_x = 498
 size_y = 1722
 
-[node name="jump_pad_area" parent="." unique_id=1367776173 instance=ExtResource("2_8nujt")]
-position = Vector2(-331, -313)
-
 [node name="jump_pad_area2" parent="." unique_id=1699861456 instance=ExtResource("2_8nujt")]
 position = Vector2(-30, -471)
 jump_pad_type = 1
@@ -49,3 +48,16 @@ jump_pad_type = 1
 [node name="jump_pad_area3" parent="." unique_id=1352935983 instance=ExtResource("2_8nujt")]
 position = Vector2(-207, -684)
 jump_pad_type = 2
+
+[node name="jump_orb_area" parent="." unique_id=1916127095 instance=ExtResource("3_i8j47")]
+position = Vector2(-280, -334)
+
+[node name="collectible" parent="." unique_id=1045126076 instance=ExtResource("4_k5h48")]
+position = Vector2(-695, -146)
+
+[node name="collectible2" parent="." unique_id=44380659 instance=ExtResource("4_k5h48")]
+position = Vector2(-557, -171)
+
+[node name="collectible3" parent="." unique_id=783410208 instance=ExtResource("4_k5h48")]
+position = Vector2(199, -282)
+collectible_type = 1
