@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://i0p7d356akmr" path="res://Resources/Prototype/Green/texture_12.png" id="2_8mohm"]
 [ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_5bkq3"]
 [ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_a18an"]
+[ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="6_5bkq3"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="6_8mohm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
@@ -13,9 +14,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dy7ct"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0o4t1"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ynqhe"]
-load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [node name="Locker" type="Control" unique_id=520495004]
 layout_mode = 3
@@ -141,7 +139,10 @@ texture_normal = ExtResource("5_a18an")
 
 [node name="Skin 1" type="TextureButton" parent="HBoxContainer2" unique_id=818902951]
 layout_mode = 2
-texture_normal = SubResource("CompressedTexture2D_ynqhe")
+offset_transform_enabled = true
+offset_transform_position = Vector2(-570, -545)
+offset_transform_scale = Vector2(0.15, 0.15)
+texture_normal = ExtResource("6_5bkq3")
 
 [node name="Skin 5" type="TextureButton" parent="HBoxContainer2" unique_id=1725965094]
 layout_mode = 2
