@@ -54,6 +54,50 @@ grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_5bkq3")
 
+[node name="Skin 3" type="TextureButton" parent="." unique_id=1910999664]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 304.0
+offset_right = 218.0
+offset_bottom = 432.0
+texture_normal = ExtResource("5_a18an")
+
+[node name="Skin 2" type="TextureButton" parent="." unique_id=961715493]
+layout_mode = 0
+offset_left = 329.0
+offset_top = 302.0
+offset_right = 457.0
+offset_bottom = 430.0
+texture_normal = ExtResource("5_a18an")
+
+[node name="Skin 1" type="TextureButton" parent="." unique_id=818902951]
+layout_mode = 0
+offset_left = 627.0
+offset_top = 360.0
+offset_right = 727.0
+offset_bottom = 460.0
+scale = Vector2(0.15, 0.15)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-570, -540)
+texture_normal = ExtResource("6_5bkq3")
+ignore_texture_size = true
+
+[node name="Skin 5" type="TextureButton" parent="." unique_id=1725965094]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 317.0
+offset_right = 941.0
+offset_bottom = 445.0
+texture_normal = ExtResource("5_a18an")
+
+[node name="Skin 4" type="TextureButton" parent="." unique_id=70877221]
+layout_mode = 0
+offset_left = 1046.0
+offset_top = 320.0
+offset_right = 1174.0
+offset_bottom = 448.0
+texture_normal = ExtResource("5_a18an")
+
 [node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
 layout_mode = 0
 offset_left = 406.0
@@ -129,29 +173,6 @@ offset_bottom = 448.0
 offset_transform_enabled = true
 theme_override_constants/separation = 100
 
-[node name="Skin 3" type="TextureButton" parent="HBoxContainer2" unique_id=1910999664]
-layout_mode = 2
-texture_normal = ExtResource("5_a18an")
-
-[node name="Skin 2" type="TextureButton" parent="HBoxContainer2" unique_id=961715493]
-layout_mode = 2
-texture_normal = ExtResource("5_a18an")
-
-[node name="Skin 1" type="TextureButton" parent="HBoxContainer2" unique_id=818902951]
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(-570, -545)
-offset_transform_scale = Vector2(0.15, 0.15)
-texture_normal = ExtResource("6_5bkq3")
-
-[node name="Skin 5" type="TextureButton" parent="HBoxContainer2" unique_id=1725965094]
-layout_mode = 2
-texture_normal = ExtResource("5_a18an")
-
-[node name="Skin 4" type="TextureButton" parent="HBoxContainer2" unique_id=70877221]
-layout_mode = 2
-texture_normal = ExtResource("5_a18an")
-
 [node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=597114437]
 layout_mode = 0
 offset_left = 136.0
@@ -191,6 +212,8 @@ theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 30
 text = "skin 4"
 
+[connection signal="pressed" from="Skin 2" to="." method="_on_level_2_pressed"]
+[connection signal="pressed" from="Skin 1" to="." method="_on_level_1_pressed"]
 [connection signal="mouse_entered" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_exited"]
 [connection signal="pressed" from="HBoxContainer/LevelSelect" to="." method="_on_level_select_pressed"]
@@ -198,5 +221,3 @@ text = "skin 4"
 [connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]
 [connection signal="pressed" from="HBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="HBoxContainer2/Skin 2" to="." method="_on_level_2_pressed"]
-[connection signal="pressed" from="HBoxContainer2/Skin 1" to="." method="_on_level_1_pressed"]
