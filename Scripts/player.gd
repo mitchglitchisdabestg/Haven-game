@@ -6,6 +6,7 @@ var speed: float = 650.0
 @export var friction: float = 1000.0
 var jump_velocity: float = -600.0
 const CHARGED_JUMP_MULT: float = 1.3
+@export var fall_gravity_multiplier: float = 1.8
 var sprint_speed_mult: float = 1.02
 var max_speed: float = 1800.0
 var min_speed: float = 650.0
@@ -24,6 +25,8 @@ var crouching_sprite_scale_y: float = 0.1
 var sprite_scale_y: float = 0.159
 var crouching_sprite_y_pos: float = 19.0
 var crouching_tween: Tween
+
+var can_wall_jump: bool = false
 
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
@@ -60,11 +63,14 @@ func crouch_anim() -> void:
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
-	if not is_on_floor():
-		velocity += gravity * delta
+	var current_gravity = gravity
+	if velocity.y > 0:
+		current_gravity *= fall_gravity_multiplier
+		
+	velocity.y += current_gravity.y * delta
 	
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() or Input.is_action_just_pressed("jump") and can_wall_jump:
 		if crouching:
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
