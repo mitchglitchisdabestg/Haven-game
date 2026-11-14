@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c1sj1xckcvpys"]
+
+[ext_resource type="AudioStream" uid="uid://detify75xoun3" path="res://Resources/Sound/Music/Music Menu.mp3" id="1_ngxtg"]
+[ext_resource type="Script" uid="uid://bw17uibdwqvqr" path="res://Scripts/Menu/audio_stream_player.gd" id="2_uacig"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" unique_id=89513051]
+stream = ExtResource("1_ngxtg")
+script = ExtResource("2_uacig")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

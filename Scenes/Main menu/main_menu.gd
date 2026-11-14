@@ -4,6 +4,7 @@ var sway_speed : float = 0.05
 var screen_center : Vector2
 var start_position : Vector2
 
+
 @onready var new_game_button: Button = $MarginContainer/VBoxContainer/NewGameButton
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/QuitButton
 @onready var locker_button: Button = $MarginContainer/VBoxContainer/Locker
@@ -15,7 +16,9 @@ func _ready() -> void:
 	start_position = background.position
 	
 func _on_new_game_button_pressed() -> void:
+
 	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")
+
 	
 
 func _on_quit_pressed() -> void:

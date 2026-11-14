@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dfuy86evptu10" path="res://Scenes/Main menu/main_menu.gd" id="1_fu7sn"]
 [ext_resource type="Texture2D" uid="uid://bnfkijjeo6l4r" path="res://Resources/Prototype/Green/texture_08.png" id="2_oe6ut"]
-[ext_resource type="Script" uid="uid://d4j2v5ahr42lu" path="res://Scripts/Menu/menumusic.gd" id="3_7d32k"]
 [ext_resource type="Texture2D" uid="uid://ds5dkoff8wndo" path="res://Resources/Prototype/Dark/texture_05.png" id="3_xv4m7"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_xv4m7"]
 
@@ -129,9 +128,6 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
 text = "Quit"
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1802320571]
-script = ExtResource("3_7d32k")
 
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_mouse_exited"]
