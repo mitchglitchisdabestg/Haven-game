@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bnfkijjeo6l4r" path="res://Resources/Prototype/Green/texture_08.png" id="2_oe6ut"]
 [ext_resource type="Script" uid="uid://d4j2v5ahr42lu" path="res://Scripts/Menu/menumusic.gd" id="3_7d32k"]
 [ext_resource type="Texture2D" uid="uid://ds5dkoff8wndo" path="res://Resources/Prototype/Dark/texture_05.png" id="3_xv4m7"]
+[ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_xv4m7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
 
@@ -79,11 +80,13 @@ alignment = 2
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1136207556]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_xv4m7")
 theme_override_font_sizes/font_size = 50
 text = "Bounce back game"
 
 [node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=515091646]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_xv4m7")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
@@ -95,6 +98,7 @@ text = "Level Select "
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_xv4m7")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
@@ -106,6 +110,7 @@ text = "Locker"
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_xv4m7")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
@@ -117,6 +122,7 @@ text = "Settings"
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_xv4m7")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")

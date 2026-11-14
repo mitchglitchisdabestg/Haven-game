@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://i0p7d356akmr" path="res://Resources/Prototype/Green/texture_12.png" id="2_ae5x7"]
 [ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_ae5x7"]
 [ext_resource type="Script" uid="uid://d4j2v5ahr42lu" path="res://Scripts/Menu/menumusic.gd" id="3_o363i"]
+[ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_obj5t"]
 [ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_o363i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
@@ -62,6 +63,7 @@ offset_left = 406.0
 offset_top = 5.0
 offset_right = 860.0
 offset_bottom = 74.0
+theme_override_fonts/font = ExtResource("4_obj5t")
 theme_override_font_sizes/font_size = 50
 text = "Level Select"
 horizontal_alignment = 1
@@ -104,6 +106,7 @@ theme_override_constants/separation = 900
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_obj5t")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
@@ -115,6 +118,7 @@ text = "Locker"
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_obj5t")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
