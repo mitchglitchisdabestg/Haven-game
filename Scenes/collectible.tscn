@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://21us1w2ajlnl"]
+
+[ext_resource type="Script" uid="uid://dvs3h1wae853q" path="res://Scripts/collectible.gd" id="1_athsx"]
+[ext_resource type="Texture2D" uid="uid://dv25gglkon2rn" path="res://Resources/Prototype/Green/texture_04.png" id="2_7xeth"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_usgnq"]
+
+[node name="collectible" type="Area2D" unique_id=1045126076]
+script = ExtResource("1_athsx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=258169372]
+shape = SubResource("RectangleShape2D_usgnq")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=96332149]
+scale = Vector2(0.01953125, 0.01953125)
+texture = ExtResource("2_7xeth")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
