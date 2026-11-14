@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="2_vgqql"]
 [ext_resource type="PackedScene" uid="uid://c0n1jlecf0u43" path="res://Scenes/player_ui.tscn" id="3_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://dfqj7pcpub4ca" path="res://Resources/Images/circle-shadow-overlay-free-png.webp" id="3_fkybt"]
-[ext_resource type="Texture2D" uid="uid://boncrud5w7bkj" path="res://Resources/Images/zorbdefault.png" id="4_fkybt"]
+[ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="4_x3wgy"]
 [ext_resource type="PackedScene" uid="uid://b7sfq206tqyr7" path="res://Scenes/death_screen.tscn" id="6_x3wgy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6t5aa"]
@@ -38,7 +38,7 @@ texture = ExtResource("2_vgqql")
 [node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask/circle_mask_2" unique_id=900488016]
 position = Vector2(-0.8966976, -10.304047)
 scale = Vector2(0.5420069, 0.55760026)
-texture = ExtResource("4_fkybt")
+texture = ExtResource("4_x3wgy")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1471862222]
 position_smoothing_enabled = true
