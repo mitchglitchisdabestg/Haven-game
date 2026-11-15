@@ -25,3 +25,8 @@ func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
 	var offset = (mouse_pos - screen_center) * sway_speed
 	background.position = start_position - offset
+	
+	
+	
+	
+	
