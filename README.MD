@@ -1,23 +1,17 @@
-player in a ball
-ball deteriorates
+The player in the zorble deteriorates
 
-goal is
-ball goes to the clouds and into space
-in the moon they bounce 0 gravity
+The main goal is the ball(zorble) goes to the clouds and into space in the moon they bounce with 0 gravity.
 
-3 levels
-earth bounces around building
-clouds bounces around clouds
-space bounces around asteroids to then end in the moon
+There are 3 levels earth bounces around building clouds bounces around clouds space bounces around asteroids to then end in the moon!
 
-health bar slowly increases but deteriorates more than u heal
+The health bar slowly increases but deteriorates more than u heal!
 
-enemy tries to stop you you attack it and it bounces around until the edge of the screen where it explodes
+When enemy tries to stop you you attack it and it bounces around until the edge of the screen where it explodes!
 
-ball deteriorates more the more it rolls around need to keep bouncing
+The Ball deteriorates more the more it rolls around need to keep bouncing.
 
-ball in clouds needs to bounce in time or else they fall off the cloud
+All the balls inside clouds needs to bounce in time or else they fall off the cloud.
 
-progression system
+A cool progression system!
 
-certain amount of coins unlock new orb skins
+A certain amount of coins unlock new orb skins!
