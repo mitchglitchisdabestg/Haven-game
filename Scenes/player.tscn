@@ -37,7 +37,7 @@ texture = ExtResource("2_vgqql")
 
 [node name="proto_player_texture" type="Sprite2D" parent="sprite_parent/circle_mask/circle_mask_2" unique_id=900488016]
 position = Vector2(-0.8966976, -10.304047)
-scale = Vector2(0.5420069, 0.55760026)
+scale = Vector2(0.558, 0.558)
 texture = ExtResource("4_x3wgy")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1471862222]
