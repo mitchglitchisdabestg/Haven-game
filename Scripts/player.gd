@@ -250,6 +250,7 @@ func collect(collectible_type: int) -> void:
 	match collectible_type:
 		0:
 			coins += 1
+			Constants.total_coins += 1
 			collectible_name = "Coins"
 		1:
 			helium_time_remaining = helium_duration
