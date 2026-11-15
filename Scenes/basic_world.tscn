@@ -2,12 +2,13 @@
 
 [ext_resource type="Texture2D" uid="uid://b4xs3ned11l6y" path="res://Resources/Images/factory.png" id="1_7d3xn"]
 [ext_resource type="Texture2D" uid="uid://bu330wxhlr0p2" path="res://Resources/Prototype/Orange/texture_02.png" id="1_cw8j7"]
+[ext_resource type="Script" uid="uid://cakmxkyxldpq6" path="res://Scripts/basic_world.gd" id="1_e14uv"]
 [ext_resource type="PackedScene" uid="uid://s5knk7obedau" path="res://Scenes/player.tscn" id="2_rqcs4"]
-[ext_resource type="PackedScene" uid="uid://bpb4fnp7ve8te" path="res://Scenes/tutorial.tscn" id="3_dfxwm"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rqcs4"]
 
 [node name="basic_world" type="StaticBody2D" unique_id=857319446]
+script = ExtResource("1_e14uv")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1931234125]
 offset_left = -853.0
@@ -30,5 +31,3 @@ region_rect = Rect2(-56575.324, 0, 94397.91, 338.90234)
 
 [node name="player" parent="." unique_id=1185885422 instance=ExtResource("2_rqcs4")]
 position = Vector2(0, -248)
-
-[node name="tutorial" parent="." unique_id=198061394 instance=ExtResource("3_dfxwm")]
