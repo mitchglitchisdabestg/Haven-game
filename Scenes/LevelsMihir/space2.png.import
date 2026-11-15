@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://y6ihieuof85r"
-path="res://.godot/imported/space2.png-692c3a8e2494248eb422203dcff1c0f5.ctex"
+uid="uid://bbe5kb3c2g3e2"
+path="res://.godot/imported/space2.png-4d287674dc2dc4ef7e2626142de5abb5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Images/space2.png"
-dest_files=["res://.godot/imported/space2.png-692c3a8e2494248eb422203dcff1c0f5.ctex"]
+source_file="res://Scenes/LevelsMihir/space2.png"
+dest_files=["res://.godot/imported/space2.png-4d287674dc2dc4ef7e2626142de5abb5.ctex"]
 
 [params]
 
