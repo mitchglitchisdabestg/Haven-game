@@ -7,8 +7,6 @@ extends Control
 @onready var status: Label = $CenterContainer/Panel/VBoxContainer/Status
 
 func _ready() -> void:
-	SettingsManager.error_message_changed.connect(_on_error_message_changed)
-	status.text = SettingsManager.last_error_message
 	master_slider.value = SettingsManager.master_volume
 	music_slider.value = SettingsManager.music_volume
 	_update_volume_labels()

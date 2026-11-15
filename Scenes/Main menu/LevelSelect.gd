@@ -28,12 +28,20 @@ func _process(_delta: float) -> void:
 	var offset = (mouse_pos - screen_center) * sway_speed
 	background.position = start_position - offset
 
+func load_world(level: int) -> void:
+	var world: Node2D = load("res://Scenes/basic_world.tscn").instantiate()
+	
+	world.level_to_load = level
+	
+	Constants.current_level = level
+	
+	get_tree().change_scene_to_node(world)
 
 func _on_level_1_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/basic_world.tscn")
+	load_world(Constants.LEVEL_TUTORIAL)
 	Constants.deaths = 0
 
 
 func _on_level_2_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/basic_platforms.tscn")
+	load_world(Constants.LEVEL_EARTH)
 	Constants.deaths = 0

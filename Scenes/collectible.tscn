@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://21us1w2ajlnl"]
 
 [ext_resource type="Script" uid="uid://dvs3h1wae853q" path="res://Scripts/collectible.gd" id="1_athsx"]
-[ext_resource type="Texture2D" uid="uid://dv25gglkon2rn" path="res://Resources/Prototype/Green/texture_04.png" id="2_7xeth"]
+[ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="2_athsx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collectible"]
 radius = 16.0
@@ -13,7 +13,7 @@ script = ExtResource("1_athsx")
 shape = SubResource("CircleShape2D_collectible")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=96332149]
-scale = Vector2(0.01953125, 0.01953125)
-texture = ExtResource("2_7xeth")
+scale = Vector2(0.049999997, 0.049999997)
+texture = ExtResource("2_athsx")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

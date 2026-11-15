@@ -57,15 +57,21 @@ func _process(delta: float) -> void:
 
 
 func _on_main_menu_pressed() -> void:
+	Constants.current_level = -1
 	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 
 func _on_restart_pressed() -> void:
-	get_tree().reload_current_scene()
+	var world: Node2D = load("res://Scenes/basic_world.tscn").instantiate()
+	
+	world.level_to_load = Constants.current_level
+	
+	get_tree().change_scene_to_node(world)
 
 func _on_back_to_lvl_select_pressed() -> void:
+	Constants.current_level = -1
 	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")
 
 

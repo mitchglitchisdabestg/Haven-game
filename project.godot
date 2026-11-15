@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Haven Game"
-run/main_scene="uid://dnjc7jbpfdh2a"
+run/main_scene="uid://bheumvpgw1mxt"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/image="uid://33d3at85x75"
 config/icon="uid://dgjpbrxlpsg4n"

@@ -29,6 +29,10 @@ func _update_sprite() -> void:
 		
 	if collectible_type >= 0 and collectible_type < textures.size():
 		$Sprite2D.texture = textures[collectible_type]
+		if collectible_type == 0:
+			$Sprite2D.modulate = Color.YELLOW
+		else:
+			$Sprite2D.modulate = Color.WHITE
 
 
 func _on_body_entered(body: Node2D) -> void:
