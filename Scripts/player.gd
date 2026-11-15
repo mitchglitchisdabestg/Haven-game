@@ -64,11 +64,17 @@ func _ready() -> void:
 	
 	var skin_texture
 	
+	player_sprite_skin.scale = Vector2(0.558, 0.558)
+	player_sprite_skin.position = Vector2(-0.897, -10.304)
+	
 	match Constants.selected_skin:
 		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
 		1: skin_texture = preload("res://Resources/Images/zorbdefault.png")
-		2: skin_texture = preload("res://Resources/Images/BALLSFIXED.png")
-		3: skin_texture = preload("res://icon.svg")
+		2: 
+			skin_texture = preload("res://Resources/Images/BALLSFIXED.png")
+			player_sprite_skin.scale = Vector2(1.998, 1.998)
+			player_sprite_skin.position = Vector2(6.289, 25.157)
+		3: skin_texture = preload("res://Resources/Images/Doughnutskin.png")
 		4: skin_texture = preload("res://Resources/misc/cover_mask.png")
 	
 	player_sprite_skin.texture = skin_texture
