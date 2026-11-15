@@ -69,13 +69,13 @@ func _ready() -> void:
 	
 	match Constants.selected_skin:
 		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
-		1: skin_texture = preload("res://Resources/Images/zorbdefault.png")
+		1: skin_texture = preload("res://Resources/Images/Recordskin Final.png")
 		2: 
 			skin_texture = preload("res://Resources/Images/BALLSFIXED.png")
 			player_sprite_skin.scale = Vector2(1.998, 1.998)
 			player_sprite_skin.position = Vector2(6.289, 25.157)
 		3: skin_texture = preload("res://Resources/Images/Doughnutskin.png")
-		4: skin_texture = preload("res://Resources/misc/cover_mask.png")
+		4: skin_texture = preload("res://Resources/Images/zorbdefault.png")
 	
 	player_sprite_skin.texture = skin_texture
 

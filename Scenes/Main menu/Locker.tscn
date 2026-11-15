@@ -5,10 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_5bkq3"]
 [ext_resource type="Texture2D" uid="uid://dhqtnygxrfq58" path="res://Resources/Images/BALLSFIXED.png" id="4_17rfx"]
 [ext_resource type="Texture2D" uid="uid://36c3087trh04" path="res://Resources/Images/zorbdefault.png" id="5_6kqcx"]
+[ext_resource type="Texture2D" uid="uid://cqd0nf82v5o7t" path="res://Resources/Images/Recordskin Final.png" id="5_a18an"]
 [ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="6_5bkq3"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="6_8mohm"]
 [ext_resource type="Texture2D" uid="uid://chk3qwpvht7o3" path="res://Resources/Images/Doughnutskin.png" id="7_6kqcx"]
-[ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="7_a18an"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
 
@@ -71,12 +71,12 @@ stretch_mode = 0
 
 [node name="Skin 2" type="TextureButton" parent="." unique_id=961715493]
 layout_mode = 0
-offset_left = 329.0
-offset_top = 302.0
-offset_right = 457.0
-offset_bottom = 430.0
+offset_left = 328.0
+offset_top = 313.0
+offset_right = 460.0
+offset_bottom = 441.0
 pivot_offset = Vector2(64, 64)
-texture_normal = ExtResource("5_6kqcx")
+texture_normal = ExtResource("5_a18an")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -109,7 +109,7 @@ offset_top = 317.0
 offset_right = 941.0
 offset_bottom = 445.0
 pivot_offset = Vector2(64, 64)
-texture_normal = ExtResource("7_a18an")
+texture_normal = ExtResource("5_6kqcx")
 ignore_texture_size = true
 stretch_mode = 0
 
