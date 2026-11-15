@@ -9,6 +9,8 @@ var start_position : Vector2
 @onready var quit_button: Button = $MarginContainer/VBoxContainer/QuitButton
 @onready var locker_button: Button = $MarginContainer/VBoxContainer/Locker
 @onready var settings_button: Button = $MarginContainer/VBoxContainer/SettingsButton
+@onready var credits_button: Button = $MarginContainer/VBoxContainer/CreditsButton
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,7 +59,10 @@ func _on_quit_button_mouse_entered() -> void:
 func _on_quit_button_mouse_exited() -> void:
 	quit_button.text = "Quit"
 	
-
+func _on_credits_button_mouse_entered() -> void:
+	credits_button.text = ">> Credits"
+func _on_credits_button_mouse_exited() -> void:
+	credits_button.text = "Credits"
 
 func _on_locker_pressed() -> void:
 		get_tree().change_scene_to_file("res://Scenes/Main menu/Locker.tscn")
