@@ -1,9 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bb1wcsfe8rj3c"]
 
-[ext_resource type="Script" path="res://Scripts/credits.gd" id="1_credits"]
+[ext_resource type="Script" uid="uid://c3anut61medfa" path="res://Scripts/credits.gd" id="1_credits"]
+[ext_resource type="Texture2D" uid="uid://dfhpjyud7rh4j" path="res://Scenes/LevelsMihir/space.png" id="2_ccovl"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="3_font"]
 
-[node name="Credits" type="Control"]
+[node name="Credits" type="Control" unique_id=1955455080]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +13,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_credits")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=844739449]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 1282.0
+offset_bottom = 717.0
+texture = ExtResource("2_ccovl")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=716823704]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,42 +28,51 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+[node name="Panel" type="PanelContainer" parent="CenterContainer" unique_id=347566142]
 custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
+offset_transform_enabled = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=1044919057]
 layout_mode = 2
+offset_transform_enabled = true
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1525744201]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "Credits"
 horizontal_alignment = 1
 
-[node name="Programming" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="Programming" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=300281771]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
-text = "Programming & Scene Design\nGuayabR"
+theme_override_font_sizes/font_size = 40
+text = "Programming & Scene Design
+GuayabR"
 horizontal_alignment = 1
 
-[node name="MenuMusic" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MenuMusic" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=911540098]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
-text = "Menu & Music Design\nMitchell"
+theme_override_font_sizes/font_size = 40
+text = "Menu & Music Design
+Mitchell"
 horizontal_alignment = 1
 
-[node name="Art" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="Art" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1101076651]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
-text = "Art Design\nMihir"
+theme_override_font_sizes/font_size = 40
+text = "Art Design
+Mihir"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/VBoxContainer" unique_id=843223620]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 50
 text = "Back"
 
 [connection signal="pressed" from="CenterContainer/Panel/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
