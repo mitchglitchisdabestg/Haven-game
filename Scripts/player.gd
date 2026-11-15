@@ -16,6 +16,7 @@ var min_speed: float = 650.0
 
 @onready var player_sprite_parent: Node2D = $sprite_parent
 @onready var player_sprite: Sprite2D = $sprite_parent/circle_mask
+@onready var player_sprite_skin: Sprite2D = $sprite_parent/circle_mask/circle_mask_2/proto_player_texture
 @onready var player_sprite_child: Sprite2D = $sprite_parent/circle_mask/circle_mask_2
 
 @onready var ball_radius: float = $CollisionShape2D.shape.radius
@@ -60,6 +61,17 @@ var is_dead: bool = false
 
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
+	
+	var skin_texture
+	
+	match Constants.selected_skin:
+		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
+		1: skin_texture = preload("res://Resources/Images/zorbdefault.png")
+		2: skin_texture = preload("res://Resources/Images/BALLSFIXED.png")
+		3: skin_texture = preload("res://icon.svg")
+		4: skin_texture = preload("res://Resources/misc/cover_mask.png")
+	
+	player_sprite_skin.texture = skin_texture
 
 func _process(delta: float) -> void:
 	# Heal over time and expire helium

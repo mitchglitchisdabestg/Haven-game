@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://b3kk3oxycjc60" path="res://Scenes/Main menu/locker.gd" id="1_ynqhe"]
 [ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_8mohm"]
 [ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_5bkq3"]
+[ext_resource type="Texture2D" uid="uid://dhqtnygxrfq58" path="res://Resources/Images/BALLSFIXED.png" id="4_17rfx"]
+[ext_resource type="Texture2D" uid="uid://36c3087trh04" path="res://Resources/Images/zorbdefault.png" id="5_6kqcx"]
 [ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_a18an"]
 [ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="6_5bkq3"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="6_8mohm"]
@@ -60,7 +62,10 @@ offset_left = 90.0
 offset_top = 304.0
 offset_right = 218.0
 offset_bottom = 432.0
-texture_normal = ExtResource("5_a18an")
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("4_17rfx")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="Skin 2" type="TextureButton" parent="." unique_id=961715493]
 layout_mode = 0
@@ -68,19 +73,22 @@ offset_left = 329.0
 offset_top = 302.0
 offset_right = 457.0
 offset_bottom = 430.0
-texture_normal = ExtResource("5_a18an")
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("5_6kqcx")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="Skin 1" type="TextureButton" parent="." unique_id=818902951]
 layout_mode = 0
-offset_left = 627.0
-offset_top = 360.0
-offset_right = 727.0
-offset_bottom = 460.0
-scale = Vector2(0.15, 0.15)
-offset_transform_enabled = true
+offset_left = 574.0
+offset_top = 311.0
+offset_right = 702.0
+offset_bottom = 439.0
+pivot_offset = Vector2(64, 64)
 offset_transform_position = Vector2(-570, -540)
 texture_normal = ExtResource("6_5bkq3")
 ignore_texture_size = true
+stretch_mode = 0
 
 [node name="Skin 5" type="TextureButton" parent="." unique_id=1725965094]
 layout_mode = 0
@@ -88,6 +96,7 @@ offset_left = 813.0
 offset_top = 317.0
 offset_right = 941.0
 offset_bottom = 445.0
+pivot_offset = Vector2(64, 64)
 texture_normal = ExtResource("5_a18an")
 
 [node name="Skin 4" type="TextureButton" parent="." unique_id=70877221]
@@ -96,6 +105,7 @@ offset_left = 1046.0
 offset_top = 320.0
 offset_right = 1174.0
 offset_bottom = 448.0
+pivot_offset = Vector2(64, 64)
 texture_normal = ExtResource("5_a18an")
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
@@ -108,28 +118,6 @@ theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 50
 text = "Locker"
 horizontal_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=4046111]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 318.0
-offset_top = 111.0
-offset_right = -357.0
-offset_bottom = -127.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 64
-theme_override_constants/margin_bottom = 64
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1990260065]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-theme_override_constants/separation = 20
-alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
 layout_mode = 0
@@ -163,15 +151,6 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
 text = "Return"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1885574687]
-layout_mode = 0
-offset_left = 125.0
-offset_top = 320.0
-offset_right = 1254.0
-offset_bottom = 448.0
-offset_transform_enabled = true
-theme_override_constants/separation = 100
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=597114437]
 layout_mode = 0
@@ -212,8 +191,19 @@ theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 30
 text = "skin 4"
 
-[connection signal="pressed" from="Skin 2" to="." method="_on_level_2_pressed"]
-[connection signal="pressed" from="Skin 1" to="." method="_on_level_1_pressed"]
+[connection signal="mouse_entered" from="Skin 3" to="." method="_on_skin_3_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 3" to="." method="_on_skin_3_mouse_exited"]
+[connection signal="pressed" from="Skin 3" to="." method="_on_skin_3_pressed"]
+[connection signal="mouse_entered" from="Skin 2" to="." method="_on_skin_2_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 2" to="." method="_on_skin_2_mouse_exited"]
+[connection signal="pressed" from="Skin 2" to="." method="_on_skin_2_pressed"]
+[connection signal="mouse_entered" from="Skin 1" to="." method="_on_skin_1_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 1" to="." method="_on_skin_1_mouse_exited"]
+[connection signal="pressed" from="Skin 1" to="." method="_on_skin_1_pressed"]
+[connection signal="mouse_entered" from="Skin 5" to="." method="_on_skin_5_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 5" to="." method="_on_skin_5_mouse_exited"]
+[connection signal="mouse_entered" from="Skin 4" to="." method="_on_skin_4_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 4" to="." method="_on_skin_4_mouse_exited"]
 [connection signal="mouse_entered" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_exited"]
 [connection signal="pressed" from="HBoxContainer/LevelSelect" to="." method="_on_level_select_pressed"]
