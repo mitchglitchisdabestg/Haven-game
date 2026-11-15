@@ -32,6 +32,10 @@ var jump_buffered: bool = false
 var crouch_buffer_used: bool = false
 var jump_buffer_used: bool = false
 
+var hit_wall_tween: Tween
+
+var hit_floor_tween: Tween
+
 var can_wall_jump: bool = false
 var is_in_wall_jump_area: bool = false
 var wall_jump_direction: float = 0.0
@@ -59,7 +63,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# Heal over time and expire helium
-	hp += 2.0 * delta
+	hp += 1.5 * delta
 	helium_time_remaining = maxf(helium_time_remaining - delta, 0.0)
 	if hp <= 0.0:
 		die()
@@ -98,6 +102,25 @@ func crouch_anim() -> void:
 	crouching_tween = create_tween()
 	crouching_tween.tween_property(player_sprite_parent, "scale:y", crouching_sprite_scale_y if crouching else sprite_scale_y, 0.2).set_ease(Tween.EASE_OUT)
 	crouching_tween.parallel().tween_property(player_sprite_parent, "position:y", crouching_sprite_y_pos if crouching else 0.0, 0.2).set_ease(Tween.EASE_OUT)
+
+func hit_wall_anim(dir: float = 1.0) -> void:
+	hit_wall_tween = create_tween()
+	
+	hit_wall_tween.tween_property(player_sprite_parent, "scale:x", 0.135, 0.04).set_ease(Tween.EASE_OUT)
+	hit_wall_tween.parallel().tween_property(player_sprite_parent, "position:x", -13.0 * dir, 0.04).set_ease(Tween.EASE_OUT)
+	
+	hit_wall_tween.tween_property(player_sprite_parent, "scale:x", sprite_scale_y, 0.1).set_ease(Tween.EASE_IN)
+	hit_wall_tween.parallel().tween_property(player_sprite_parent, "position:x", 0.0, 0.04).set_ease(Tween.EASE_OUT)
+
+func hit_floor_anim() -> void:
+	hit_floor_tween = create_tween()
+	
+	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", 0.135, 0.04).set_ease(Tween.EASE_OUT)
+	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", 0, 0.04).set_ease(Tween.EASE_OUT)
+	
+	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", sprite_scale_y, 0.1).set_ease(Tween.EASE_IN)
+	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", 0.0, 0.04).set_ease(Tween.EASE_OUT)
+
 
 var deteriorate_amount_mult: float = 1.0
 
@@ -231,6 +254,12 @@ func collect(collectible_type: int) -> void:
 		1:
 			helium_time_remaining = helium_duration
 			collectible_name = "Helium"
+		2:
+			hp += Constants.health_potion_amount
+			collectible_name = "Health Potion"
+		3:
+			hp = 100.0
+			collectible_name = "Health Barrel"
 		_:
 			return
 

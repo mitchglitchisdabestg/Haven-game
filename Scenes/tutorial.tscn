@@ -626,3 +626,11 @@ collectible_type = 1
 [node name="jump_orb_area2" parent="." unique_id=795001206 instance=ExtResource("1_feyax")]
 position = Vector2(3721, -3211)
 jump_orb_type = 3
+
+[node name="collectible7" parent="." unique_id=204233011 instance=ExtResource("5_p8jf4")]
+position = Vector2(3740, -993)
+collectible_type = 2
+
+[node name="collectible8" parent="." unique_id=320230127 instance=ExtResource("5_p8jf4")]
+position = Vector2(5586, -2602)
+collectible_type = 3

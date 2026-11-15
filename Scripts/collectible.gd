@@ -1,6 +1,6 @@
 extends Area2D
 
-@export_enum("Coins", "Helium") var collectible_type: int = 0
+@export_enum("Coins", "Helium", "Health Potion", "Health Barrel") var collectible_type: int = 0
 
 var collected: bool = false
 
