@@ -142,6 +142,18 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
 text = "Credits"
 
+[node name="enable_audio_web" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1240490386]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("4_xv4m7")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
+text = "Enable audio"
+
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1296841661]
 layout_mode = 2
 theme_override_constants/h_separation = 0
@@ -166,6 +178,9 @@ text = "Quit"
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_mouse_exited"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/enable_audio_web" to="." method="_on_enable_audio_web_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/enable_audio_web" to="." method="_on_enable_audio_web_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/enable_audio_web" to="." method="_on_enable_audio_web_pressed"]
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]

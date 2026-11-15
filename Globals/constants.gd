@@ -23,8 +23,10 @@ var total_coins: int = 0:
 
 func _ready() -> void:
 	load_coins()
-	add_child(load("res://Scenes/Main menu/audio_stream_player.tscn").instantiate())
+	if OS.get_name() != "Web": add_audio()
 
+func add_audio() -> void:
+	add_child(load("res://Scenes/Main menu/audio_stream_player.tscn").instantiate())
 
 func save_coins() -> void:
 	var config := ConfigFile.new()

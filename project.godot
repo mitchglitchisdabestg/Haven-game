@@ -21,6 +21,10 @@ boot_splash/image="uid://33d3at85x75"
 config/icon="uid://dgjpbrxlpsg4n"
 boot_splash/minimum_display_time=100
 
+[audio]
+
+general/default_playback_type.web=0
+
 [autoload]
 
 SettingsManager="*res://Globals/settings.gd"
