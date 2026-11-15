@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b2mnqmjuq3kcg"]
+
+[ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="1_usb85"]
+
+[node name="Level1" type="Node2D" unique_id=529409274]
+
+[node name="Space2" type="Sprite2D" parent="." unique_id=1596235003]
+position = Vector2(639.7778, 358)
+scale = Vector2(1.1141975, 1.1141975)
+texture = ExtResource("1_usb85")
