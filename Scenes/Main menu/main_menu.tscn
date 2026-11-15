@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bheumvpgw1mxt"]
 
 [ext_resource type="Script" uid="uid://dfuy86evptu10" path="res://Scenes/Main menu/main_menu.gd" id="1_fu7sn"]
-[ext_resource type="Texture2D" uid="uid://bnfkijjeo6l4r" path="res://Resources/Prototype/Green/texture_08.png" id="2_oe6ut"]
+[ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_xv4m7"]
 [ext_resource type="Texture2D" uid="uid://ds5dkoff8wndo" path="res://Resources/Prototype/Dark/texture_05.png" id="3_xv4m7"]
 [ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="4_6rwoe"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_xv4m7"]
@@ -30,13 +30,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -585.0
-offset_top = -510.0
-offset_right = 644.0
-offset_bottom = 514.0
+offset_left = -1016.0
+offset_top = -565.0
+offset_right = 1062.0
+offset_bottom = 459.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_oe6ut")
+texture = ExtResource("2_xv4m7")
 stretch_mode = 6
 
 [node name="Background2" type="TextureRect" parent="." unique_id=1092752064]
@@ -44,14 +44,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 287.0
-offset_top = 17.0
-offset_right = 207.0
-offset_bottom = 321.0
+offset_left = 405.00003
+offset_top = 93.0
+offset_right = -40.0
+offset_bottom = 269.66663
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_xv4m7")
+expand_mode = 1
 
 [node name="Background3" type="TextureRect" parent="." unique_id=543045615]
 layout_mode = 1
@@ -61,9 +62,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -60.0
-offset_top = -336.0
+offset_top = -246.0
 offset_right = 1187.0
-offset_bottom = 874.0
+offset_bottom = 964.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.11, 0.11)
@@ -74,10 +75,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 318.0
-offset_top = 111.0
-offset_right = -357.0
-offset_bottom = -127.0
+offset_left = 322.0
+offset_top = 214.0
+offset_right = -353.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 64
