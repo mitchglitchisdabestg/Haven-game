@@ -1,9 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://blfwlaawcjg40"]
 
-[ext_resource type="Script" path="res://Scripts/settings_scn.gd" id="1_settings"]
+[ext_resource type="Script" uid="uid://d2ax6ywn0xks0" path="res://Scripts/settings_scn.gd" id="1_settings"]
+[ext_resource type="Texture2D" uid="uid://dfhpjyud7rh4j" path="res://Scenes/LevelsMihir/space.png" id="2_lhmql"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="3_font"]
 
-[node name="Settings" type="Control"]
+[node name="Settings" type="Control" unique_id=1046553678]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +13,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_settings")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=251880200]
+layout_mode = 0
+offset_right = 1286.0
+offset_bottom = 724.0
+texture = ExtResource("2_lhmql")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1334511844]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,59 +27,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+[node name="Panel" type="PanelContainer" parent="CenterContainer" unique_id=1334941975]
 custom_minimum_size = Vector2(460, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel" unique_id=226859409]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1540699268]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 40
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=6239484]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Master Volume"
 
-[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer" unique_id=1801115159]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 100.0
 
-[node name="MasterValue" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MasterValue" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1607738880]
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
-[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=1899357728]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Music Volume"
 
-[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer" unique_id=321317447]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 100.0
 
-[node name="MusicValue" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="MusicValue" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=711710894]
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
-[node name="Status" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="Status" type="Label" parent="CenterContainer/Panel/VBoxContainer" unique_id=613068703]
 layout_mode = 2
-autowrap_mode = 2
 horizontal_alignment = 1
+autowrap_mode = 2
 
-[node name="BackButton" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/VBoxContainer" unique_id=1756089638]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Back"
