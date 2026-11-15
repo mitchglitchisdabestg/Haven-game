@@ -12,6 +12,8 @@ const LEVEL_EARTH = 1
 
 var current_level: int = -1
 
+var selected_skin: int = 0
+
 # Save coins when updated
 var total_coins: int = 0:
 	set(value):

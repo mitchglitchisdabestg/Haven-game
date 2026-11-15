@@ -1,0 +1,213 @@
+[gd_scene format=3 uid="uid://bg2j7k35el4i"]
+
+[ext_resource type="Script" uid="uid://b3kk3oxycjc60" path="res://Scenes/Main menu/locker.gd" id="1_ynqhe"]
+[ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_8mohm"]
+[ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_5bkq3"]
+[ext_resource type="Texture2D" uid="uid://dhqtnygxrfq58" path="res://Resources/Images/BALLSFIXED.png" id="4_17rfx"]
+[ext_resource type="Texture2D" uid="uid://36c3087trh04" path="res://Resources/Images/zorbdefault.png" id="5_6kqcx"]
+[ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_a18an"]
+[ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="6_5bkq3"]
+[ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="6_8mohm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8qtwp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dy7ct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0o4t1"]
+
+[node name="Locker" type="Control" unique_id=520495004]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ynqhe")
+
+[node name="Background" type="TextureRect" parent="." unique_id=420134897]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -961.0
+offset_top = -487.0
+offset_right = 938.0
+offset_bottom = 537.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8mohm")
+stretch_mode = 6
+
+[node name="Background2" type="TextureRect" parent="." unique_id=491794387]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 49.0
+offset_top = 76.0
+offset_right = 769.0
+offset_bottom = 380.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_5bkq3")
+
+[node name="Skin 3" type="TextureButton" parent="." unique_id=1910999664]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 304.0
+offset_right = 218.0
+offset_bottom = 432.0
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("4_17rfx")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Skin 2" type="TextureButton" parent="." unique_id=961715493]
+layout_mode = 0
+offset_left = 329.0
+offset_top = 302.0
+offset_right = 457.0
+offset_bottom = 430.0
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("5_6kqcx")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Skin 1" type="TextureButton" parent="." unique_id=818902951]
+layout_mode = 0
+offset_left = 574.0
+offset_top = 311.0
+offset_right = 702.0
+offset_bottom = 439.0
+pivot_offset = Vector2(64, 64)
+offset_transform_position = Vector2(-570, -540)
+texture_normal = ExtResource("6_5bkq3")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Skin 5" type="TextureButton" parent="." unique_id=1725965094]
+layout_mode = 0
+offset_left = 813.0
+offset_top = 317.0
+offset_right = 941.0
+offset_bottom = 445.0
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("5_a18an")
+
+[node name="Skin 4" type="TextureButton" parent="." unique_id=70877221]
+layout_mode = 0
+offset_left = 1046.0
+offset_top = 320.0
+offset_right = 1174.0
+offset_bottom = 448.0
+pivot_offset = Vector2(64, 64)
+texture_normal = ExtResource("5_a18an")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 36.0
+offset_right = 863.0
+offset_bottom = 105.0
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 50
+text = "Locker"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 642.0
+offset_right = 1277.0
+offset_bottom = 691.0
+offset_transform_enabled = true
+theme_override_constants/separation = 850
+
+[node name="LevelSelect" type="Button" parent="HBoxContainer" unique_id=1361054276]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
+text = "Level select"
+
+[node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1296841661]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/line_spacing = 500
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qe12f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_8qtwp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_dy7ct")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
+text = "Return"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=597114437]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 428.0
+offset_right = 1265.0
+offset_bottom = 556.0
+offset_transform_enabled = true
+theme_override_constants/separation = 160
+
+[node name="Skin 3" type="Label" parent="HBoxContainer3" unique_id=456077609]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 30
+text = "skin 3"
+
+[node name="Skin 2" type="Label" parent="HBoxContainer3" unique_id=1029719985]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 30
+text = "skin2"
+
+[node name="Skin 1" type="Label" parent="HBoxContainer3" unique_id=1918281085]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 30
+text = "Equipped"
+
+[node name="Skin 5" type="Label" parent="HBoxContainer3" unique_id=702823555]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 30
+text = "skin 5"
+
+[node name="Skin 4" type="Label" parent="HBoxContainer3" unique_id=1966686730]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_8mohm")
+theme_override_font_sizes/font_size = 30
+text = "skin 4"
+
+[connection signal="mouse_entered" from="Skin 3" to="." method="_on_skin_3_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 3" to="." method="_on_skin_3_mouse_exited"]
+[connection signal="pressed" from="Skin 3" to="." method="_on_skin_3_pressed"]
+[connection signal="mouse_entered" from="Skin 2" to="." method="_on_skin_2_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 2" to="." method="_on_skin_2_mouse_exited"]
+[connection signal="pressed" from="Skin 2" to="." method="_on_skin_2_pressed"]
+[connection signal="mouse_entered" from="Skin 1" to="." method="_on_skin_1_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 1" to="." method="_on_skin_1_mouse_exited"]
+[connection signal="pressed" from="Skin 1" to="." method="_on_skin_1_pressed"]
+[connection signal="mouse_entered" from="Skin 5" to="." method="_on_skin_5_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 5" to="." method="_on_skin_5_mouse_exited"]
+[connection signal="mouse_entered" from="Skin 4" to="." method="_on_skin_4_mouse_entered"]
+[connection signal="mouse_exited" from="Skin 4" to="." method="_on_skin_4_mouse_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/LevelSelect" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/LevelSelect" to="." method="_on_level_select_pressed"]
+[connection signal="focus_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_focus_entered"]
+[connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
