@@ -71,11 +71,11 @@ func _ready() -> void:
 		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
 		1: skin_texture = preload("res://Resources/Images/Recordskin Final.png")
 		2: 
-			skin_texture = preload("res://Resources/Images/BALLSFIXED.png")
+			skin_texture = preload("res://Resources/Images/buoy (1).png")
 			player_sprite_skin.scale = Vector2(1.998, 1.998)
 			player_sprite_skin.position = Vector2(6.289, 25.157)
-		3: skin_texture = preload("res://Resources/Images/Doughnutskin.png")
-		4: skin_texture = preload("res://Resources/Images/zorbdefault.png")
+		3: skin_texture = preload("res://Resources/Images/doughnut2 (1).png")
+		4: skin_texture = preload("res://Resources/Images/gear (1).png")
 	
 	player_sprite_skin.texture = skin_texture
 
