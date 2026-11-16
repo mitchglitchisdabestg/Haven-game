@@ -20,18 +20,21 @@ fall_gravity_multiplier = 1.65
 shape = SubResource("CircleShape2D_6t5aa")
 
 [node name="sprite_parent" type="Sprite2D" parent="." unique_id=1827462053]
+self_modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.159, 0.159)
 texture = ExtResource("2_vgqql")
 
 [node name="shadow" type="Sprite2D" parent="sprite_parent" unique_id=68562964]
 position = Vector2(6.2893076, 113.207535)
-scale = Vector2(1.4503914, 1.450391)
+scale = Vector2(1.1680144, 1.1680142)
 texture = ExtResource("3_fkybt")
 
 [node name="circle_mask" type="Sprite2D" parent="sprite_parent" unique_id=1415873267]
+self_modulate = Color(1, 1, 1, 0)
 texture = ExtResource("2_vgqql")
 
 [node name="circle_mask_2" type="Sprite2D" parent="sprite_parent/circle_mask" unique_id=1500329099]
+self_modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("2_vgqql")
 

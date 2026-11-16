@@ -67,15 +67,20 @@ func _ready() -> void:
 	player_sprite_skin.scale = Vector2(0.558, 0.558)
 	player_sprite_skin.position = Vector2(-0.897, -10.304)
 	
+	$sprite_parent/shadow.scale = Vector2(1.168, 1.168)
+	$sprite_parent/shadow.position = Vector2(6.289, 113.208)
+	
 	match Constants.selected_skin:
 		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
 		1: skin_texture = preload("res://Resources/Images/Recordskin Final.png")
-		2: 
-			skin_texture = preload("res://Resources/Images/buoy (1).png")
-			player_sprite_skin.scale = Vector2(1.998, 1.998)
-			player_sprite_skin.position = Vector2(6.289, 25.157)
+		2: skin_texture = preload("res://Resources/Images/buoy (1).png")
 		3: skin_texture = preload("res://Resources/Images/doughnut2 (1).png")
-		4: skin_texture = preload("res://Resources/Images/gear (1).png")
+		4: 
+			skin_texture = preload("res://Resources/Images/gear (1).png")
+			player_sprite_skin.scale = Vector2(0.554, 0.593)
+			player_sprite_skin.position = Vector2(3.145, -9.434)
+			$sprite_parent/shadow.scale = Vector2(1.065, 1.065)
+			$sprite_parent/shadow.position = Vector2(6.289, 94.34)
 	
 	player_sprite_skin.texture = skin_texture
 
