@@ -1,6 +1,7 @@
 extends Node
 
 const SETTINGS_PATH := "user://settings.json"
+const INPUT_ACTIONS := ["left", "right", "crouch", "jump", "sprint", "back"]
 
 var master_volume: float = 100.0
 var music_volume: float = 100.0
@@ -49,6 +50,7 @@ func _load_settings() -> void:
 	var settings: Dictionary = json.data
 	master_volume = _read_volume(settings, "master_volume", master_volume)
 	music_volume = _read_volume(settings, "music_volume", music_volume)
+	_apply_saved_keybindings(settings.get("keybindings", {}))
 
 func _read_volume(settings: Dictionary, key: String, default_value: float) -> float:
 	var value: Variant = settings.get(key, default_value)
@@ -69,13 +71,92 @@ func _apply_bus_volume(bus_name: String, value: float) -> bool:
 	AudioServer.set_bus_volume_db(bus_index, volume_db)
 	return true
 
+func get_action_events(action: String) -> Array[InputEvent]:
+	if not INPUT_ACTIONS.has(action) or not InputMap.has_action(action):
+		push_error("Unknown input action: %s" % action)
+		return []
+
+	var events: Array[InputEvent] = []
+	for event in InputMap.action_get_events(action):
+		events.append(event.duplicate())
+	return events
+
+func set_action_events(action: String, events: Array[InputEvent]) -> void:
+	if not INPUT_ACTIONS.has(action) or not InputMap.has_action(action):
+		push_error("Unknown input action: %s" % action)
+		return
+
+	InputMap.action_erase_events(action)
+	for event in events:
+		InputMap.action_add_event(action, event.duplicate())
+	_save_settings()
+
+func _apply_saved_keybindings(bindings: Variant) -> void:
+	if not bindings is Dictionary:
+		return
+
+	for action in INPUT_ACTIONS:
+		if not bindings.has(action):
+			continue
+
+		var saved_events: Variant = bindings[action]
+		if not saved_events is Array:
+			push_warning("Ignoring invalid saved keybindings for action '%s'." % action)
+			continue
+
+		var key_events: Array[InputEvent] = []
+		for saved_event in saved_events:
+			if not saved_event is Dictionary:
+				continue
+			var key_event := _key_event_from_dict(saved_event)
+			if key_event != null:
+				key_events.append(key_event)
+
+		InputMap.action_erase_events(action)
+		for event in key_events:
+			InputMap.action_add_event(action, event)
+
+func _key_event_from_dict(data: Dictionary) -> InputEventKey:
+	var key_event := InputEventKey.new()
+	key_event.keycode = int(data.get("keycode", 0))
+	key_event.physical_keycode = int(data.get("physical_keycode", 0))
+	key_event.unicode = int(data.get("unicode", 0))
+	key_event.location = int(data.get("location", 0))
+	key_event.shift_pressed = bool(data.get("shift_pressed", false))
+	key_event.ctrl_pressed = bool(data.get("ctrl_pressed", false))
+	key_event.alt_pressed = bool(data.get("alt_pressed", false))
+	key_event.meta_pressed = bool(data.get("meta_pressed", false))
+	return key_event
+
+func _serialize_keybindings() -> Dictionary:
+	var bindings: Dictionary = {}
+	for action in INPUT_ACTIONS:
+		var saved_events: Array[Dictionary] = []
+		for event in InputMap.action_get_events(action):
+			if not event is InputEventKey:
+				continue
+			saved_events.append({
+				"keycode": event.keycode,
+				"physical_keycode": event.physical_keycode,
+				"unicode": event.unicode,
+				"location": event.location,
+				"shift_pressed": event.shift_pressed,
+				"ctrl_pressed": event.ctrl_pressed,
+				"alt_pressed": event.alt_pressed,
+				"meta_pressed": event.meta_pressed
+			})
+		bindings[action] = saved_events
+	return bindings
+
 func _save_settings() -> void:
 	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
 	if file == null:
+		push_error("Could not save settings: %s" % error_string(FileAccess.get_open_error()))
 		return
 
 	var settings := {
 		"master_volume": master_volume,
-		"music_volume": music_volume
+		"music_volume": music_volume,
+		"keybindings": _serialize_keybindings()
 	}
 	file.store_string(JSON.stringify(settings, "\t"))

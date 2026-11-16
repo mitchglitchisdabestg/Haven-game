@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinResource" format=3 uid="uid://2c3iae57sxke"]
+
+[ext_resource type="Script" uid="uid://cyawqo7tmi3q" path="res://Resources/Skins/skin_resource.gd" id="1_o1fw5"]
+
+[resource]
+script = ExtResource("1_o1fw5")
+texture_path = "uid://b6watagrcuqj5"
+skin_name = "Solid"
+display_order = 6
+sprite_scale = Vector2(1, 1)
+sprite_position = Vector2(0, 0)

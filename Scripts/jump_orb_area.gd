@@ -6,6 +6,8 @@ extends Area2D
 		jump_orb_type = value
 		_update_color()
 
+var scale_tween: Tween
+
 func _ready() -> void:
 	_update_color()
 
@@ -30,6 +32,7 @@ func _update_color() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("crouch_anim"):
+		_animate_orb_enter()
 		# Set the launch force from the selected orb size
 		match jump_orb_type:
 			0: body.jump_orb_velocity = body.jump_velocity / 1.35
@@ -40,5 +43,22 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.has_method("crouch_anim"):
+		_animate_orb_exit()
 		body.jump_orb_velocity = 0.0
 		body.can_complete_with_orb = false
+
+func _animate_orb_enter() -> void:
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+
+	scale_tween = create_tween()
+	scale_tween.tween_property($orb_center, "scale", Vector2(0.065, 0.065), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	scale_tween.tween_property($orb, "scale", Vector2(0.115, 0.115), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+
+func _animate_orb_exit() -> void:
+	if scale_tween and scale_tween.is_running():
+		scale_tween.kill()
+
+	scale_tween = create_tween()
+	scale_tween.tween_property($orb, "scale", Vector2(0.094, 0.094), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	scale_tween.tween_property($orb_center, "scale", Vector2(0.044, 0.044), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
