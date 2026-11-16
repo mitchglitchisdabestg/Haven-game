@@ -1,6 +1,6 @@
 extends Node
 
-enum Gravity { EARTH = 908, SPACE = 454 }
+enum Gravity { EARTH = 1400, SPACE = 700 }
 
 const COINS_SAVE_PATH := "user://save_data.cfg"
 const SKIN_RESOURCE_DIRECTORY := "res://Resources/Skins"

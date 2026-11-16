@@ -4,15 +4,21 @@ extends CharacterBody2D
 var speed: float = 650.0
 @export var acceleration: float = 800.0
 @export var friction: float = 1000.0
-var jump_velocity: float = -600.0
+var jump_velocity: float = -745.0
 const CHARGED_JUMP_MULT: float = 1.3
 var direction: float
 @export var fall_gravity_multiplier: float = 1.8
+@export var jump_release_gravity_multiplier: float = 1.8
 var sprint_speed_mult: float = 1.02
 var max_speed: float = 1800.0
 var min_speed: float = 650.0
 
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
+@export var max_vertical_velocity_y: float = 5000.0
+
+const FALL_DAMAGE_THRESHOLD := 1800.0
+const MAX_FALL_DAMAGE := 65.0
+const FALLING_ROLL_ROTATION_SPEED := 1.0
 
 @onready var player_sprite_parent: Node2D = $sprite_parent
 @onready var player_sprite: Sprite2D = $sprite_parent/circle_mask
@@ -22,6 +28,11 @@ var min_speed: float = 650.0
 @onready var ball_radius: float = $CollisionShape2D.shape.radius
 
 var sprinting: bool = false
+var times_jumped: int = 0
+var times_charged_jumped: int = 0
+var times_wall_jumped: int = 0
+var times_charged_wall_jumped: int = 0
+var pixels_ran_while_sprinting: float = 0.0
 
 var crouching: bool = false
 var crouching_sprite_scale_y: float = 0.1
@@ -36,6 +47,13 @@ var jump_buffer_used: bool = false
 var hit_wall_tween: Tween
 
 var hit_floor_tween: Tween
+const MAX_LANDING_IMPACT_SPEED := 1500.0
+const LANDING_SQUASH_SCALE_FACTOR := 0.75
+var impact_strength: float = 0.0
+var target_scale_y: float = 0.0
+var target_position_y: float = 0.0
+var squashed_scale_y: float = 0.0
+var squashed_position_y: float = 0.0
 
 var can_wall_jump: bool = false
 var is_in_wall_jump_area: bool = false
@@ -44,7 +62,10 @@ var jump_orb_velocity: float = 0.0
 
 # Track coins helium and run totals
 var coins: int = 0
-var collectible_stats: Dictionary = {}
+var collectible_stats: Dictionary = {
+	"Coins": 0,
+	"Helium": 0
+}
 var helium_time_remaining: float = 0.0
 
 const helium_duration: float = 2.0
@@ -128,20 +149,31 @@ func hit_wall_anim(dir: float = 1.0) -> void:
 	hit_wall_tween.tween_property(player_sprite_parent, "scale:x", sprite_scale_y, 0.1).set_ease(Tween.EASE_IN)
 	hit_wall_tween.parallel().tween_property(player_sprite_parent, "position:x", 0.0, 0.04).set_ease(Tween.EASE_OUT)
 
-func hit_floor_anim() -> void:
+func hit_floor_anim(impact_velocity_y: float) -> void:
+	impact_strength = clampf(impact_velocity_y / MAX_LANDING_IMPACT_SPEED, 0.0, 1.0)
+	target_scale_y = crouching_sprite_scale_y if crouching else sprite_scale_y
+	target_position_y = crouching_sprite_y_pos if crouching else 0.0
+	squashed_scale_y = lerpf(target_scale_y, target_scale_y * LANDING_SQUASH_SCALE_FACTOR, impact_strength)
+	var sprite_radius_at_normal_scale := ball_radius / sprite_scale_y
+	squashed_position_y = target_position_y + sprite_radius_at_normal_scale * (target_scale_y - squashed_scale_y)
+
+	if hit_floor_tween and hit_floor_tween.is_running():
+		hit_floor_tween.kill()
+	if crouching_tween and crouching_tween.is_running():
+		crouching_tween.kill()
+
 	hit_floor_tween = create_tween()
-	
-	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", 0.135, 0.04).set_ease(Tween.EASE_OUT)
-	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", 0, 0.04).set_ease(Tween.EASE_OUT)
-	
-	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", sprite_scale_y, 0.1).set_ease(Tween.EASE_IN)
-	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", 0.0, 0.04).set_ease(Tween.EASE_OUT)
+	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", squashed_scale_y, 0.03).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", squashed_position_y, 0.03).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", target_scale_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", target_position_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 
 
 var deteriorate_amount_mult: float = 1.0
 
 func _physics_process(delta: float) -> void:
 	var crouch_wall_jump := false
+	var was_on_floor := is_on_floor()
 
 	# Buffer jump presses until player reaches a surface or releases the keybind
 	if Input.is_action_just_pressed("jump"):
@@ -158,7 +190,9 @@ func _physics_process(delta: float) -> void:
 	var current_gravity = gravity
 	if helium_time_remaining > 0.0:
 		current_gravity *= HELIUM_GRAVITY_MULTIPLIER
-	if velocity.y > 0:
+	if velocity.y < 0 and not Input.is_action_pressed("jump"):
+		current_gravity *= jump_release_gravity_multiplier
+	elif velocity.y > 0:
 		current_gravity *= fall_gravity_multiplier
 		
 	velocity.y += current_gravity.y * delta
@@ -169,11 +203,13 @@ func _physics_process(delta: float) -> void:
 		jump_buffered = false
 		jump_buffer_used = Input.is_action_pressed("jump")
 		if jump_orb_velocity != 0.0:
+			_record_jump()
 			velocity.y = jump_orb_velocity
 			crouching = false
 			if is_on_floor():
 				crouch_anim()
 		elif can_wall_jump and crouching:
+			_record_jump(true, true)
 			# Launch away from the wall with a stronger jump
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT
 			velocity.x = wall_jump_direction * speed
@@ -181,11 +217,13 @@ func _physics_process(delta: float) -> void:
 			crouch_anim()
 			crouch_wall_jump = true
 		elif crouching:
+			_record_jump(true)
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
 			return
 		else:
+			_record_jump(false, can_wall_jump)
 			velocity.y = jump_velocity
 		can_wall_jump = false
 		
@@ -197,7 +235,7 @@ func _physics_process(delta: float) -> void:
 		jump_velocity = -clampf(speed * sprint_speed_mult, min_speed, max_speed) * 0.3
 	else:
 		speed = min_speed
-		jump_velocity = -600.0
+		jump_velocity = -745.0
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -213,12 +251,23 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 
+	velocity.y = minf(velocity.y, max_vertical_velocity_y)
+	var sprint_start_x := global_position.x
+	var sprinting_on_ground := sprinting and is_on_floor()
+	var impact_velocity_y := velocity.y
 	move_and_slide()
+	if sprinting_on_ground:
+		pixels_ran_while_sprinting += absf(global_position.x - sprint_start_x)
 
 	_activate_crouch_buffer()
 	if crouching and not (is_on_floor() or can_wall_jump):
 		crouching = false
 		crouch_anim()
+	if not was_on_floor and is_on_floor() and impact_velocity_y > 0.0:
+		hit_floor_anim(impact_velocity_y)
+		_apply_fall_damage(impact_velocity_y)
+		if is_dead:
+			return
 
 	# Apply wear based on movement and nearby surfaces
 	if is_in_wall_jump_area:
@@ -255,9 +304,37 @@ func _activate_crouch_buffer() -> void:
 	crouch_buffer_used = Input.is_action_pressed("crouch")
 	crouch_anim()
 
+
+func _record_jump(charged: bool = false, wall: bool = false) -> void:
+	times_jumped += 1
+	if charged:
+		times_charged_jumped += 1
+	if wall:
+		times_wall_jumped += 1
+	if charged and wall:
+		times_charged_wall_jumped += 1
+
+
+func _apply_fall_damage(impact_velocity_y: float) -> void:
+	if impact_velocity_y <= FALL_DAMAGE_THRESHOLD or max_vertical_velocity_y <= FALL_DAMAGE_THRESHOLD:
+		return
+
+	var damage_fraction := clampf(
+		(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (max_vertical_velocity_y - FALL_DAMAGE_THRESHOLD),
+		0.0,
+		1.0
+	)
+	hp -= MAX_FALL_DAMAGE * damage_fraction
+	if hp <= 0.0:
+		die()
+
+
 func apply_roll_rotation(delta: float) -> void:
 	# Angular velocity (radians/sec) = linear velocity / radius
 	var angular_velocity: float = velocity.x / ball_radius
+	if not is_on_floor() and velocity.y > 0.0:
+		var horizontal_speed_ratio := clampf(absf(velocity.x) / max_speed, 0.0, 1.0)
+		angular_velocity += signf(velocity.x) * FALLING_ROLL_ROTATION_SPEED * horizontal_speed_ratio
 	player_sprite.rotation += angular_velocity * delta
 
 func collect(collectible_type: int) -> void:

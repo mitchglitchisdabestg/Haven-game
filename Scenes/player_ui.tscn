@@ -60,26 +60,36 @@ offset_bottom = 81.0
 grow_horizontal = 0
 value = 100.0
 
-[node name="coins" type="Label" parent="MarginContainer/Control" unique_id=1520703331]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control" unique_id=1056880214]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 200.0
-offset_bottom = 40.0
+offset_right = 313.0
+offset_bottom = 155.0
+
+[node name="coins" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=1520703331]
+layout_mode = 2
 text = "Coins: 0"
+
+[node name="helium" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=1563989908]
+layout_mode = 2
+text = "Helium Cans: 0"
+
+[node name="deaths" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=128293775]
+layout_mode = 2
+text = "Deaths: 0"
 
 [node name="debug" type="Control" parent="MarginContainer" unique_id=610157372]
 layout_mode = 2
 
 [node name="text_cont" type="VBoxContainer" parent="MarginContainer/debug" unique_id=1593596982]
 layout_mode = 0
-offset_top = 37.0
+offset_top = 78.0
 offset_right = 162.0
-offset_bottom = 217.0
+offset_bottom = 258.0
 
 [node name="velocity" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1423133567]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.49768078, 0.81229275, 0.7770982, 1)
+theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 12
 text = "gravity = 
 velocity x = 
@@ -93,6 +103,49 @@ can complete with orb = "
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "delta = "
+
+[node name="debug_actions" type="PanelContainer" parent="MarginContainer/debug" unique_id=1091198452]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -212.0
+offset_top = -248.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/debug/debug_actions" unique_id=178028291]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="title" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=512966539]
+layout_mode = 2
+text = "Debug Actions"
+horizontal_alignment = 1
+
+[node name="health_potion" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1400257670]
+layout_mode = 2
+text = "Give Health Potion"
+
+[node name="health_barrel" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1251515230]
+layout_mode = 2
+text = "Give Health Barrel"
+
+[node name="helium" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1994915907]
+layout_mode = 2
+text = "Give Helium"
+
+[node name="coin" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1777048294]
+layout_mode = 2
+text = "Give Coin"
+
+[node name="damage" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1061561528]
+layout_mode = 2
+text = "Take 10 Damage"
 
 [node name="pause" type="Control" parent="MarginContainer" unique_id=310085563]
 unique_name_in_owner = true
@@ -142,6 +195,11 @@ text = "Quit Game"
 layout_mode = 2
 text = "Unpause"
 
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_potion" to="." method="_on_debug_health_potion_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_barrel" to="." method="_on_debug_health_barrel_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/helium" to="." method="_on_debug_helium_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/coin" to="." method="_on_debug_coin_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/damage" to="." method="_on_debug_damage_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/main_menu" to="." method="_on_main_menu_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/back_to_lvl_select" to="." method="_on_back_to_lvl_select_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/restart" to="." method="_on_restart_pressed"]
