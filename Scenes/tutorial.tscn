@@ -50,7 +50,7 @@ size_x = 970
 size_y = 100
 
 [node name="StaticBody2D16" parent="." unique_id=2003772233 instance=ExtResource("2_omtrn")]
-position = Vector2(4165, -2897)
+position = Vector2(4165, -2898)
 size_x = 1833
 size_y = 100
 

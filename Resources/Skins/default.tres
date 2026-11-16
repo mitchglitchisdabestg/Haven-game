@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkinResource" format=3 uid="uid://vyfe783u5lrx"]
+
+[ext_resource type="Script" uid="uid://cyawqo7tmi3q" path="res://Resources/Skins/skin_resource.gd" id="1_skin"]
+
+[resource]
+script = ExtResource("1_skin")
+texture_path = "uid://c7ap7nq2vp6ha"
+skin_name = "Default"
+display_order = 0

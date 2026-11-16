@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkinResource" format=3 uid="uid://cqwi7oyfobq6u"]
+
+[ext_resource type="Script" uid="uid://cyawqo7tmi3q" path="res://Resources/Skins/skin_resource.gd" id="1_skin"]
+
+[resource]
+script = ExtResource("1_skin")
+texture_path = "uid://c4crmh361gh11"
+skin_name = "LINKIN PARK"
+display_order = 5
+sprite_scale = Vector2(1, 1)
+sprite_position = Vector2(0, 0)

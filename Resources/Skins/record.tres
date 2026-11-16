@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkinResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Resources/Skins/skin_resource.gd" id="1_skin"]
+
+[resource]
+script = ExtResource("1_skin")
+texture_path = "res://Resources/Images/Recordskin Final.png"
+skin_name = "Record"
+display_order = 1
+sprite_scale = Vector2(0.558, 0.558)
+sprite_position = Vector2(-0.897, -10.304)
+shadow_scale = Vector2(1.168, 1.168)
+shadow_position = Vector2(6.289, 113.208)

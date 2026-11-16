@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://buyx1lhug0bpr"]
 
-[ext_resource type="Script" uid="uid://b6wc8iteh18yq" path="res://Scenes/Main menu/LevelSelect.gd" id="1_ae5x7"]
+[ext_resource type="Script" uid="uid://b6wc8iteh18yq" path="res://Scripts/Menu/LevelSelect.gd" id="1_ae5x7"]
 [ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_o363i"]
 [ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_ae5x7"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_obj5t"]

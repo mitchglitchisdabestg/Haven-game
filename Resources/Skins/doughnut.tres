@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkinResource" format=3 uid="uid://cenf1bwyw273i"]
+
+[ext_resource type="Script" uid="uid://cyawqo7tmi3q" path="res://Resources/Skins/skin_resource.gd" id="1_skin"]
+
+[resource]
+script = ExtResource("1_skin")
+texture_path = "res://Resources/Images/doughnut2 (1).png"
+skin_name = "Doughnut"
+display_order = 3

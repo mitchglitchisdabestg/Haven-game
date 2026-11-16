@@ -62,27 +62,20 @@ var is_dead: bool = false
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
 	
-	var skin_texture
-	
-	player_sprite_skin.scale = Vector2(0.558, 0.558)
-	player_sprite_skin.position = Vector2(-0.897, -10.304)
-	
-	$sprite_parent/shadow.scale = Vector2(1.168, 1.168)
-	$sprite_parent/shadow.position = Vector2(6.289, 113.208)
-	
-	match Constants.selected_skin:
-		0: skin_texture = preload("res://Resources/Images/zorbdefaulttest (1).png")
-		1: skin_texture = preload("res://Resources/Images/Recordskin Final.png")
-		2: skin_texture = preload("res://Resources/Images/buoy (1).png")
-		3: skin_texture = preload("res://Resources/Images/doughnut2 (1).png")
-		4: 
-			skin_texture = preload("res://Resources/Images/gear (1).png")
-			player_sprite_skin.scale = Vector2(0.554, 0.593)
-			player_sprite_skin.position = Vector2(3.145, -9.434)
-			$sprite_parent/shadow.scale = Vector2(1.065, 1.065)
-			$sprite_parent/shadow.position = Vector2(6.289, 94.34)
-	
+	var selected_skin: SkinResource = Constants.get_selected_skin_resource()
+	if selected_skin == null:
+		return
+
+	var skin_texture := load(selected_skin.texture_path) as Texture2D
+	if skin_texture == null:
+		push_error("Could not load skin texture: %s" % selected_skin.texture_path)
+		return
+
 	player_sprite_skin.texture = skin_texture
+	player_sprite_skin.scale = selected_skin.sprite_scale
+	player_sprite_skin.position = selected_skin.sprite_position
+	$sprite_parent/shadow.scale = selected_skin.shadow_scale
+	$sprite_parent/shadow.position = selected_skin.shadow_position
 
 func _process(delta: float) -> void:
 	# Heal over time and expire helium

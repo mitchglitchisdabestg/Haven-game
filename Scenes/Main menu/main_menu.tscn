@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bheumvpgw1mxt"]
 
-[ext_resource type="Script" uid="uid://dfuy86evptu10" path="res://Scenes/Main menu/main_menu.gd" id="1_fu7sn"]
+[ext_resource type="Script" uid="uid://dfuy86evptu10" path="res://Scripts/Menu/main_menu.gd" id="1_fu7sn"]
 [ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_xv4m7"]
 [ext_resource type="Texture2D" uid="uid://ds5dkoff8wndo" path="res://Resources/Prototype/Dark/texture_05.png" id="3_xv4m7"]
 [ext_resource type="Texture2D" uid="uid://c7ap7nq2vp6ha" path="res://Resources/Images/zorbdefaulttest (1).png" id="4_6rwoe"]
