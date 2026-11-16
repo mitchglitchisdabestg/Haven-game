@@ -9,3 +9,4 @@ func _ready() -> void:
 	match level_to_load:
 		0: add_child(load("res://Scenes/tutorial.tscn").instantiate())
 		1: add_child(load("res://Scenes/earth.tscn").instantiate())
+		2: add_child(load("res://Scenes/tutorialnew.tscn").instantiate())

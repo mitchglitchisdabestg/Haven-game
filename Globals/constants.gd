@@ -10,6 +10,7 @@ var health_potion_amount: float = 35.0
 
 const LEVEL_TUTORIAL = 0
 const LEVEL_EARTH = 1
+const LEVEL_TEST_TUTORIAL = 2
 
 var current_level: int = -1
 

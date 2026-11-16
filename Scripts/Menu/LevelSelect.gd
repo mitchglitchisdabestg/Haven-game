@@ -45,3 +45,7 @@ func _on_level_1_pressed() -> void:
 func _on_level_2_pressed() -> void:
 	load_world(Constants.LEVEL_EARTH)
 	Constants.deaths = 0
+
+func _on_level_3_pressed() -> void:
+	load_world(Constants.LEVEL_TEST_TUTORIAL)
+	Constants.deaths = 0
