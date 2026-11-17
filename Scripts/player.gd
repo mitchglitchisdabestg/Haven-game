@@ -15,6 +15,11 @@ var min_speed: float = 650.0
 
 var dash_speed: float = 1000
 var dash_direction:float
+var is_dashing:bool
+var dash_duration: float = 100
+var dash_timer:float
+var dash_cooldown:bool
+var dash_cooldown_timer:float = 3
 
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 @export var max_vertical_velocity_y: float = 5000.0
