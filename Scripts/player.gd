@@ -17,6 +17,14 @@ var min_speed: float = 650.0
 @onready var wall_right_particles: GPUParticles2D = $sprite_parent/wall_right_pos/wall_particles
 @onready var wall_left_particles: GPUParticles2D = $sprite_parent/wall_left_pos/wall_particles
 
+var dash_speed: float = 1000
+var dash_direction:float
+var is_dashing:bool
+var dash_duration: float = 100
+var dash_timer:float
+var dash_cooldown:bool
+var dash_cooldown_timer:float = 3
+
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 @export var max_vertical_velocity_y: float = 5000.0
 
@@ -354,6 +362,7 @@ func _activate_crouch_buffer() -> void:
 	crouching = true
 	crouch_buffer_used = Input.is_action_pressed("crouch")
 	crouch_anim()
+
 
 
 func _record_jump(charged: bool = false, wall: bool = false) -> void:
