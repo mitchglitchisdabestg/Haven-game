@@ -4,9 +4,9 @@ extends Area2D
 # Drag your 4 textures into this array in the Inspector (in the same order as the enum)
 @export var textures: Array[Texture2D] = [
 	preload("res://Resources/misc/cover_mask.png"),
-	preload("res://Resources/Prototype/Light/texture_02.png"),
-	preload("res://Resources/Prototype/Green/texture_02.png"),
-	preload("res://Resources/Prototype/Green/texture_13.png")
+	preload("res://Resources/Images/helium.png"),
+	preload("res://Resources/Images/healthbottle.png"),
+	preload("res://Resources/Images/health.png")
 ]
 
 @export_enum("Coins", "Helium", "Health Potion", "Health Barrel") var collectible_type: int = 0:

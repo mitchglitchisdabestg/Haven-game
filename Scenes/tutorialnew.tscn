@@ -5,6 +5,10 @@
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="3_itw2k"]
 [ext_resource type="PackedScene" uid="uid://d2wg6ekgco54d" path="res://Scenes/jump_pad_area.tscn" id="4_ceth3"]
 [ext_resource type="PackedScene" uid="uid://21us1w2ajlnl" path="res://Scenes/collectible.tscn" id="5_8qbfd"]
+[ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="6_8qbfd"]
+[ext_resource type="Texture2D" uid="uid://duvhd5mafxeqj" path="res://Resources/Prototype/Light/texture_02.png" id="7_lbty4"]
+[ext_resource type="Texture2D" uid="uid://kviupn54vvse" path="res://Resources/Prototype/Green/texture_02.png" id="8_7m72t"]
+[ext_resource type="Texture2D" uid="uid://b3vuw138khp2c" path="res://Resources/Prototype/Green/texture_13.png" id="9_0wh6i"]
 
 [node name="tutorial" type="Node2D" unique_id=198061394]
 
@@ -638,21 +642,27 @@ position = Vector2(4865, -158)
 
 [node name="collectible" parent="." unique_id=1045126076 instance=ExtResource("5_8qbfd")]
 position = Vector2(5429, -285)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 
 [node name="collectible2" parent="." unique_id=1311537795 instance=ExtResource("5_8qbfd")]
 position = Vector2(5525, -285)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 
 [node name="collectible3" parent="." unique_id=2110799714 instance=ExtResource("5_8qbfd")]
 position = Vector2(5615, -285)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 
 [node name="collectible4" parent="." unique_id=1980815864 instance=ExtResource("5_8qbfd")]
 position = Vector2(5783, -285)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 
 [node name="collectible6" parent="." unique_id=580987903 instance=ExtResource("5_8qbfd")]
 position = Vector2(5702, -285)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 
 [node name="collectible5" parent="." unique_id=968047132 instance=ExtResource("5_8qbfd")]
 position = Vector2(6332, -282)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 collectible_type = 1
 
 [node name="jump_orb_area2" parent="." unique_id=795001206 instance=ExtResource("1_ybe8s")]
@@ -661,8 +671,10 @@ jump_orb_type = 3
 
 [node name="collectible7" parent="." unique_id=204233011 instance=ExtResource("5_8qbfd")]
 position = Vector2(9184, -1865)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 collectible_type = 2
 
 [node name="collectible8" parent="." unique_id=320230127 instance=ExtResource("5_8qbfd")]
 position = Vector2(5586, -2602)
+textures = Array[Texture2D]([ExtResource("6_8qbfd"), ExtResource("7_lbty4"), ExtResource("8_7m72t"), ExtResource("9_0wh6i")])
 collectible_type = 3
