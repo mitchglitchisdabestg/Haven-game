@@ -6,13 +6,18 @@ const ACTION_LABELS := {
 	"crouch": "Crouch",
 	"jump": "Jump",
 	"sprint": "Sprint",
-	"back": "Pause / Back"
+	"back": "Pause / Back",
+	"toggle_debug": "Toggle Debug UI"
 }
 
 @onready var master_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterSlider
 @onready var music_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicSlider
+@onready var sfx_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXSlider
 @onready var master_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterValue
 @onready var music_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicValue
+@onready var sfx_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXValue
+@onready var sfx_pitch_toggle: CheckButton = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXPitchToggle
+@onready var debug_ui_toggle: CheckButton = $CenterContainer/Panel/MarginContainer/VBoxContainer/DebugUIToggle
 @onready var status: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/Status
 @onready var keybind_list: VBoxContainer = $CenterContainer/Panel/MarginContainer/VBoxContainer/KeybindScroll/KeybindList
 
@@ -22,6 +27,9 @@ var waiting_for_event_index: int = -1
 func _ready() -> void:
 	master_slider.value = SettingsManager.master_volume
 	music_slider.value = SettingsManager.music_volume
+	sfx_slider.value = SettingsManager.sfx_volume
+	sfx_pitch_toggle.button_pressed = SettingsManager.sfx_pitch_scales_with_time_scale
+	debug_ui_toggle.button_pressed = SettingsManager.player_debug_ui_visible
 	_update_volume_labels()
 	_build_keybind_rows()
 
@@ -66,9 +74,20 @@ func _on_music_slider_value_changed(value: float) -> void:
 	SettingsManager.set_music_volume(value)
 	_update_volume_labels()
 
+func _on_sfx_slider_value_changed(value: float) -> void:
+	SettingsManager.set_sfx_volume(value)
+	_update_volume_labels()
+
+func _on_sfx_pitch_toggle_toggled(enabled: bool) -> void:
+	SettingsManager.set_sfx_pitch_scales_with_time_scale(enabled)
+
+func _on_debug_ui_toggle_toggled(enabled: bool) -> void:
+	SettingsManager.set_player_debug_ui_visible(enabled)
+
 func _update_volume_labels() -> void:
 	master_value.text = "%d%%" % int(master_slider.value)
 	music_value.text = "%d%%" % int(music_slider.value)
+	sfx_value.text = "%d%%" % int(sfx_slider.value)
 
 func _build_keybind_rows() -> void:
 	for child in keybind_list.get_children():

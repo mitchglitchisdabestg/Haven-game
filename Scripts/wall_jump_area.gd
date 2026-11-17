@@ -12,6 +12,8 @@ func _on_body_entered(body: Node2D) -> void:
 		body.hit_wall_anim(dir)
 		if body.wall_jump_direction == 0.0:
 			body.wall_jump_direction = 1.0
+		if body.has_method("set_wall_particle_emission"):
+			body.set_wall_particle_emission(body.wall_jump_direction)
 
 
 func _on_body_exited(body: Node2D) -> void:
@@ -19,3 +21,5 @@ func _on_body_exited(body: Node2D) -> void:
 		body.can_wall_jump = false
 		body.is_in_wall_jump_area = false
 		body.wall_jump_direction = 0.0
+		if body.has_method("stop_wall_particle_emission"):
+			body.stop_wall_particle_emission()

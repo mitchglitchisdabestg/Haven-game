@@ -4,6 +4,7 @@ enum Gravity { EARTH = 1400, SPACE = 700 }
 
 const COINS_SAVE_PATH := "user://save_data.cfg"
 const LEVEL_STATS_SAVE_PATH := "user://level_stats.cfg"
+const SAVE_DATA_PASSWORD := "HavenGameLocalSave_v1"
 const SKIN_RESOURCE_DIRECTORY := "res://Resources/Skins"
 
 var deaths: int = 0
@@ -39,16 +40,23 @@ func add_audio() -> void:
 
 func save_coins() -> void:
 	var config := ConfigFile.new()
-	config.load(COINS_SAVE_PATH)
+	var load_error := _load_save_config(COINS_SAVE_PATH, config)
+	if load_error != OK and load_error != ERR_FILE_NOT_FOUND:
+		push_error("Could not load player save data before saving coins: %s" % error_string(load_error))
+		return
 	config.set_value("Player", "total_coins", total_coins)
-	config.save(COINS_SAVE_PATH)
+	var save_error := config.save_encrypted_pass(COINS_SAVE_PATH, SAVE_DATA_PASSWORD)
+	if save_error != OK:
+		push_error("Could not encrypt player save data: %s" % error_string(save_error))
 
 
 func load_coins() -> void:
 	var config := ConfigFile.new()
-	var err := config.load(COINS_SAVE_PATH)
+	var err := _load_save_config(COINS_SAVE_PATH, config)
 	if err == OK:
-		total_coins = config.get_value("Player", "total_coins", 0)
+		total_coins = _read_saved_count(config.get_value("Player", "total_coins", 0))
+	elif err != ERR_FILE_NOT_FOUND:
+		push_error("Could not load player save data: %s" % error_string(err))
 
 
 func load_skin_resources() -> void:
@@ -100,20 +108,20 @@ func set_selected_skin(index: int) -> void:
 	selected_skin = index
 
 	var config := ConfigFile.new()
-	var load_error := config.load(COINS_SAVE_PATH)
+	var load_error := _load_save_config(COINS_SAVE_PATH, config)
 	if load_error != OK and load_error != ERR_FILE_NOT_FOUND:
 		push_error("Could not load player save data: %s" % error_string(load_error))
 		return
 
 	config.set_value("Player", "selected_skin", selected_skin)
-	var save_error := config.save(COINS_SAVE_PATH)
+	var save_error := config.save_encrypted_pass(COINS_SAVE_PATH, SAVE_DATA_PASSWORD)
 	if save_error != OK:
-		push_error("Could not save selected skin: %s" % error_string(save_error))
+		push_error("Could not encrypt selected skin save data: %s" % error_string(save_error))
 
 
 func load_selected_skin() -> void:
 	var config := ConfigFile.new()
-	var load_error := config.load(COINS_SAVE_PATH)
+	var load_error := _load_save_config(COINS_SAVE_PATH, config)
 	if load_error == ERR_FILE_NOT_FOUND:
 		return
 	if load_error != OK:
@@ -140,7 +148,7 @@ func get_level_stats(level_id: int) -> Dictionary:
 		return stats
 
 	var config := ConfigFile.new()
-	var load_error := config.load(LEVEL_STATS_SAVE_PATH)
+	var load_error := _load_save_config(LEVEL_STATS_SAVE_PATH, config)
 	if load_error == ERR_FILE_NOT_FOUND:
 		return stats
 	if load_error != OK:
@@ -167,7 +175,7 @@ func record_level_stats(
 		return
 
 	var config := ConfigFile.new()
-	var load_error := config.load(LEVEL_STATS_SAVE_PATH)
+	var load_error := _load_save_config(LEVEL_STATS_SAVE_PATH, config)
 	if load_error != OK and load_error != ERR_FILE_NOT_FOUND:
 		push_error("Could not load level stats before saving: %s" % error_string(load_error))
 		return
@@ -183,9 +191,33 @@ func record_level_stats(
 	config.set_value(section, "helium", maxi(previous_helium, _read_saved_count(collectible_stats.get("Helium", 0))))
 	config.set_value(section, "deaths", previous_deaths + maxi(death_increment, 0))
 
-	var save_error := config.save(LEVEL_STATS_SAVE_PATH)
+	var save_error := config.save_encrypted_pass(LEVEL_STATS_SAVE_PATH, SAVE_DATA_PASSWORD)
 	if save_error != OK:
-		push_error("Could not save level stats: %s" % error_string(save_error))
+		push_error("Could not encrypt level stats: %s" % error_string(save_error))
+
+
+func _load_save_config(path: String, config: ConfigFile) -> Error:
+	if not FileAccess.file_exists(path):
+		return ERR_FILE_NOT_FOUND
+
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return FileAccess.get_open_error()
+	var is_encrypted := file.get_buffer(4) == "GDEC".to_ascii_buffer()
+	file.close()
+
+	if is_encrypted:
+		return config.load_encrypted_pass(path, SAVE_DATA_PASSWORD)
+
+	var legacy_load_error := config.load(path)
+	if legacy_load_error != OK:
+		return legacy_load_error
+
+	var migration_error := config.save_encrypted_pass(path, SAVE_DATA_PASSWORD)
+	if migration_error != OK:
+		push_error("Could not encrypt legacy save data at %s: %s" % [path, error_string(migration_error)])
+		return migration_error
+	return OK
 
 
 func _read_saved_count(value: Variant) -> int:

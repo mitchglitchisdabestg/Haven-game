@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://chqyu0y7vnci0" path="res://Scenes/basic_platform.tscn" id="1_ngbl3"]
 [ext_resource type="PackedScene" uid="uid://d2wg6ekgco54d" path="res://Scenes/jump_pad_area.tscn" id="2_8nujt"]
-[ext_resource type="PackedScene" path="res://Scenes/jump_orb_area.tscn" id="3_i8j47"]
+[ext_resource type="PackedScene" uid="uid://d4bik70fwevov" path="res://Scenes/jump_orb_area.tscn" id="3_i8j47"]
 [ext_resource type="PackedScene" uid="uid://21us1w2ajlnl" path="res://Scenes/collectible.tscn" id="4_k5h48"]
 
 [node name="earth" type="Node2D" unique_id=1902116238]
@@ -61,3 +61,7 @@ position = Vector2(-557, -171)
 [node name="collectible3" parent="." unique_id=783410208 instance=ExtResource("4_k5h48")]
 position = Vector2(199, -282)
 collectible_type = 1
+
+[node name="jump_orb_area2" parent="." unique_id=1910929881 instance=ExtResource("3_i8j47")]
+position = Vector2(-609, -6318)
+jump_orb_type = 3

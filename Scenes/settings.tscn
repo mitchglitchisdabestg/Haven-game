@@ -72,6 +72,29 @@ layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
+[node name="SFXLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font")
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+value = 100.0
+
+[node name="SFXValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 1
+
+[node name="SFXPitchToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Pitch scale SFX with game speed"
+
+[node name="DebugUIToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Show player debug UI (F1)"
+
 [node name="KeybindTitle" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1894501137]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
@@ -102,4 +125,7 @@ text = "Back"
 
 [connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/VBoxContainer/SFXPitchToggle" to="." method="_on_sfx_pitch_toggle_toggled"]
+[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/VBoxContainer/DebugUIToggle" to="." method="_on_debug_ui_toggle_toggled"]
 [connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

@@ -4,15 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://b6watagrcuqj5" path="res://Resources/misc/cover_mask.png" id="2_athsx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collectible"]
-radius = 57.00877
+radius = 40.0
 
 [node name="collectible" type="Area2D" unique_id=1045126076]
 script = ExtResource("1_athsx")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=96332149]
 modulate = Color(1, 1, 0, 1)
-position = Vector2(7.6293945e-06, 1.0000076)
-scale = Vector2(0.15625, 0.15625)
+scale = Vector2(0.145, 0.145)
 texture = ExtResource("2_athsx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=258169372]

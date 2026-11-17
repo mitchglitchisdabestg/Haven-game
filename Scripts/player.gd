@@ -13,6 +13,10 @@ var sprint_speed_mult: float = 1.02
 var max_speed: float = 1800.0
 var min_speed: float = 650.0
 
+@onready var roll_particles: GPUParticles2D = $sprite_parent/roll_particles_pos/roll_particles
+@onready var wall_right_particles: GPUParticles2D = $sprite_parent/wall_right_pos/wall_particles
+@onready var wall_left_particles: GPUParticles2D = $sprite_parent/wall_left_pos/wall_particles
+
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 @export var max_vertical_velocity_y: float = 5000.0
 
@@ -82,6 +86,9 @@ var is_dead: bool = false
 
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
+	roll_particles.emitting = false
+	wall_right_particles.emitting = false
+	wall_left_particles.emitting = false
 	
 	var selected_skin: SkinResource = Constants.get_selected_skin_resource()
 	if selected_skin == null:
@@ -150,7 +157,7 @@ func hit_wall_anim(dir: float = 1.0) -> void:
 	hit_wall_tween.tween_property(player_sprite_parent, "scale:x", sprite_scale_y, 0.1).set_ease(Tween.EASE_IN)
 	hit_wall_tween.parallel().tween_property(player_sprite_parent, "position:x", 0.0, 0.04).set_ease(Tween.EASE_OUT)
 
-func hit_floor_anim(impact_velocity_y: float) -> void:
+func hit_floor_anim(impact_velocity_y: float, restore_after_squash: bool = true) -> void:
 	impact_strength = clampf(impact_velocity_y / MAX_LANDING_IMPACT_SPEED, 0.0, 1.0)
 	target_scale_y = crouching_sprite_scale_y if crouching else sprite_scale_y
 	target_position_y = crouching_sprite_y_pos if crouching else 0.0
@@ -166,8 +173,9 @@ func hit_floor_anim(impact_velocity_y: float) -> void:
 	hit_floor_tween = create_tween()
 	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", squashed_scale_y, 0.03).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", squashed_position_y, 0.03).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	hit_floor_tween.tween_property(player_sprite_parent, "scale:y", target_scale_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
-	hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", target_position_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	if restore_after_squash:
+		hit_floor_tween.tween_property(player_sprite_parent, "scale:y", target_scale_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+		hit_floor_tween.parallel().tween_property(player_sprite_parent, "position:y", target_position_y, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 
 
 var deteriorate_amount_mult: float = 1.0
@@ -199,17 +207,19 @@ func _physics_process(delta: float) -> void:
 	
 	# Handle jump.
 	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
-		
+		roll_particles.emitting = false
 		jump_buffered = false
 		jump_buffer_used = Input.is_action_pressed("jump")
 		if jump_orb_velocity != 0.0:
 			_record_jump()
+			SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH)
 			velocity.y = jump_orb_velocity
 			crouching = false
 			if is_on_floor():
 				crouch_anim()
 		elif can_wall_jump and crouching:
 			_record_jump(true, true)
+			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH)
 			# Launch away from the wall with a stronger jump
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT
 			velocity.x = wall_jump_direction * speed
@@ -218,12 +228,17 @@ func _physics_process(delta: float) -> void:
 			crouch_wall_jump = true
 		elif crouching:
 			_record_jump(true)
+			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH)
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
 			return
 		else:
 			_record_jump(false, can_wall_jump)
+			if can_wall_jump:
+				SFX.play(SFX.WallJump, SFX.DEFAULT_SFX_PITCH)
+			else:
+				SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH)
 			velocity.y = jump_velocity
 		can_wall_jump = false
 		
@@ -239,6 +254,7 @@ func _physics_process(delta: float) -> void:
 		pass
 	elif direction:
 		velocity.x = move_toward(velocity.x, direction * movement_speed, acceleration * delta)
+		roll_particles.process_material.direction = Vector3(-direction, 0.0, 0.0)
 		#if direction > 0.1: player_sprite.flip_h = true
 		#else: player_sprite.flip_h = false
 	else:
@@ -255,7 +271,10 @@ func _physics_process(delta: float) -> void:
 	var sprint_start_x := global_position.x
 	var sprinting_on_ground := sprinting and is_on_floor()
 	var impact_velocity_y := velocity.y
+	var landing_jump_buffered := jump_buffered
+	var landing_crouch_buffered := crouch_buffered
 	move_and_slide()
+	_update_roll_particles()
 	if sprinting_on_ground:
 		pixels_ran_while_sprinting += absf(global_position.x - sprint_start_x)
 
@@ -264,8 +283,15 @@ func _physics_process(delta: float) -> void:
 		crouching = false
 		crouch_anim()
 	if not was_on_floor and is_on_floor() and impact_velocity_y > 0.0:
-		hit_floor_anim(impact_velocity_y)
-		_apply_fall_damage(impact_velocity_y)
+		if not landing_jump_buffered:
+			hit_floor_anim(impact_velocity_y, not landing_crouch_buffered)
+		var damage_dealt := _apply_fall_damage(impact_velocity_y)
+		if damage_dealt > 45.0:
+			SFX.play(SFX.LandCritical)
+		elif damage_dealt > 20.0:
+			SFX.play(SFX.LandDamaging)
+		else:
+			SFX.play(SFX.Land, SFX.DEFAULT_SFX_PITCH)
 		if is_dead:
 			return
 
@@ -296,6 +322,29 @@ func _physics_process(delta: float) -> void:
 	
 	
 
+func _update_roll_particles() -> void:
+	var particle_count := 16.0
+	if sprinting and crouching:
+		particle_count = 20.0
+	elif sprinting:
+		particle_count = 24.0
+	elif crouching:
+		particle_count = 12.0
+
+	roll_particles.amount_ratio = particle_count / float(roll_particles.amount)
+	roll_particles.emitting = is_on_floor() and absf(velocity.x) > 5.0
+
+
+func set_wall_particle_emission(wall_jump_dir: float) -> void:
+	wall_left_particles.emitting = wall_jump_dir > 0.0
+	wall_right_particles.emitting = wall_jump_dir < 0.0
+
+
+func stop_wall_particle_emission() -> void:
+	wall_left_particles.emitting = false
+	wall_right_particles.emitting = false
+
+
 func _activate_crouch_buffer() -> void:
 	if not crouch_buffered or not (is_on_floor() or can_wall_jump):
 		return
@@ -317,18 +366,20 @@ func _record_jump(charged: bool = false, wall: bool = false) -> void:
 		times_charged_wall_jumped += 1
 
 
-func _apply_fall_damage(impact_velocity_y: float) -> void:
+func _apply_fall_damage(impact_velocity_y: float) -> float:
 	if impact_velocity_y <= FALL_DAMAGE_THRESHOLD or max_vertical_velocity_y <= FALL_DAMAGE_THRESHOLD:
-		return
+		return 0.0
 
 	var damage_fraction := clampf(
 		(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (max_vertical_velocity_y - FALL_DAMAGE_THRESHOLD),
 		0.0,
 		1.0
 	)
-	hp -= MAX_FALL_DAMAGE * damage_fraction
+	var damage_dealt := minf(hp, MAX_FALL_DAMAGE * damage_fraction)
+	hp -= damage_dealt
 	if hp <= 0.0:
 		die()
+	return damage_dealt
 
 
 func apply_roll_rotation(delta: float) -> void:
@@ -339,28 +390,34 @@ func apply_roll_rotation(delta: float) -> void:
 		angular_velocity += signf(velocity.x) * FALLING_ROLL_ROTATION_SPEED * horizontal_speed_ratio
 	player_sprite.rotation += angular_velocity * delta
 
-func collect(collectible_type: int) -> void:
+func collect(collectible_type: int, debug: bool = false) -> void:
 	# Apply collectible effects and record run totals
 	var collectible_name: String
 	match collectible_type:
 		0:
-			coins += 1
-			Constants.total_coins += 1
+			SFX.play(SFX.Coin, 0.25)
+			if not debug:
+				coins += 1
+				Constants.total_coins += 1
 			collectible_name = "Coins"
 		1:
+			SFX.play(SFX.Boost)
 			helium_time_remaining = helium_duration
 			collectible_name = "Helium"
 		2:
+			SFX.play(SFX.HealthGain)
 			hp += Constants.health_potion_amount
 			collectible_name = "Health Potion"
 		3:
+			SFX.play(SFX.HealthGain)
 			hp = 100.0
 			collectible_name = "Health Barrel"
 		_:
 			return
 
-	collectible_stats[collectible_name] = collectible_stats.get(collectible_name, 0) + 1
-	Constants.record_level_stats(Constants.current_level, collectible_stats, false)
+	if not debug:
+		collectible_stats[collectible_name] = collectible_stats.get(collectible_name, 0) + 1
+		Constants.record_level_stats(Constants.current_level, collectible_stats, false)
 
 func die() -> void:
 	if is_dead:

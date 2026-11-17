@@ -112,7 +112,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -212.0
-offset_top = -248.0
+offset_top = -320.0
 offset_right = -8.0
 offset_bottom = -8.0
 grow_horizontal = 0
@@ -126,6 +126,35 @@ theme_override_constants/separation = 4
 layout_mode = 2
 text = "Debug Actions"
 horizontal_alignment = 1
+
+[node name="position_controls" type="HBoxContainer" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1249110722]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="x_label" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=10444474]
+layout_mode = 2
+text = "X"
+
+[node name="x_position" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=709749651]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+placeholder_text = "X"
+select_all_on_focus = true
+
+[node name="y_label" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=1351556318]
+layout_mode = 2
+text = "Y"
+
+[node name="y_position" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=864611524]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+placeholder_text = "Y"
+select_all_on_focus = true
+
+[node name="set_position" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=677141478]
+layout_mode = 2
+text = "Set Player Position"
 
 [node name="health_potion" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1400257670]
 layout_mode = 2
@@ -146,6 +175,27 @@ text = "Give Coin"
 [node name="damage" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1061561528]
 layout_mode = 2
 text = "Take 10 Damage"
+
+[node name="speedhack_controls" type="HBoxContainer" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1068449692]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="mult" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls" unique_id=487751782]
+layout_mode = 2
+text = "Game speed"
+
+[node name="mult_edit" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls" unique_id=1710635959]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "1.0"
+placeholder_text = "1.0x"
+select_all_on_focus = true
+
+[node name="speedhack" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=286687002]
+layout_mode = 2
+text = "Set Speed"
 
 [node name="pause" type="Control" parent="MarginContainer" unique_id=310085563]
 unique_name_in_owner = true
@@ -195,11 +245,14 @@ text = "Quit Game"
 layout_mode = 2
 text = "Unpause"
 
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/set_position" to="." method="_on_debug_set_position_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_potion" to="." method="_on_debug_health_potion_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_barrel" to="." method="_on_debug_health_barrel_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/helium" to="." method="_on_debug_helium_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/coin" to="." method="_on_debug_coin_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/damage" to="." method="_on_debug_damage_pressed"]
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls/mult_edit" to="." method="_on_mult_edit_text_submitted"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/speedhack" to="." method="_on_debug_speedhack_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/main_menu" to="." method="_on_main_menu_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/back_to_lvl_select" to="." method="_on_back_to_lvl_select_pressed"]
 [connection signal="pressed" from="MarginContainer/pause/VBoxContainer/restart" to="." method="_on_restart_pressed"]

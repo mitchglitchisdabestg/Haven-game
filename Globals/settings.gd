@@ -1,13 +1,17 @@
 extends Node
 
 const SETTINGS_PATH := "user://settings.json"
-const INPUT_ACTIONS := ["left", "right", "crouch", "jump", "sprint", "back"]
+const INPUT_ACTIONS := ["left", "right", "crouch", "jump", "sprint", "back", "toggle_debug"]
 
 var master_volume: float = 100.0
 var music_volume: float = 100.0
+var sfx_volume: float = 100.0
+var sfx_pitch_scales_with_time_scale: bool = true
+var player_debug_ui_visible: bool = true
 
 func _ready() -> void:
 	add_music_bus()
+	add_sfx_bus()
 	_load_settings()
 	_apply_volumes()
 
@@ -23,6 +27,20 @@ func set_music_volume(value: float) -> void:
 		return
 	_save_settings()
 
+func set_sfx_volume(value: float) -> void:
+	sfx_volume = clampf(value, 0.0, 100.0)
+	if not _apply_bus_volume("SFX", sfx_volume):
+		return
+	_save_settings()
+
+func set_sfx_pitch_scales_with_time_scale(enabled: bool) -> void:
+	sfx_pitch_scales_with_time_scale = enabled
+	_save_settings()
+
+func set_player_debug_ui_visible(visible: bool) -> void:
+	player_debug_ui_visible = visible
+	_save_settings()
+
 func add_music_bus() -> void:
 	if AudioServer.get_bus_index("Music") >= 0:
 		return
@@ -30,6 +48,15 @@ func add_music_bus() -> void:
 	var bus_index := AudioServer.bus_count
 	AudioServer.add_bus()
 	AudioServer.set_bus_name(bus_index, "Music")
+	AudioServer.set_bus_send(bus_index, "Master")
+
+func add_sfx_bus() -> void:
+	if AudioServer.get_bus_index("SFX") >= 0:
+		return
+
+	var bus_index := AudioServer.bus_count
+	AudioServer.add_bus()
+	AudioServer.set_bus_name(bus_index, "SFX")
 	AudioServer.set_bus_send(bus_index, "Master")
 
 func _load_settings() -> void:
@@ -50,6 +77,17 @@ func _load_settings() -> void:
 	var settings: Dictionary = json.data
 	master_volume = _read_volume(settings, "master_volume", master_volume)
 	music_volume = _read_volume(settings, "music_volume", music_volume)
+	sfx_volume = _read_volume(settings, "sfx_volume", sfx_volume)
+	sfx_pitch_scales_with_time_scale = _read_bool(
+		settings,
+		"sfx_pitch_scales_with_time_scale",
+		sfx_pitch_scales_with_time_scale
+	)
+	player_debug_ui_visible = _read_bool(
+		settings,
+		"player_debug_ui_visible",
+		player_debug_ui_visible
+	)
 	_apply_saved_keybindings(settings.get("keybindings", {}))
 
 func _read_volume(settings: Dictionary, key: String, default_value: float) -> float:
@@ -58,9 +96,14 @@ func _read_volume(settings: Dictionary, key: String, default_value: float) -> fl
 		return default_value
 	return clampf(float(value), 0.0, 100.0)
 
+func _read_bool(settings: Dictionary, key: String, default_value: bool) -> bool:
+	var value: Variant = settings.get(key, default_value)
+	return value if typeof(value) == TYPE_BOOL else default_value
+
 func _apply_volumes() -> void:
 	_apply_bus_volume("Master", master_volume)
 	_apply_bus_volume("Music", music_volume)
+	_apply_bus_volume("SFX", sfx_volume)
 
 func _apply_bus_volume(bus_name: String, value: float) -> bool:
 	var bus_index := AudioServer.get_bus_index(bus_name)
@@ -157,6 +200,9 @@ func _save_settings() -> void:
 	var settings := {
 		"master_volume": master_volume,
 		"music_volume": music_volume,
+		"sfx_volume": sfx_volume,
+		"sfx_pitch_scales_with_time_scale": sfx_pitch_scales_with_time_scale,
+		"player_debug_ui_visible": player_debug_ui_visible,
 		"keybindings": _serialize_keybindings()
 	}
 	file.store_string(JSON.stringify(settings, "\t"))
