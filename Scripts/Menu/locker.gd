@@ -1,32 +1,20 @@
 extends Control
-@onready var background = $Background
 @onready var skin_grid: GridContainer = $SkinScroll/SkinGrid
-var sway_speed : float = 0.05
-var screen_center : Vector2
-var start_position : Vector2
 
 var skin_labels: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	screen_center = get_viewport_rect().size / 2.0
-	start_position = background.position
-
 	$coins_lbl.text = "Coins: %d" % Constants.total_coins
 	_create_skin_buttons()
 	_update_equipped_skin_label()
 
 func _on_quit_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
+	get_parent().show_main_menu()
 
 func _on_level_select_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Main menu/LevelSelect.tscn")
+	get_parent().show_level_select()
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	var mouse_pos = get_viewport().get_mouse_position()
-	var offset = (mouse_pos - screen_center) * sway_speed
-	background.position = start_position - offset
 func _create_skin_buttons() -> void:
 	var resources: Array[SkinResource] = Constants.get_skin_resources()
 	var label_font := load("res://Resources/Fonts/augiepixel.ttf") as Font
@@ -56,6 +44,7 @@ func _create_skin_buttons() -> void:
 		button.mouse_entered.connect(_on_skin_button_mouse_entered.bind(button))
 		button.mouse_exited.connect(_on_skin_button_mouse_exited.bind(button))
 		button_center.add_child(button)
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 		var label := Label.new()
 		label.text = skin.skin_name

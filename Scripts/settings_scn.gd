@@ -9,12 +9,12 @@ const ACTION_LABELS := {
 	"back": "Pause / Back"
 }
 
-@onready var master_slider: HSlider = $CenterContainer/Panel/VBoxContainer/MasterSlider
-@onready var music_slider: HSlider = $CenterContainer/Panel/VBoxContainer/MusicSlider
-@onready var master_value: Label = $CenterContainer/Panel/VBoxContainer/MasterValue
-@onready var music_value: Label = $CenterContainer/Panel/VBoxContainer/MusicValue
-@onready var status: Label = $CenterContainer/Panel/VBoxContainer/Status
-@onready var keybind_list: VBoxContainer = $CenterContainer/Panel/VBoxContainer/KeybindScroll/KeybindList
+@onready var master_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterSlider
+@onready var music_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicSlider
+@onready var master_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterValue
+@onready var music_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicValue
+@onready var status: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/Status
+@onready var keybind_list: VBoxContainer = $CenterContainer/Panel/MarginContainer/VBoxContainer/KeybindScroll/KeybindList
 
 var waiting_for_action: String = ""
 var waiting_for_event_index: int = -1
@@ -96,18 +96,21 @@ func _build_keybind_rows() -> void:
 			key_button.text = events[event_index].as_text()
 			key_button.custom_minimum_size.x = 72.0
 			key_button.pressed.connect(_begin_rebind.bind(action, event_index))
+			key_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			row.add_child(key_button)
 
 			var remove_button := Button.new()
 			remove_button.text = "x"
 			remove_button.tooltip_text = "Remove this key"
 			remove_button.pressed.connect(_remove_binding.bind(action, event_index))
+			remove_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			row.add_child(remove_button)
 
 		var add_button := Button.new()
 		add_button.text = "+"
 		add_button.tooltip_text = "Add another key"
 		add_button.pressed.connect(_begin_rebind.bind(action, -1))
+		add_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		row.add_child(add_button)
 
 func _begin_rebind(action: String, event_index: int) -> void:
@@ -130,4 +133,4 @@ func _on_error_message_changed(message: String) -> void:
 	status.text = message
 
 func _on_back_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
+	get_parent().show_main_menu()

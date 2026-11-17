@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://buyx1lhug0bpr"]
 
 [ext_resource type="Script" uid="uid://b6wc8iteh18yq" path="res://Scripts/Menu/LevelSelect.gd" id="1_ae5x7"]
-[ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_o363i"]
-[ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_ae5x7"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="4_obj5t"]
 [ext_resource type="Texture2D" uid="uid://bm6c3xbvobacd" path="res://icon.svg" id="5_o363i"]
 
@@ -23,42 +21,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ae5x7")
 
-[node name="Background" type="TextureRect" parent="." unique_id=420134897]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -785.0
-offset_top = -489.0
-offset_right = 782.0
-offset_bottom = 535.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_o363i")
-stretch_mode = 6
-
-[node name="Background2" type="TextureRect" parent="." unique_id=491794387]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 49.0
-offset_top = 76.0
-offset_right = 769.0
-offset_bottom = 380.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_ae5x7")
-
 [node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
 layout_mode = 0
 offset_left = 424.0
-offset_top = 33.0
+offset_top = 103.0
 offset_right = 878.0
-offset_bottom = 102.0
+offset_bottom = 172.0
 theme_override_fonts/font = ExtResource("4_obj5t")
 theme_override_font_sizes/font_size = 50
 text = "Level Select"
@@ -89,14 +57,15 @@ alignment = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
 layout_mode = 0
 offset_left = 90.0
-offset_top = 638.0
+offset_top = 598.0
 offset_right = 1219.0
-offset_bottom = 687.0
+offset_bottom = 647.0
 offset_transform_enabled = true
 theme_override_constants/separation = 900
 
 [node name="Locker" type="Button" parent="HBoxContainer" unique_id=1361054276]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
 theme_override_fonts/font = ExtResource("4_obj5t")
@@ -109,6 +78,7 @@ text = "Locker"
 
 [node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1296841661]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
 theme_override_fonts/font = ExtResource("4_obj5t")
@@ -120,29 +90,191 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_0o4t1")
 text = "Return"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=1885574687]
-layout_mode = 0
-offset_left = 242.0
-offset_top = 323.0
-offset_right = 1371.0
-offset_bottom = 451.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -564.5
+offset_top = -64.0
+offset_right = 564.5
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 offset_transform_enabled = true
 theme_override_constants/separation = 100
+alignment = 1
 
 [node name="Level 1" type="TextureButton" parent="HBoxContainer2" unique_id=818902951]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_o363i")
 
-[node name="Level 2" type="TextureButton" parent="HBoxContainer2" unique_id=961715493]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2/Level 1" unique_id=1162815165]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="HBoxContainer2/Level 1/VBoxContainer" unique_id=367168930]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 22
+text = "Tutorial"
+horizontal_alignment = 1
+
+[node name="stats" type="Label" parent="HBoxContainer2/Level 1/VBoxContainer" unique_id=469543061]
+layout_mode = 2
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 16
+text = "Not Completed
+Coins: 0
+Helium cans: 0
+deaths: 0"
+horizontal_alignment = 1
+
+[node name="Level 2" type="TextureButton" parent="HBoxContainer2" unique_id=1213403328]
+layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_o363i")
 
-[node name="Level 3" type="TextureButton" parent="HBoxContainer2" unique_id=1910999664]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2/Level 2" unique_id=2636337]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="HBoxContainer2/Level 2/VBoxContainer" unique_id=754290180]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 22
+text = "Tutorial pt.2"
+horizontal_alignment = 1
+
+[node name="stats" type="Label" parent="HBoxContainer2/Level 2/VBoxContainer" unique_id=1952267129]
+layout_mode = 2
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 16
+text = "Not Completed
+Coins: 0
+Helium cans: 0
+deaths: 0"
+horizontal_alignment = 1
+
+[node name="Level 3" type="TextureButton" parent="HBoxContainer2" unique_id=961715493]
+layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_o363i")
 
-[node name="Level 4" type="TextureButton" parent="HBoxContainer2" unique_id=70877221]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2/Level 3" unique_id=314704947]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="HBoxContainer2/Level 3/VBoxContainer" unique_id=979430168]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 22
+text = "Earth"
+horizontal_alignment = 1
+
+[node name="stats" type="Label" parent="HBoxContainer2/Level 3/VBoxContainer" unique_id=489591627]
+layout_mode = 2
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 16
+text = "Not Completed
+Coins: 0
+Helium cans: 0
+deaths: 0"
+horizontal_alignment = 1
+
+[node name="Level 4" type="TextureButton" parent="HBoxContainer2" unique_id=1910999664]
+layout_mode = 2
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_o363i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2/Level 4" unique_id=1332494587]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="HBoxContainer2/Level 4/VBoxContainer" unique_id=197828823]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 22
+text = "Clouds"
+horizontal_alignment = 1
+
+[node name="stats" type="Label" parent="HBoxContainer2/Level 4/VBoxContainer" unique_id=1215612171]
+layout_mode = 2
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 16
+text = "Not Completed
+Coins: 0
+Helium cans: 0
+deaths: 0"
+horizontal_alignment = 1
+
+[node name="Level 5" type="TextureButton" parent="HBoxContainer2" unique_id=70877221]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("5_o363i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2/Level 5" unique_id=1274521303]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="HBoxContainer2/Level 5/VBoxContainer" unique_id=1953429158]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 22
+text = "Space"
+horizontal_alignment = 1
+
+[node name="stats" type="Label" parent="HBoxContainer2/Level 5/VBoxContainer" unique_id=1398602980]
+layout_mode = 2
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_obj5t")
+theme_override_font_sizes/font_size = 16
+text = "Not Completed
+Coins: 0
+Helium cans: 0
+deaths: 0"
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/Locker" to="." method="_on_settings_button_mouse_exited"]
@@ -151,6 +283,3 @@ texture_normal = ExtResource("5_o363i")
 [connection signal="mouse_entered" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/QuitButton" to="." method="_on_quit_button_mouse_exited"]
 [connection signal="pressed" from="HBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="HBoxContainer2/Level 1" to="." method="_on_level_1_pressed"]
-[connection signal="pressed" from="HBoxContainer2/Level 2" to="." method="_on_level_2_pressed"]
-[connection signal="pressed" from="HBoxContainer2/Level 3" to="." method="_on_level_3_pressed"]

@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://bg2j7k35el4i"]
 
 [ext_resource type="Script" uid="uid://b3kk3oxycjc60" path="res://Scripts/Menu/locker.gd" id="1_ynqhe"]
-[ext_resource type="Texture2D" uid="uid://bbe5kb3c2g3e2" path="res://Scenes/LevelsMihir/space2.png" id="2_8mohm"]
-[ext_resource type="Texture2D" uid="uid://dfigabhim0s3k" path="res://Resources/Prototype/Dark/texture_09.png" id="3_5bkq3"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="6_8mohm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qe12f"]
@@ -22,42 +20,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ynqhe")
 
-[node name="Background" type="TextureRect" parent="." unique_id=420134897]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -961.0
-offset_top = -487.0
-offset_right = 938.0
-offset_bottom = 537.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_8mohm")
-stretch_mode = 6
-
-[node name="Background2" type="TextureRect" parent="." unique_id=491794387]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 49.0
-offset_top = 76.0
-offset_right = 769.0
-offset_bottom = 380.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_5bkq3")
-
 [node name="TitleLabel" type="Label" parent="." unique_id=1136207556]
 layout_mode = 0
 offset_left = 409.0
-offset_top = 36.0
+offset_top = 100.0
 offset_right = 863.0
-offset_bottom = 105.0
+offset_bottom = 169.0
 theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 50
 text = "Locker"
@@ -66,9 +34,9 @@ horizontal_alignment = 1
 [node name="coins_lbl" type="Label" parent="." unique_id=522934320]
 layout_mode = 0
 offset_left = 409.0
-offset_top = 82.0
+offset_top = 146.0
 offset_right = 863.0
-offset_bottom = 151.0
+offset_bottom = 215.0
 theme_override_fonts/font = ExtResource("6_8mohm")
 theme_override_font_sizes/font_size = 40
 text = "Coins: 0"
@@ -77,14 +45,15 @@ horizontal_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=647106823]
 layout_mode = 0
 offset_left = 66.0
-offset_top = 642.0
+offset_top = 598.0
 offset_right = 1277.0
-offset_bottom = 691.0
+offset_bottom = 647.0
 offset_transform_enabled = true
 theme_override_constants/separation = 850
 
 [node name="LevelSelect" type="Button" parent="HBoxContainer" unique_id=1361054276]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
 theme_override_fonts/font = ExtResource("6_8mohm")
@@ -97,6 +66,7 @@ text = "Level select"
 
 [node name="QuitButton" type="Button" parent="HBoxContainer" unique_id=1296841661]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/line_spacing = 500
 theme_override_fonts/font = ExtResource("6_8mohm")

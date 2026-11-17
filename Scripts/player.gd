@@ -127,6 +127,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("sprint"): 
 		sprinting = false
 		#crouch_anim()
+	
 
 
 func crouch_anim() -> void:
@@ -172,13 +173,12 @@ func hit_floor_anim(impact_velocity_y: float) -> void:
 var deteriorate_amount_mult: float = 1.0
 
 func _physics_process(delta: float) -> void:
+	
 	var crouch_wall_jump := false
 	var was_on_floor := is_on_floor()
 
 	# Buffer jump presses until player reaches a surface or releases the keybind
 	if Input.is_action_just_pressed("jump"):
-		
-		
 		if can_complete_with_orb: 
 			complete()
 			return
@@ -230,13 +230,6 @@ func _physics_process(delta: float) -> void:
 		var t = create_tween()
 		t.tween_property(player_sprite_child, "rotation_degrees", player_sprite_child.rotation_degrees + 90.0 * direction, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
-	if sprinting and is_on_floor():
-		speed = clampf(speed * sprint_speed_mult, min_speed, max_speed)
-		jump_velocity = -clampf(speed * sprint_speed_mult, min_speed, max_speed) * 0.3
-	else:
-		speed = min_speed
-		jump_velocity = -745.0
-	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_axis("left", "right")
@@ -250,7 +243,14 @@ func _physics_process(delta: float) -> void:
 		#else: player_sprite.flip_h = false
 	else:
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
-
+	
+	if sprinting and is_on_floor():
+		speed = clampf(speed * sprint_speed_mult, min_speed, max_speed)
+		jump_velocity = -clampf(speed * sprint_speed_mult, min_speed, max_speed) * 0.3
+	else:
+		speed = min_speed
+		jump_velocity = -745.0
+	
 	velocity.y = minf(velocity.y, max_vertical_velocity_y)
 	var sprint_start_x := global_position.x
 	var sprinting_on_ground := sprinting and is_on_floor()
@@ -293,6 +293,8 @@ func _physics_process(delta: float) -> void:
 		hp -= (10.0 * delta) * deteriorate_amount_mult
 		if hp <= 0.0:
 			die()
+	
+	
 
 func _activate_crouch_buffer() -> void:
 	if not crouch_buffered or not (is_on_floor() or can_wall_jump):
@@ -358,6 +360,7 @@ func collect(collectible_type: int) -> void:
 			return
 
 	collectible_stats[collectible_name] = collectible_stats.get(collectible_name, 0) + 1
+	Constants.record_level_stats(Constants.current_level, collectible_stats, false)
 
 func die() -> void:
 	if is_dead:
@@ -367,12 +370,15 @@ func die() -> void:
 	is_dead = true
 	set_process(false)
 	set_physics_process(false)
-	$CanvasLayer/death_ui.show_death_screen(collectible_stats)
 	Constants.deaths += 1
+	Constants.record_level_stats(Constants.current_level, collectible_stats, false, 1)
+	$CanvasLayer/death_ui.show_death_screen(collectible_stats)
 
 func complete() -> void:
 	print("completing %s" % str(can_complete_with_orb))
 	if is_dead or not can_complete_with_orb: return
+
+	Constants.record_level_stats(Constants.current_level, collectible_stats, true)
 	
 	set_process(false)
 	set_physics_process(false)

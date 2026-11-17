@@ -3,14 +3,18 @@ extends Node
 enum Gravity { EARTH = 1400, SPACE = 700 }
 
 const COINS_SAVE_PATH := "user://save_data.cfg"
+const LEVEL_STATS_SAVE_PATH := "user://level_stats.cfg"
 const SKIN_RESOURCE_DIRECTORY := "res://Resources/Skins"
 
 var deaths: int = 0
 var health_potion_amount: float = 35.0
 
 const LEVEL_TUTORIAL = 0
-const LEVEL_EARTH = 1
-const LEVEL_TEST_TUTORIAL = 2
+const LEVEL_TUTORIAL_PART_2 = 1
+const LEVEL_EARTH = 2
+const LEVEL_CLOUDS = 3
+const LEVEL_SPACE = 4
+const LEVEL_TEST_TUTORIAL = LEVEL_TUTORIAL_PART_2
 
 var current_level: int = -1
 
@@ -122,3 +126,69 @@ func load_selected_skin() -> void:
 		return
 
 	selected_skin = int(saved_skin)
+
+
+func get_level_stats(level_id: int) -> Dictionary:
+	var stats := {
+		"completed": false,
+		"coins": 0,
+		"helium": 0,
+		"deaths": 0
+	}
+	if level_id < 0:
+		push_error("Cannot load stats for invalid level id: %d" % level_id)
+		return stats
+
+	var config := ConfigFile.new()
+	var load_error := config.load(LEVEL_STATS_SAVE_PATH)
+	if load_error == ERR_FILE_NOT_FOUND:
+		return stats
+	if load_error != OK:
+		push_error("Could not load level stats: %s" % error_string(load_error))
+		return stats
+
+	var section := "Level_%d" % level_id
+	var completed_value: Variant = config.get_value(section, "completed", false)
+	stats["completed"] = completed_value if typeof(completed_value) == TYPE_BOOL else false
+	stats["coins"] = _read_saved_count(config.get_value(section, "coins", 0))
+	stats["helium"] = _read_saved_count(config.get_value(section, "helium", 0))
+	stats["deaths"] = _read_saved_count(config.get_value(section, "deaths", 0))
+	return stats
+
+
+func record_level_stats(
+	level_id: int,
+	collectible_stats: Dictionary,
+	completed: bool,
+	death_increment: int = 0
+) -> void:
+	if level_id < 0:
+		push_error("Cannot save stats for invalid level id: %d" % level_id)
+		return
+
+	var config := ConfigFile.new()
+	var load_error := config.load(LEVEL_STATS_SAVE_PATH)
+	if load_error != OK and load_error != ERR_FILE_NOT_FOUND:
+		push_error("Could not load level stats before saving: %s" % error_string(load_error))
+		return
+
+	var section := "Level_%d" % level_id
+	var previous_coins := _read_saved_count(config.get_value(section, "coins", 0))
+	var previous_helium := _read_saved_count(config.get_value(section, "helium", 0))
+	var previous_deaths := _read_saved_count(config.get_value(section, "deaths", 0))
+	var previous_completed: Variant = config.get_value(section, "completed", false)
+
+	config.set_value(section, "completed", completed or (previous_completed is bool and previous_completed))
+	config.set_value(section, "coins", maxi(previous_coins, _read_saved_count(collectible_stats.get("Coins", 0))))
+	config.set_value(section, "helium", maxi(previous_helium, _read_saved_count(collectible_stats.get("Helium", 0))))
+	config.set_value(section, "deaths", previous_deaths + maxi(death_increment, 0))
+
+	var save_error := config.save(LEVEL_STATS_SAVE_PATH)
+	if save_error != OK:
+		push_error("Could not save level stats: %s" % error_string(save_error))
+
+
+func _read_saved_count(value: Variant) -> int:
+	if typeof(value) != TYPE_INT and typeof(value) != TYPE_FLOAT:
+		return 0
+	return maxi(int(value), 0)

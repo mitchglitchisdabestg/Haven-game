@@ -1,51 +1,52 @@
 extends Control
-@onready var background = $Background
-var sway_speed : float = 0.05
-var screen_center : Vector2
-var start_position : Vector2
 
-@onready var new_game_button: Button = $MarginContainer/VBoxContainer/NewGameButton
-@onready var quit_button: Button = $MarginContainer/VBoxContainer/QuitButton
-@onready var settings_button: Button = $MarginContainer/VBoxContainer/SettingsButton
-@onready var level_1: TextureButton = $"HBoxContainer2/Level 1"
-@onready var level_2: TextureButton = $"HBoxContainer2/Level 2"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	screen_center = get_viewport_rect().size / 2.0
-	start_position = background.position
+const LEVEL_BUTTONS := [
+	{"id": Constants.LEVEL_TUTORIAL, "path": "HBoxContainer2/Level 1"},
+	{"id": Constants.LEVEL_TUTORIAL_PART_2, "path": "HBoxContainer2/Level 2"},
+	{"id": Constants.LEVEL_EARTH, "path": "HBoxContainer2/Level 3"},
+	{"id": Constants.LEVEL_CLOUDS, "path": "HBoxContainer2/Level 4"},
+	{"id": Constants.LEVEL_SPACE, "path": "HBoxContainer2/Level 5"}
+]
 
 func _on_quit_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
+	if get_parent().has_method("show_main_menu"):
+		get_parent().show_main_menu()
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
 	
 func _on_locker_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Main menu/Locker.tscn")
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	var mouse_pos = get_viewport().get_mouse_position()
-	var offset = (mouse_pos - screen_center) * sway_speed
-	background.position = start_position - offset
+	get_parent().show_locker()
+
+func _ready() -> void:
+	for level_button in LEVEL_BUTTONS:
+		var button_path: String = level_button["path"]
+		var level_id: int = level_button["id"]
+		var button := get_node_or_null(button_path) as TextureButton
+		if button == null:
+			push_error("Level button not found: %s" % button_path)
+			continue
+
+		button.pressed.connect(load_world.bind(level_id))
+		_update_level_stats(button, level_id)
 
 func load_world(level: int) -> void:
+	Constants.deaths = 0
 	var world: Node2D = load("res://Scenes/basic_world.tscn").instantiate()
-	
 	world.level_to_load = level
-	
 	Constants.current_level = level
-	
 	get_tree().change_scene_to_node(world)
 
-func _on_level_1_pressed() -> void:
-	load_world(Constants.LEVEL_TUTORIAL)
-	Constants.deaths = 0
+func _update_level_stats(button: TextureButton, level_id: int) -> void:
+	var stats_label := button.get_node_or_null("VBoxContainer/stats") as Label
+	if stats_label == null:
+		push_error("Stats label not found for level id %d." % level_id)
+		return
 
-
-func _on_level_2_pressed() -> void:
-	load_world(Constants.LEVEL_EARTH)
-	Constants.deaths = 0
-
-func _on_level_3_pressed() -> void:
-	load_world(Constants.LEVEL_TEST_TUTORIAL)
-	Constants.deaths = 0
+	var stats := Constants.get_level_stats(level_id)
+	var completion_status := "Completed" if stats["completed"] else "Not Completed"
+	stats_label.text = "%s\nCoins: %d\nHelium cans: %d\nDeaths: %d" % [
+		completion_status,
+		stats["coins"],
+		stats["helium"],
+		stats["deaths"]
+	]

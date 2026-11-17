@@ -47,7 +47,6 @@ texture = ExtResource("4_x3wgy")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1471862222]
 position_smoothing_enabled = true
-position_smoothing_speed = 4.36
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=919148663]
 

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bb1wcsfe8rj3c"]
 
 [ext_resource type="Script" uid="uid://c3anut61medfa" path="res://Scripts/credits.gd" id="1_credits"]
-[ext_resource type="Texture2D" uid="uid://dfhpjyud7rh4j" path="res://Scenes/LevelsMihir/space.png" id="2_ccovl"]
 [ext_resource type="FontFile" uid="uid://diriyvfe5ptnq" path="res://Resources/Fonts/augiepixel.ttf" id="3_font"]
 
 [node name="Credits" type="Control" unique_id=1955455080]
@@ -12,13 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_credits")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=844739449]
-layout_mode = 0
-offset_top = 1.0
-offset_right = 1282.0
-offset_bottom = 717.0
-texture = ExtResource("2_ccovl")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=716823704]
 layout_mode = 1
