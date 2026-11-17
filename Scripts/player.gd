@@ -13,6 +13,9 @@ var sprint_speed_mult: float = 1.02
 var max_speed: float = 1800.0
 var min_speed: float = 650.0
 
+var dash_speed: float = 1000
+var dash_direction:float
+
 @export var gravity: Vector2 = Vector2(0.0, Constants.Gravity.EARTH)
 @export var max_vertical_velocity_y: float = 5000.0
 
@@ -305,6 +308,7 @@ func _activate_crouch_buffer() -> void:
 	crouching = true
 	crouch_buffer_used = Input.is_action_pressed("crouch")
 	crouch_anim()
+
 
 
 func _record_jump(charged: bool = false, wall: bool = false) -> void:
