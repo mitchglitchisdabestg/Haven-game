@@ -1,13 +1,29 @@
 extends Node
 
+signal vfx_setting_changed(setting: String, enabled: bool)
+
 const SETTINGS_PATH := "user://settings.json"
 const INPUT_ACTIONS := ["left", "right", "crouch", "jump", "sprint", "back", "toggle_debug"]
+const VFX_DEFAULTS := {
+	"rolling_particles": true,
+	"wall_rolling_particles": true,
+	"wall_jump_burst": true,
+	"jump_burst": true,
+	"orb_particles": true,
+	"pad_particles": true,
+	"land_squish": true,
+	"crouch_squish": true,
+	"wall_squish": true,
+	"movement_rotation": true,
+	"jumping_rotation": true
+}
 
 var master_volume: float = 100.0
 var music_volume: float = 100.0
 var sfx_volume: float = 100.0
 var sfx_pitch_scales_with_time_scale: bool = true
 var player_debug_ui_visible: bool = true
+var vfx_enabled: Dictionary = VFX_DEFAULTS.duplicate()
 
 func _ready() -> void:
 	add_music_bus()
@@ -40,6 +56,23 @@ func set_sfx_pitch_scales_with_time_scale(enabled: bool) -> void:
 func set_player_debug_ui_visible(visible: bool) -> void:
 	player_debug_ui_visible = visible
 	_save_settings()
+
+func is_vfx_enabled(setting: String) -> bool:
+	if not VFX_DEFAULTS.has(setting):
+		push_error("Unknown VFX setting: %s" % setting)
+		return false
+	return vfx_enabled.get(setting, VFX_DEFAULTS[setting])
+
+func set_vfx_enabled(setting: String, enabled: bool) -> void:
+	if not VFX_DEFAULTS.has(setting):
+		push_error("Unknown VFX setting: %s" % setting)
+		return
+	if is_vfx_enabled(setting) == enabled:
+		return
+
+	vfx_enabled[setting] = enabled
+	_save_settings()
+	vfx_setting_changed.emit(setting, enabled)
 
 func add_music_bus() -> void:
 	if AudioServer.get_bus_index("Music") >= 0:
@@ -88,6 +121,10 @@ func _load_settings() -> void:
 		"player_debug_ui_visible",
 		player_debug_ui_visible
 	)
+	var saved_vfx: Variant = settings.get("vfx", {})
+	if saved_vfx is Dictionary:
+		for setting in VFX_DEFAULTS:
+			vfx_enabled[setting] = _read_bool(saved_vfx, setting, VFX_DEFAULTS[setting])
 	_apply_saved_keybindings(settings.get("keybindings", {}))
 
 func _read_volume(settings: Dictionary, key: String, default_value: float) -> float:
@@ -203,6 +240,7 @@ func _save_settings() -> void:
 		"sfx_volume": sfx_volume,
 		"sfx_pitch_scales_with_time_scale": sfx_pitch_scales_with_time_scale,
 		"player_debug_ui_visible": player_debug_ui_visible,
+		"vfx": vfx_enabled,
 		"keybindings": _serialize_keybindings()
 	}
 	file.store_string(JSON.stringify(settings, "\t"))

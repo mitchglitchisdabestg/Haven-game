@@ -6,6 +6,18 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eg8xt"]
 size = Vector2(72, 14)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pad"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(34, 2, 1)
+direction = Vector3(0, -1, 0)
+spread = 35.0
+initial_velocity_min = 12.0
+initial_velocity_max = 56.0
+gravity = Vector3(0, -18, 0)
+scale_min = 2.0
+scale_max = 4.0
+
 [node name="jump_pad_area" type="Area2D" unique_id=1367776173]
 script = ExtResource("1_m4v3l")
 
@@ -15,5 +27,13 @@ shape = SubResource("RectangleShape2D_eg8xt")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1894314037]
 scale = Vector2(0.0703125, 0.013671876)
 texture = ExtResource("2_ao3o6")
+
+[node name="pad_particles" type="GPUParticles2D" parent="."]
+position = Vector2(0, -12)
+z_index = 1
+amount = 16
+lifetime = 0.55
+emitting = true
+process_material = SubResource("ParticleProcessMaterial_pad")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

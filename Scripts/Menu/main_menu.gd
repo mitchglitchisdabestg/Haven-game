@@ -31,6 +31,17 @@ func _ready() -> void:
 		enable_audio_web.disabled = true
 		
 	
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo or event.keycode != KEY_ESCAPE:
+		return
+	if menu_buttons.visible:
+		return
+
+	if settings_page.has_method("cancel_key_rebind"):
+		settings_page.call("cancel_key_rebind")
+	show_main_menu()
+	get_viewport().set_input_as_handled()
+
 func _on_new_game_button_pressed() -> void:
 	show_level_select()
 

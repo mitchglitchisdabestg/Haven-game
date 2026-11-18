@@ -31,101 +31,124 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer" unique_id=226859409]
+[node name="ContentScroll" type="ScrollContainer" parent="CenterContainer/Panel/MarginContainer" unique_id=769733670]
+custom_minimum_size = Vector2(0, 660)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/ContentScroll" unique_id=226859409]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1540699268]
+[node name="Title" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1540699268]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 40
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=6239484]
+[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=6239484]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Master Volume"
 
-[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1801115159]
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1801115159]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 value = 100.0
 
-[node name="MasterValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1607738880]
+[node name="MasterValue" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1607738880]
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
-[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1899357728]
+[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1899357728]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Music Volume"
 
-[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=321317447]
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=321317447]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 value = 100.0
 
-[node name="MusicValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=711710894]
+[node name="MusicValue" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=711710894]
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
-[node name="SFXLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="SFXLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1191553183]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "SFX Volume"
 
-[node name="SFXSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="SFXSlider" type="HSlider" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=2088941331]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 value = 100.0
 
-[node name="SFXValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="SFXValue" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=869039808]
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 1
 
-[node name="SFXPitchToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="SFXPitchToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1572427222]
 layout_mode = 2
 text = "Pitch scale SFX with game speed"
 
-[node name="DebugUIToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="DebugUIToggle" type="CheckButton" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=158875678]
 layout_mode = 2
 text = "Show player debug UI (F1)"
 
-[node name="KeybindTitle" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1894501137]
+[node name="VFXTitle" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=468301027]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 24
+text = "VFX"
+horizontal_alignment = 1
+
+[node name="VFXScroll" type="ScrollContainer" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=218970805]
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VFXOptionGrid" type="GridContainer" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/VFXScroll" unique_id=755921686]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="KeybindTitle" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1894501137]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 24
 text = "Keybinds"
 horizontal_alignment = 1
 
-[node name="KeybindScroll" type="ScrollContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=223476486]
-custom_minimum_size = Vector2(0, 250)
+[node name="KeybindScroll" type="ScrollContainer" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=223476486]
+custom_minimum_size = Vector2(0, 190)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="KeybindList" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/KeybindScroll" unique_id=358575640]
+[node name="KeybindList" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/KeybindScroll" unique_id=358575640]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="Status" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=613068703]
+[node name="Status" type="Label" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=613068703]
 layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="BackButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1756089638]
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer" unique_id=1756089638]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("3_font")
 text = "Back"
 
-[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
-[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
-[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
-[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/VBoxContainer/SFXPitchToggle" to="." method="_on_sfx_pitch_toggle_toggled"]
-[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/VBoxContainer/DebugUIToggle" to="." method="_on_debug_ui_toggle_toggled"]
-[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/SFXPitchToggle" to="." method="_on_sfx_pitch_toggle_toggled"]
+[connection signal="toggled" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/DebugUIToggle" to="." method="_on_debug_ui_toggle_toggled"]
+[connection signal="pressed" from="CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

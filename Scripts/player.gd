@@ -16,6 +16,7 @@ var min_speed: float = 650.0
 @onready var roll_particles: GPUParticles2D = $sprite_parent/roll_particles_pos/roll_particles
 @onready var wall_right_particles: GPUParticles2D = $sprite_parent/wall_right_pos/wall_particles
 @onready var wall_left_particles: GPUParticles2D = $sprite_parent/wall_left_pos/wall_particles
+const PARTICLE_BURST_SCENE: PackedScene = preload("res://Scenes/Particles/particle_burst.tscn")
 
 var dash_speed: float = 1000
 var dash_direction:float
@@ -30,6 +31,7 @@ var dash_cooldown_timer:float = 3
 
 const FALL_DAMAGE_THRESHOLD := 1800.0
 const MAX_FALL_DAMAGE := 65.0
+const FATAL_FALL_SPEED := 4000.0
 const FALLING_ROLL_ROTATION_SPEED := 1.0
 
 @onready var player_sprite_parent: Node2D = $sprite_parent
@@ -70,6 +72,7 @@ var squashed_position_y: float = 0.0
 var can_wall_jump: bool = false
 var is_in_wall_jump_area: bool = false
 var wall_jump_direction: float = 0.0
+var current_wall_jump_area: Area2D
 var jump_orb_velocity: float = 0.0
 
 # Track coins helium and run totals
@@ -94,6 +97,7 @@ var is_dead: bool = false
 
 func _ready() -> void:
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
+	SettingsManager.vfx_setting_changed.connect(_on_vfx_setting_changed)
 	roll_particles.emitting = false
 	wall_right_particles.emitting = false
 	wall_left_particles.emitting = false
@@ -151,12 +155,20 @@ func crouch_anim() -> void:
 	
 	if crouching_tween and crouching_tween.is_running():
 		crouching_tween.kill()
+
+	if not SettingsManager.is_vfx_enabled("crouch_squish"):
+		player_sprite_parent.scale.y = sprite_scale_y
+		player_sprite_parent.position.y = 0.0
+		return
 	
 	crouching_tween = create_tween()
 	crouching_tween.tween_property(player_sprite_parent, "scale:y", crouching_sprite_scale_y if crouching else sprite_scale_y, 0.2).set_ease(Tween.EASE_OUT)
 	crouching_tween.parallel().tween_property(player_sprite_parent, "position:y", crouching_sprite_y_pos if crouching else 0.0, 0.2).set_ease(Tween.EASE_OUT)
 
 func hit_wall_anim(dir: float = 1.0) -> void:
+	if not SettingsManager.is_vfx_enabled("wall_squish"):
+		return
+
 	hit_wall_tween = create_tween()
 	
 	hit_wall_tween.tween_property(player_sprite_parent, "scale:x", 0.135, 0.04).set_ease(Tween.EASE_OUT)
@@ -166,9 +178,13 @@ func hit_wall_anim(dir: float = 1.0) -> void:
 	hit_wall_tween.parallel().tween_property(player_sprite_parent, "position:x", 0.0, 0.04).set_ease(Tween.EASE_OUT)
 
 func hit_floor_anim(impact_velocity_y: float, restore_after_squash: bool = true) -> void:
+	if not SettingsManager.is_vfx_enabled("land_squish"):
+		return
+
 	impact_strength = clampf(impact_velocity_y / MAX_LANDING_IMPACT_SPEED, 0.0, 1.0)
-	target_scale_y = crouching_sprite_scale_y if crouching else sprite_scale_y
-	target_position_y = crouching_sprite_y_pos if crouching else 0.0
+	var visually_crouching := crouching and SettingsManager.is_vfx_enabled("crouch_squish")
+	target_scale_y = crouching_sprite_scale_y if visually_crouching else sprite_scale_y
+	target_position_y = crouching_sprite_y_pos if visually_crouching else 0.0
 	squashed_scale_y = lerpf(target_scale_y, target_scale_y * LANDING_SQUASH_SCALE_FACTOR, impact_strength)
 	var sprite_radius_at_normal_scale := ball_radius / sprite_scale_y
 	squashed_position_y = target_position_y + sprite_radius_at_normal_scale * (target_scale_y - squashed_scale_y)
@@ -228,15 +244,17 @@ func _physics_process(delta: float) -> void:
 		elif can_wall_jump and crouching:
 			_record_jump(true, true)
 			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH)
+			_spawn_wall_jump_burst()
 			# Launch away from the wall with a stronger jump
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT
-			velocity.x = wall_jump_direction * speed
+			velocity.x = wall_jump_direction * speed * 1.175
 			crouching = false
 			crouch_anim()
 			crouch_wall_jump = true
 		elif crouching:
 			_record_jump(true)
 			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH)
+			_spawn_surface_jump_burst(true)
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
@@ -245,13 +263,16 @@ func _physics_process(delta: float) -> void:
 			_record_jump(false, can_wall_jump)
 			if can_wall_jump:
 				SFX.play(SFX.WallJump, SFX.DEFAULT_SFX_PITCH)
+				_spawn_wall_jump_burst()
 			else:
 				SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH)
+				_spawn_surface_jump_burst(false)
 			velocity.y = jump_velocity
 		can_wall_jump = false
 		
-		var t = create_tween()
-		t.tween_property(player_sprite_child, "rotation_degrees", player_sprite_child.rotation_degrees + 90.0 * direction, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		if SettingsManager.is_vfx_enabled("jumping_rotation"):
+			var t = create_tween()
+			t.tween_property(player_sprite_child, "rotation_degrees", player_sprite_child.rotation_degrees + 90.0 * direction, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -281,8 +302,11 @@ func _physics_process(delta: float) -> void:
 	var impact_velocity_y := velocity.y
 	var landing_jump_buffered := jump_buffered
 	var landing_crouch_buffered := crouch_buffered
+	var position_before_move := global_position
 	move_and_slide()
+	var movement_distance := global_position.distance_to(position_before_move)
 	_update_roll_particles()
+	_update_wall_particles(movement_distance)
 	if sprinting_on_ground:
 		pixels_ran_while_sprinting += absf(global_position.x - sprint_start_x)
 
@@ -294,6 +318,13 @@ func _physics_process(delta: float) -> void:
 		if not landing_jump_buffered:
 			hit_floor_anim(impact_velocity_y, not landing_crouch_buffered)
 		var damage_dealt := _apply_fall_damage(impact_velocity_y)
+		if damage_dealt > 0.0:
+			var flash_strength := clampf(
+				(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (FATAL_FALL_SPEED - FALL_DAMAGE_THRESHOLD),
+				0.0,
+				1.0
+			)
+			$CanvasLayer/player_ui.show_fall_damage_flash(impact_velocity_y, damage_dealt, flash_strength)
 		if damage_dealt > 45.0:
 			SFX.play(SFX.LandCritical)
 		elif damage_dealt > 20.0:
@@ -305,7 +336,7 @@ func _physics_process(delta: float) -> void:
 
 	# Apply wear based on movement and nearby surfaces
 	if is_in_wall_jump_area:
-		deteriorate_amount_mult = 0.5
+		deteriorate_amount_mult = 0.5 if movement_distance > 0.1 else 0.0
 	elif is_zero_approx(direction):
 		deteriorate_amount_mult = 0.0
 	elif is_on_floor():
@@ -331,6 +362,10 @@ func _physics_process(delta: float) -> void:
 	
 
 func _update_roll_particles() -> void:
+	if not SettingsManager.is_vfx_enabled("rolling_particles"):
+		roll_particles.emitting = false
+		return
+
 	var particle_count := 16.0
 	if sprinting and crouching:
 		particle_count = 20.0
@@ -343,14 +378,48 @@ func _update_roll_particles() -> void:
 	roll_particles.emitting = is_on_floor() and absf(velocity.x) > 5.0
 
 
-func set_wall_particle_emission(wall_jump_dir: float) -> void:
-	wall_left_particles.emitting = wall_jump_dir > 0.0
-	wall_right_particles.emitting = wall_jump_dir < 0.0
-
-
 func stop_wall_particle_emission() -> void:
 	wall_left_particles.emitting = false
 	wall_right_particles.emitting = false
+
+
+func _update_wall_particles(movement_distance: float) -> void:
+	var should_emit := (
+		SettingsManager.is_vfx_enabled("wall_rolling_particles")
+		and is_in_wall_jump_area
+		and movement_distance > 0.1
+	)
+	wall_left_particles.emitting = should_emit and wall_jump_direction > 0.0
+	wall_right_particles.emitting = should_emit and wall_jump_direction < 0.0
+
+
+func _spawn_surface_jump_burst(charged: bool) -> void:
+	if not SettingsManager.is_vfx_enabled("jump_burst"):
+		return
+
+	var effect := PARTICLE_BURST_SCENE.instantiate() as ParticleBurst
+	if effect == null:
+		push_error("Could not instantiate surface jump particle effect.")
+		return
+
+	effect.particle_color = Color(0.7, 0.9, 1.0, 1.0) if not charged else Color(1.0, 0.83, 0.42, 1.0)
+	effect.emission_direction = Vector3(0.0, -1.0, 0.0)
+	effect.particle_amount = 18 if not charged else 28
+	effect.particle_speed_min = 90.0 if not charged else 140.0
+	effect.particle_speed_max = 190.0 if not charged else 280.0
+	var effect_position: Vector2 = $sprite_parent/roll_particles_pos.global_position
+	get_tree().current_scene.add_child(effect)
+	effect.global_position = effect_position
+
+
+func _spawn_wall_jump_burst() -> void:
+	if not SettingsManager.is_vfx_enabled("wall_jump_burst"):
+		return
+	if not is_instance_valid(current_wall_jump_area):
+		return
+
+	var effect_position := global_position - Vector2(wall_jump_direction * ball_radius, 0.0)
+	current_wall_jump_area.call("spawn_wall_jump_effect", effect_position, wall_jump_direction)
 
 
 func _activate_crouch_buffer() -> void:
@@ -376,15 +445,20 @@ func _record_jump(charged: bool = false, wall: bool = false) -> void:
 
 
 func _apply_fall_damage(impact_velocity_y: float) -> float:
-	if impact_velocity_y <= FALL_DAMAGE_THRESHOLD or max_vertical_velocity_y <= FALL_DAMAGE_THRESHOLD:
+	var damage_amount: float
+	if impact_velocity_y >= FATAL_FALL_SPEED:
+		damage_amount = 100.0
+	elif impact_velocity_y > FALL_DAMAGE_THRESHOLD and max_vertical_velocity_y > FALL_DAMAGE_THRESHOLD:
+		var damage_fraction := clampf(
+			(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (max_vertical_velocity_y - FALL_DAMAGE_THRESHOLD),
+			0.0,
+			1.0
+		)
+		damage_amount = MAX_FALL_DAMAGE * damage_fraction
+	else:
 		return 0.0
 
-	var damage_fraction := clampf(
-		(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (max_vertical_velocity_y - FALL_DAMAGE_THRESHOLD),
-		0.0,
-		1.0
-	)
-	var damage_dealt := minf(hp, MAX_FALL_DAMAGE * damage_fraction)
+	var damage_dealt := minf(hp, damage_amount)
 	hp -= damage_dealt
 	if hp <= 0.0:
 		die()
@@ -392,12 +466,40 @@ func _apply_fall_damage(impact_velocity_y: float) -> float:
 
 
 func apply_roll_rotation(delta: float) -> void:
+	if not SettingsManager.is_vfx_enabled("movement_rotation"):
+		return
+
 	# Angular velocity (radians/sec) = linear velocity / radius
 	var angular_velocity: float = velocity.x / ball_radius
 	if not is_on_floor() and velocity.y > 0.0:
 		var horizontal_speed_ratio := clampf(absf(velocity.x) / max_speed, 0.0, 1.0)
 		angular_velocity += signf(velocity.x) * FALLING_ROLL_ROTATION_SPEED * horizontal_speed_ratio
 	player_sprite.rotation += angular_velocity * delta
+
+
+func _on_vfx_setting_changed(setting: String, enabled: bool) -> void:
+	if setting == "rolling_particles" and not enabled:
+		roll_particles.emitting = false
+	elif setting == "wall_rolling_particles" and not enabled:
+		stop_wall_particle_emission()
+	elif setting == "crouch_squish" and not enabled:
+		if crouching_tween and crouching_tween.is_running():
+			crouching_tween.kill()
+		player_sprite_parent.scale.y = sprite_scale_y
+		player_sprite_parent.position.y = 0.0
+	elif setting == "wall_squish" and not enabled:
+		if hit_wall_tween and hit_wall_tween.is_running():
+			hit_wall_tween.kill()
+		player_sprite_parent.scale.x = sprite_scale_y
+		player_sprite_parent.position.x = 0.0
+	elif setting == "land_squish" and not enabled:
+		if hit_floor_tween and hit_floor_tween.is_running():
+			hit_floor_tween.kill()
+		var visually_crouching := crouching and SettingsManager.is_vfx_enabled("crouch_squish")
+		var restore_scale_y := crouching_sprite_scale_y if visually_crouching else sprite_scale_y
+		var restore_position_y := crouching_sprite_y_pos if visually_crouching else 0.0
+		player_sprite_parent.scale.y = restore_scale_y
+		player_sprite_parent.position.y = restore_position_y
 
 func collect(collectible_type: int, debug: bool = false) -> void:
 	# Apply collectible effects and record run totals

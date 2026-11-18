@@ -245,6 +245,20 @@ text = "Quit Game"
 layout_mode = 2
 text = "Unpause"
 
+[node name="FallDamageFlash" type="ColorRect" parent="." unique_id=962699165]
+modulate = Color(1, 1, 1, 0)
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/position_controls/x_position" to="." method="_on_x_position_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/position_controls/y_position" to="." method="_on_y_position_text_submitted"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/set_position" to="." method="_on_debug_set_position_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_potion" to="." method="_on_debug_health_potion_pressed"]
 [connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_barrel" to="." method="_on_debug_health_barrel_pressed"]

@@ -14,9 +14,11 @@ var paused: bool = false
 @onready var player_x_input: LineEdit = $MarginContainer/debug/debug_actions/VBoxContainer/position_controls/x_position
 @onready var player_y_input: LineEdit = $MarginContainer/debug/debug_actions/VBoxContainer/position_controls/y_position
 @onready var mult_edit: LineEdit = %mult_edit
+@onready var fall_damage_flash: ColorRect = $FallDamageFlash
+
+var fall_damage_flash_tween: Tween
 
 func _ready() -> void:
-	_sync_position_inputs()
 	mult_edit.text = str(Engine.time_scale)
 	debug_container.visible = SettingsManager.player_debug_ui_visible
 
@@ -64,6 +66,34 @@ func _on_debug_set_position_pressed() -> void:
 		player_y_input.text.to_float()
 	)
 	player_parent.velocity = Vector2.ZERO
+	player_x_input.clear()
+	player_y_input.clear()
+
+func _on_x_position_text_submitted(new_text: String) -> void:
+	if not _can_use_debug_actions():
+		return
+	if not new_text.is_valid_float() and not new_text.is_valid_int():
+		push_warning("Enter a valid numeric X coordinate.")
+		return
+
+	var player_position := player_parent.global_position
+	player_position.x = new_text.to_float()
+	player_parent.global_position = player_position
+	player_parent.velocity.x = 0.0
+	player_x_input.clear()
+
+func _on_y_position_text_submitted(new_text: String) -> void:
+	if not _can_use_debug_actions():
+		return
+	if not new_text.is_valid_float() and not new_text.is_valid_int():
+		push_warning("Enter a valid numeric Y coordinate.")
+		return
+
+	var player_position := player_parent.global_position
+	player_position.y = new_text.to_float()
+	player_parent.global_position = player_position
+	player_parent.velocity.y = 0.0
+	player_y_input.clear()
 
 func _can_use_debug_actions() -> bool:
 	return player_parent != null and not player_parent.is_dead
@@ -153,21 +183,46 @@ func _process(delta: float) -> void:
 	str(player_parent.can_complete_with_orb)]
 	
 	d_delta.text = "delta = " + str(delta)
-	_sync_position_inputs()
+	_update_position_placeholders()
 	
 	hp.value = player_parent.hp
 	coins.text = "Coins: " + str(player_parent.collectible_stats["Coins"])
 	helium.text = "Helium Cans: " + str(player_parent.collectible_stats["Helium"])
 	deaths.text = "Deaths: " + str(Constants.deaths)
 
-func _sync_position_inputs() -> void:
+func _update_position_placeholders() -> void:
 	if player_parent == null:
 		return
-	if not player_x_input.has_focus():
-		player_x_input.text = str(snappedf(player_parent.global_position.x, 0.01))
-	if not player_y_input.has_focus():
-		player_y_input.text = str(snappedf(player_parent.global_position.y, 0.01))
+	player_x_input.placeholder_text = str(snappedf(player_parent.global_position.x, 0.01))
+	player_y_input.placeholder_text = str(snappedf(player_parent.global_position.y, 0.01))
 
+func show_fall_damage_flash(
+	impact_velocity_y: float,
+	damage_dealt: float,
+	damage_strength: float
+) -> void:
+	if damage_dealt <= 0.0:
+		return
+
+	if fall_damage_flash_tween and fall_damage_flash_tween.is_running():
+		fall_damage_flash_tween.kill()
+
+	var is_fatal_speed := impact_velocity_y >= 4000.0
+	var flash_opacity := 1.0
+	var flash_duration := 1.0
+	if not is_fatal_speed:
+		flash_opacity = lerpf(0.25, 0.6, clampf(damage_strength, 0.0, 1.0))
+		flash_duration = 0.3
+
+	fall_damage_flash.modulate.a = 0.0
+	fall_damage_flash_tween = fall_damage_flash.create_tween()
+	fall_damage_flash_tween.tween_property(fall_damage_flash, "modulate:a", flash_opacity, 0.04)
+	fall_damage_flash_tween.tween_property(
+		fall_damage_flash,
+		"modulate:a",
+		0.0,
+		flash_duration - 0.04
+	)
 
 func _on_main_menu_pressed() -> void:
 	Constants.current_level = -1

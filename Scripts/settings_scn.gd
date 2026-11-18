@@ -10,16 +10,33 @@ const ACTION_LABELS := {
 	"toggle_debug": "Toggle Debug UI"
 }
 
-@onready var master_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterSlider
-@onready var music_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicSlider
-@onready var sfx_slider: HSlider = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXSlider
-@onready var master_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MasterValue
-@onready var music_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/MusicValue
-@onready var sfx_value: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXValue
-@onready var sfx_pitch_toggle: CheckButton = $CenterContainer/Panel/MarginContainer/VBoxContainer/SFXPitchToggle
-@onready var debug_ui_toggle: CheckButton = $CenterContainer/Panel/MarginContainer/VBoxContainer/DebugUIToggle
-@onready var status: Label = $CenterContainer/Panel/MarginContainer/VBoxContainer/Status
-@onready var keybind_list: VBoxContainer = $CenterContainer/Panel/MarginContainer/VBoxContainer/KeybindScroll/KeybindList
+const VFX_OPTIONS := [
+	{"key": "rolling_particles", "label": "Rolling particles"},
+	{"key": "wall_rolling_particles", "label": "Wall rolling particles"},
+	{"key": "wall_jump_burst", "label": "Wall jump burst"},
+	{"key": "jump_burst", "label": "Surface jump bursts"},
+	{"key": "orb_particles", "label": "Orb particles"},
+	{"key": "pad_particles", "label": "Pad particles"},
+	{"key": "land_squish", "label": "Landing squish"},
+	{"key": "crouch_squish", "label": "Crouch squish"},
+	{"key": "wall_squish", "label": "Wall hit squish"},
+	{"key": "movement_rotation", "label": "Movement rotation"},
+	{"key": "jumping_rotation", "label": "Jumping rotation"}
+]
+
+const CONTENT_PATH := "CenterContainer/Panel/MarginContainer/ContentScroll/VBoxContainer/"
+
+@onready var master_slider: HSlider = get_node(CONTENT_PATH + "MasterSlider")
+@onready var music_slider: HSlider = get_node(CONTENT_PATH + "MusicSlider")
+@onready var sfx_slider: HSlider = get_node(CONTENT_PATH + "SFXSlider")
+@onready var master_value: Label = get_node(CONTENT_PATH + "MasterValue")
+@onready var music_value: Label = get_node(CONTENT_PATH + "MusicValue")
+@onready var sfx_value: Label = get_node(CONTENT_PATH + "SFXValue")
+@onready var sfx_pitch_toggle: CheckButton = get_node(CONTENT_PATH + "SFXPitchToggle")
+@onready var debug_ui_toggle: CheckButton = get_node(CONTENT_PATH + "DebugUIToggle")
+@onready var status: Label = get_node(CONTENT_PATH + "Status")
+@onready var keybind_list: VBoxContainer = get_node(CONTENT_PATH + "KeybindScroll/KeybindList")
+@onready var vfx_option_grid: GridContainer = get_node(CONTENT_PATH + "VFXScroll/VFXOptionGrid")
 
 var waiting_for_action: String = ""
 var waiting_for_event_index: int = -1
@@ -31,6 +48,7 @@ func _ready() -> void:
 	sfx_pitch_toggle.button_pressed = SettingsManager.sfx_pitch_scales_with_time_scale
 	debug_ui_toggle.button_pressed = SettingsManager.player_debug_ui_visible
 	_update_volume_labels()
+	_build_vfx_toggles()
 	_build_keybind_rows()
 
 func _input(event: InputEvent) -> void:
@@ -40,9 +58,8 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event.keycode == KEY_ESCAPE:
-		waiting_for_action = ""
-		waiting_for_event_index = -1
-		status.text = "Key rebind cancelled."
+		cancel_key_rebind()
+		_return_to_main_menu()
 		get_viewport().set_input_as_handled()
 		return
 
@@ -66,6 +83,24 @@ func _input(event: InputEvent) -> void:
 	_build_keybind_rows()
 	get_viewport().set_input_as_handled()
 
+func cancel_key_rebind() -> void:
+	waiting_for_action = ""
+	waiting_for_event_index = -1
+	status.text = "Key rebind cancelled."
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo or event.keycode != KEY_ESCAPE:
+		return
+	_return_to_main_menu()
+	get_viewport().set_input_as_handled()
+
+func _return_to_main_menu() -> void:
+	cancel_key_rebind()
+	if get_parent().has_method("show_main_menu"):
+		get_parent().show_main_menu()
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")
+
 func _on_master_slider_value_changed(value: float) -> void:
 	SettingsManager.set_master_volume(value)
 	_update_volume_labels()
@@ -83,6 +118,21 @@ func _on_sfx_pitch_toggle_toggled(enabled: bool) -> void:
 
 func _on_debug_ui_toggle_toggled(enabled: bool) -> void:
 	SettingsManager.set_player_debug_ui_visible(enabled)
+
+func _build_vfx_toggles() -> void:
+	for child in vfx_option_grid.get_children():
+		child.queue_free()
+
+	for option in VFX_OPTIONS:
+		var setting: String = option["key"]
+		var toggle := CheckButton.new()
+		toggle.text = option["label"]
+		toggle.button_pressed = SettingsManager.is_vfx_enabled(setting)
+		toggle.toggled.connect(_on_vfx_toggle_toggled.bind(setting))
+		vfx_option_grid.add_child(toggle)
+
+func _on_vfx_toggle_toggled(enabled: bool, setting: String) -> void:
+	SettingsManager.set_vfx_enabled(setting, enabled)
 
 func _update_volume_labels() -> void:
 	master_value.text = "%d%%" % int(master_slider.value)

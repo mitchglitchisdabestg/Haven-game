@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/particle_burst.gd" id="1_burst"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_burst"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 90.0
+initial_velocity_max = 190.0
+gravity = Vector3(0, 260, 0)
+scale_min = 2.0
+scale_max = 5.0
+
+[node name="particle_burst" type="GPUParticles2D"]
+amount = 18
+lifetime = 0.42
+one_shot = true
+explosiveness = 1.0
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_burst")
+script = ExtResource("1_burst")
