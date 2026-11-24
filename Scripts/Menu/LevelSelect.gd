@@ -8,14 +8,27 @@ const LEVEL_BUTTONS := [
 	{"id": Constants.LEVEL_SPACE, "path": "HBoxContainer2/Level 5"}
 ]
 
+var _replay_file_dialog: FileDialog
+
+
 func _on_quit_pressed() -> void:
 	_return_to_main_menu()
 
+
 func _unhandled_input(event: InputEvent) -> void:
-	if not event is InputEventKey or not event.pressed or event.echo or event.keycode != KEY_ESCAPE:
+	if not event is InputEventKey or not event.pressed or event.echo:
 		return
+
+	if event.keycode == KEY_F6:
+		_replay_file_dialog.popup_centered_ratio(0.8)
+		get_viewport().set_input_as_handled()
+		return
+	if event.keycode != KEY_ESCAPE:
+		return
+
 	_return_to_main_menu()
 	get_viewport().set_input_as_handled()
+
 
 func _return_to_main_menu() -> void:
 	if get_parent().has_method("show_main_menu"):
@@ -26,7 +39,12 @@ func _return_to_main_menu() -> void:
 func _on_locker_pressed() -> void:
 	get_parent().show_locker()
 
+
 func _ready() -> void:
+	_setup_replay_file_dialog()
+	if ReplayManager.consume_replay_picker_request():
+		call_deferred("_open_replay_file_dialog")
+
 	for level_button in LEVEL_BUTTONS:
 		var button_path: String = level_button["path"]
 		var level_id: int = level_button["id"]
@@ -38,12 +56,33 @@ func _ready() -> void:
 		button.pressed.connect(load_world.bind(level_id))
 		_update_level_stats(button, level_id)
 
+
 func load_world(level: int) -> void:
 	Constants.deaths = 0
 	var world: Node2D = load("res://Scenes/basic_world.tscn").instantiate()
 	world.level_to_load = level
 	Constants.current_level = level
 	get_tree().change_scene_to_node(world)
+
+
+func _setup_replay_file_dialog() -> void:
+	_replay_file_dialog = FileDialog.new()
+	_replay_file_dialog.title = "Select Replay JSON"
+	_replay_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	_replay_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_replay_file_dialog.add_filter("*.json ; Replay files")
+	_replay_file_dialog.current_dir = ProjectSettings.globalize_path(ReplayManager.REPLAY_DIRECTORY)
+	_replay_file_dialog.file_selected.connect(_on_replay_file_selected)
+	add_child(_replay_file_dialog)
+
+
+func _open_replay_file_dialog() -> void:
+	_replay_file_dialog.popup_centered_ratio(0.8)
+
+
+func _on_replay_file_selected(path: String) -> void:
+	ReplayManager.start_playback_file(path)
+
 
 func _update_level_stats(button: TextureButton, level_id: int) -> void:
 	var stats_label := button.get_node_or_null("VBoxContainer/stats") as Label

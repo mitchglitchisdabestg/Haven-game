@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/replay_ghost.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://Scenes/player_visuals.tscn" id="2_visuals"]
+
+[node name="ReplayGhost" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="sprite_parent" parent="." instance=ExtResource("2_visuals")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+top_level = true
+position_smoothing_enabled = true
+position_smoothing_speed = 4.2

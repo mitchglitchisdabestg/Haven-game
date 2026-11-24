@@ -99,6 +99,9 @@ func _can_use_debug_actions() -> bool:
 	return player_parent != null and not player_parent.is_dead
 
 func _input(event: InputEvent) -> void:
+	if ReplayManager.is_playback_active():
+		return
+
 	if event.is_action_pressed("toggle_debug") and not (event is InputEventKey and event.echo):
 		var should_show_debug := not SettingsManager.player_debug_ui_visible
 		SettingsManager.set_player_debug_ui_visible(should_show_debug)

@@ -33,6 +33,8 @@ const FALL_DAMAGE_THRESHOLD := 1800.0
 const MAX_FALL_DAMAGE := 65.0
 const FATAL_FALL_SPEED := 4000.0
 const FALLING_ROLL_ROTATION_SPEED := 1.0
+const MAX_HEALTH: float = 100.0
+const REPLAY_SAVE_PROMPT_SCENE: PackedScene = preload("res://Scenes/replay_save_prompt.tscn")
 
 @onready var player_sprite_parent: Node2D = $sprite_parent
 @onready var player_sprite: Sprite2D = $sprite_parent/circle_mask
@@ -89,13 +91,18 @@ const HELIUM_GRAVITY_MULTIPLIER: float = 0.1
 # Keep player health within its range
 var hp: float = 100.0:
 	set(value):
-		hp = clampf(value, 0.0, 100.0)
+		hp = clampf(value, 0.0, MAX_HEALTH)
 
 var can_complete_with_orb: bool = false
 
 var is_dead: bool = false
+var _end_flow_started: bool = false
+var _replay_save_prompt: ReplaySavePrompt
 
 func _ready() -> void:
+	if ReplayManager.is_playback_active():
+		return
+
 	$CanvasLayer/player_ui.player_parent = self # set the ui player reference to this so it can get values to display
 	SettingsManager.vfx_setting_changed.connect(_on_vfx_setting_changed)
 	roll_particles.emitting = false
@@ -103,6 +110,15 @@ func _ready() -> void:
 	wall_left_particles.emitting = false
 	
 	var selected_skin: SkinResource = Constants.get_selected_skin_resource()
+	var skin_metadata: Dictionary = {"index": Constants.selected_skin}
+	if selected_skin != null:
+		skin_metadata["name"] = selected_skin.skin_name
+		skin_metadata["texture_path"] = selected_skin.texture_path
+		skin_metadata["sprite_scale"] = [selected_skin.sprite_scale.x, selected_skin.sprite_scale.y]
+		skin_metadata["sprite_position"] = [selected_skin.sprite_position.x, selected_skin.sprite_position.y]
+		skin_metadata["shadow_scale"] = [selected_skin.shadow_scale.x, selected_skin.shadow_scale.y]
+		skin_metadata["shadow_position"] = [selected_skin.shadow_position.x, selected_skin.shadow_position.y]
+	ReplayManager.start_recording(Constants.current_level, skin_metadata)
 	if selected_skin == null:
 		return
 
@@ -117,12 +133,21 @@ func _ready() -> void:
 	$sprite_parent/shadow.scale = selected_skin.shadow_scale
 	$sprite_parent/shadow.position = selected_skin.shadow_position
 
+
+func _exit_tree() -> void:
+	ReplayManager.finalize_recording(
+		ReplayManager.OUTCOME_ABANDONED,
+		_get_replay_state(),
+		Engine.get_physics_frames()
+	)
+
+
 func _process(delta: float) -> void:
 	# Heal over time and expire helium
 	hp += 1.5 * delta
 	helium_time_remaining = maxf(helium_time_remaining - delta, 0.0)
 	if hp <= 0.0:
-		die()
+		die(delta)
 		return
 	
 	if Input.is_action_just_pressed("crouch"):
@@ -212,7 +237,7 @@ func _physics_process(delta: float) -> void:
 	# Buffer jump presses until player reaches a surface or releases the keybind
 	if Input.is_action_just_pressed("jump"):
 		if can_complete_with_orb: 
-			complete()
+			complete(delta)
 			return
 		jump_buffered = true
 	# Activate buffered crouching when player reaches a surface
@@ -236,14 +261,14 @@ func _physics_process(delta: float) -> void:
 		jump_buffer_used = Input.is_action_pressed("jump")
 		if jump_orb_velocity != 0.0:
 			_record_jump()
-			SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH)
+			SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH, &"player_jump")
 			velocity.y = jump_orb_velocity
 			crouching = false
 			if is_on_floor():
 				crouch_anim()
 		elif can_wall_jump and crouching:
 			_record_jump(true, true)
-			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH)
+			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_wall_jump")
 			_spawn_wall_jump_burst()
 			# Launch away from the wall with a stronger jump
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT
@@ -253,19 +278,20 @@ func _physics_process(delta: float) -> void:
 			crouch_wall_jump = true
 		elif crouching:
 			_record_jump(true)
-			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH)
+			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_jump")
 			_spawn_surface_jump_burst(true)
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
+			_record_replay_state(delta)
 			return
 		else:
 			_record_jump(false, can_wall_jump)
 			if can_wall_jump:
-				SFX.play(SFX.WallJump, SFX.DEFAULT_SFX_PITCH)
+				SFX.play(SFX.WallJump, SFX.DEFAULT_SFX_PITCH, &"player_wall_jump")
 				_spawn_wall_jump_burst()
 			else:
-				SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH)
+				SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH, &"player_jump")
 				_spawn_surface_jump_burst(false)
 			velocity.y = jump_velocity
 		can_wall_jump = false
@@ -317,7 +343,7 @@ func _physics_process(delta: float) -> void:
 	if not was_on_floor and is_on_floor() and impact_velocity_y > 0.0:
 		if not landing_jump_buffered:
 			hit_floor_anim(impact_velocity_y, not landing_crouch_buffered)
-		var damage_dealt := _apply_fall_damage(impact_velocity_y)
+		var damage_dealt := _apply_fall_damage(impact_velocity_y, delta)
 		if damage_dealt > 0.0:
 			var flash_strength := clampf(
 				(impact_velocity_y - FALL_DAMAGE_THRESHOLD) / (FATAL_FALL_SPEED - FALL_DAMAGE_THRESHOLD),
@@ -326,11 +352,11 @@ func _physics_process(delta: float) -> void:
 			)
 			$CanvasLayer/player_ui.show_fall_damage_flash(impact_velocity_y, damage_dealt, flash_strength)
 		if damage_dealt > 45.0:
-			SFX.play(SFX.LandCritical)
+			SFX.play(SFX.LandCritical, 0.0, &"player_land_critical")
 		elif damage_dealt > 20.0:
-			SFX.play(SFX.LandDamaging)
+			SFX.play(SFX.LandDamaging, 0.0, &"player_land_damaging")
 		else:
-			SFX.play(SFX.Land, SFX.DEFAULT_SFX_PITCH)
+			SFX.play(SFX.Land, SFX.DEFAULT_SFX_PITCH, &"player_land")
 		if is_dead:
 			return
 
@@ -357,8 +383,41 @@ func _physics_process(delta: float) -> void:
 	if deteriorate_amount_mult > 0.0:
 		hp -= (10.0 * delta) * deteriorate_amount_mult
 		if hp <= 0.0:
-			die()
-	
+			die(delta)
+
+	_record_replay_state(delta)
+
+
+func _record_replay_state(simulation_delta: float = 0.0) -> void:
+	ReplayManager.record_sample(_get_replay_state(), Engine.get_physics_frames(), simulation_delta)
+
+
+func _get_replay_state() -> Dictionary:
+	return {
+		"position": [global_position.x, global_position.y],
+		"velocity": [velocity.x, velocity.y],
+		"sprite_parent_position": [player_sprite_parent.position.x, player_sprite_parent.position.y],
+		"sprite_parent_scale": [player_sprite_parent.scale.x, player_sprite_parent.scale.y],
+		"circle_mask_rotation_radians": player_sprite.rotation,
+		"circle_mask_2_rotation_radians": player_sprite_child.rotation,
+		"rolling_particles_emitting": roll_particles.emitting,
+		"rolling_particles_amount_ratio": roll_particles.amount_ratio,
+		"wall_left_particles_emitting": wall_left_particles.emitting,
+		"wall_left_particles_amount_ratio": wall_left_particles.amount_ratio,
+		"wall_right_particles_emitting": wall_right_particles.emitting,
+		"wall_right_particles_amount_ratio": wall_right_particles.amount_ratio,
+		"health": hp,
+		"max_health": MAX_HEALTH,
+		"direction": direction,
+		"crouching": crouching,
+		"sprinting": sprinting,
+		"can_wall_jump": can_wall_jump,
+		"times_jumped": times_jumped,
+		"times_charged_jumped": times_charged_jumped,
+		"times_wall_jumped": times_wall_jumped,
+		"times_charged_wall_jumped": times_charged_wall_jumped,
+		"simulation_gravity": [gravity.x, gravity.y]
+	}
 	
 
 func _update_roll_particles() -> void:
@@ -444,7 +503,7 @@ func _record_jump(charged: bool = false, wall: bool = false) -> void:
 		times_charged_wall_jumped += 1
 
 
-func _apply_fall_damage(impact_velocity_y: float) -> float:
+func _apply_fall_damage(impact_velocity_y: float, simulation_delta: float = 0.0) -> float:
 	var damage_amount: float
 	if impact_velocity_y >= FATAL_FALL_SPEED:
 		damage_amount = 100.0
@@ -461,7 +520,7 @@ func _apply_fall_damage(impact_velocity_y: float) -> float:
 	var damage_dealt := minf(hp, damage_amount)
 	hp -= damage_dealt
 	if hp <= 0.0:
-		die()
+		die(simulation_delta)
 	return damage_dealt
 
 
@@ -506,21 +565,21 @@ func collect(collectible_type: int, debug: bool = false) -> void:
 	var collectible_name: String
 	match collectible_type:
 		0:
-			SFX.play(SFX.Coin, 0.25)
+			SFX.play(SFX.Coin, 0.25, &"player_coin")
 			if not debug:
 				coins += 1
 				Constants.total_coins += 1
 			collectible_name = "Coins"
 		1:
-			SFX.play(SFX.Boost)
+			SFX.play(SFX.Boost, 0.0, &"player_boost")
 			helium_time_remaining = helium_duration
 			collectible_name = "Helium"
 		2:
-			SFX.play(SFX.HealthGain)
+			SFX.play(SFX.HealthGain, 0.0, &"player_health_gain")
 			hp += Constants.health_potion_amount
 			collectible_name = "Health Potion"
 		3:
-			SFX.play(SFX.HealthGain)
+			SFX.play(SFX.HealthGain, 0.0, &"player_health_gain")
 			hp = 100.0
 			collectible_name = "Health Barrel"
 		_:
@@ -530,30 +589,88 @@ func collect(collectible_type: int, debug: bool = false) -> void:
 		collectible_stats[collectible_name] = collectible_stats.get(collectible_name, 0) + 1
 		Constants.record_level_stats(Constants.current_level, collectible_stats, false)
 
-func die() -> void:
+func die(simulation_delta: float = 0.0) -> void:
 	if is_dead:
 		return
 
 	# Stop play and show the collected run totals
 	is_dead = true
+	ReplayManager.finalize_recording(
+		ReplayManager.OUTCOME_FAILED,
+		_get_replay_state(),
+		Engine.get_physics_frames(),
+		simulation_delta
+	)
 	set_process(false)
 	set_physics_process(false)
 	Constants.deaths += 1
 	Constants.record_level_stats(Constants.current_level, collectible_stats, false, 1)
-	$CanvasLayer/death_ui.show_death_screen(collectible_stats)
+	_begin_end_flow()
 
-func complete() -> void:
+func complete(simulation_delta: float = 0.0) -> void:
 	print("completing %s" % str(can_complete_with_orb))
 	if is_dead or not can_complete_with_orb: return
 
+	ReplayManager.finalize_recording(
+		ReplayManager.OUTCOME_COMPLETED,
+		_get_replay_state(),
+		Engine.get_physics_frames(),
+		simulation_delta
+	)
 	Constants.record_level_stats(Constants.current_level, collectible_stats, true)
 	
 	set_process(false)
 	set_physics_process(false)
-	
+	_begin_end_flow()
+
+
+func _begin_end_flow() -> void:
+	if _end_flow_started:
+		return
+	_end_flow_started = true
+	if not ReplayManager.has_pending_recording():
+		_show_normal_end_screen()
+		return
+
+	_replay_save_prompt = REPLAY_SAVE_PROMPT_SCENE.instantiate() as ReplaySavePrompt
+	if _replay_save_prompt == null:
+		push_error("Could not instantiate the replay save prompt.")
+		_show_normal_end_screen()
+		return
+	$CanvasLayer.add_child(_replay_save_prompt)
+	_replay_save_prompt.save_confirmed.connect(_on_replay_save_confirmed)
+	_replay_save_prompt.discard_requested.connect(_on_replay_discard_requested)
+
+
+func _on_replay_save_confirmed(replay_name: String) -> void:
+	var save_error := ReplayManager.save_pending_recording(replay_name)
+	if save_error != OK:
+		_replay_save_prompt.show_save_error(error_string(save_error))
+		return
+	_replay_save_prompt.queue_free()
+	_replay_save_prompt = null
+	_show_normal_end_screen()
+
+
+func _on_replay_discard_requested() -> void:
+	ReplayManager.discard_pending_recording()
+	_replay_save_prompt.queue_free()
+	_replay_save_prompt = null
+	_show_normal_end_screen()
+
+
+func _show_normal_end_screen() -> void:
+	if is_dead:
+		$CanvasLayer/death_ui.show_death_screen(collectible_stats)
+		return
+
 	$CanvasLayer/complete.show()
 	$CanvasLayer/complete/stats.text = "Stats:
-	Coins: %d | Helium cans collected: %d | Deaths: %d" % [collectible_stats["Coins"], collectible_stats["Helium"], Constants.deaths]
+	Coins: %d | Helium cans collected: %d | Deaths: %d" % [
+		collectible_stats["Coins"],
+		collectible_stats["Helium"],
+		Constants.deaths
+	]
 
 func _on_main_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Main menu/main_menu.tscn")

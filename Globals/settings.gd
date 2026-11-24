@@ -4,6 +4,9 @@ signal vfx_setting_changed(setting: String, enabled: bool)
 
 const SETTINGS_PATH := "user://settings.json"
 const INPUT_ACTIONS := ["left", "right", "crouch", "jump", "sprint", "back", "toggle_debug"]
+const REPLAY_PLAYBACK_SPEEDS: Array[float] = [
+	0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0
+]
 const VFX_DEFAULTS := {
 	"rolling_particles": true,
 	"wall_rolling_particles": true,
@@ -17,6 +20,16 @@ const VFX_DEFAULTS := {
 	"movement_rotation": true,
 	"jumping_rotation": true
 }
+const REPLAY_SETTING_DEFAULTS := {
+	"health_visible": true,
+	"debug_visible": true,
+	"controls_visible": true,
+	"camera_smoothing_enabled": true,
+	"camera_smoothing_speed": 4.2,
+	"camera_zoom": 1.0,
+	"playback_speed": 1.0,
+	"free_camera_enabled": false
+}
 
 var master_volume: float = 100.0
 var music_volume: float = 100.0
@@ -24,11 +37,15 @@ var sfx_volume: float = 100.0
 var sfx_pitch_scales_with_time_scale: bool = true
 var player_debug_ui_visible: bool = true
 var vfx_enabled: Dictionary = VFX_DEFAULTS.duplicate()
+var replay_settings: Dictionary = REPLAY_SETTING_DEFAULTS.duplicate()
+var _settings_data: Dictionary = {}
+var _settings_loaded: bool = false
 
 func _ready() -> void:
 	add_music_bus()
 	add_sfx_bus()
 	_load_settings()
+	_settings_loaded = true
 	_apply_volumes()
 
 func set_master_volume(value: float) -> void:
@@ -74,6 +91,40 @@ func set_vfx_enabled(setting: String, enabled: bool) -> void:
 	_save_settings()
 	vfx_setting_changed.emit(setting, enabled)
 
+func get_replay_settings() -> Dictionary:
+	return replay_settings.duplicate(true)
+
+func set_replay_setting(setting: String, value: Variant) -> void:
+	if not REPLAY_SETTING_DEFAULTS.has(setting):
+		push_error("Unknown replay setting: %s" % setting)
+		return
+
+	var normalized_value: Variant = value
+	match setting:
+		"health_visible", "debug_visible", "controls_visible", "camera_smoothing_enabled", "free_camera_enabled":
+			if typeof(value) != TYPE_BOOL:
+				push_warning("Ignoring invalid value for replay setting '%s'." % setting)
+				return
+		"camera_smoothing_speed":
+			if not _is_number(value):
+				push_warning("Ignoring invalid value for replay setting '%s'." % setting)
+				return
+			normalized_value = clampf(float(value), 1.0, 20.0)
+		"camera_zoom":
+			if not _is_number(value):
+				push_warning("Ignoring invalid value for replay setting '%s'." % setting)
+				return
+			normalized_value = clampf(float(value), 0.25, 4.0)
+		"playback_speed":
+			if not _is_number(value) or not _is_supported_replay_speed(float(value)):
+				push_warning("Ignoring unsupported replay playback speed: %s." % str(value))
+				return
+
+	if replay_settings.get(setting) == normalized_value:
+		return
+	replay_settings[setting] = normalized_value
+	_save_settings()
+
 func add_music_bus() -> void:
 	if AudioServer.get_bus_index("Music") >= 0:
 		return
@@ -108,6 +159,7 @@ func _load_settings() -> void:
 		return
 
 	var settings: Dictionary = json.data
+	_settings_data = settings.duplicate(true)
 	master_volume = _read_volume(settings, "master_volume", master_volume)
 	music_volume = _read_volume(settings, "music_volume", music_volume)
 	sfx_volume = _read_volume(settings, "sfx_volume", sfx_volume)
@@ -125,7 +177,34 @@ func _load_settings() -> void:
 	if saved_vfx is Dictionary:
 		for setting in VFX_DEFAULTS:
 			vfx_enabled[setting] = _read_bool(saved_vfx, setting, VFX_DEFAULTS[setting])
+	var saved_replay_settings: Variant = settings.get("replay_settings", {})
+	if saved_replay_settings is Dictionary:
+		for setting in REPLAY_SETTING_DEFAULTS:
+			replay_settings[setting] = _read_replay_setting(
+				saved_replay_settings,
+				setting,
+				REPLAY_SETTING_DEFAULTS[setting]
+			)
 	_apply_saved_keybindings(settings.get("keybindings", {}))
+
+func _read_replay_setting(settings: Dictionary, setting: String, default_value: Variant) -> Variant:
+	var value: Variant = settings.get(setting, default_value)
+	match setting:
+		"health_visible", "debug_visible", "controls_visible", "camera_smoothing_enabled", "free_camera_enabled":
+			return value if typeof(value) == TYPE_BOOL else default_value
+		"camera_smoothing_speed":
+			if not _is_number(value):
+				return default_value
+			return clampf(float(value), 1.0, 20.0)
+		"camera_zoom":
+			if not _is_number(value):
+				return default_value
+			return clampf(float(value), 0.25, 4.0)
+		"playback_speed":
+			if not _is_number(value) or not _is_supported_replay_speed(float(value)):
+				return default_value
+			return float(value)
+	return default_value
 
 func _read_volume(settings: Dictionary, key: String, default_value: float) -> float:
 	var value: Variant = settings.get(key, default_value)
@@ -198,10 +277,10 @@ func _apply_saved_keybindings(bindings: Variant) -> void:
 
 func _key_event_from_dict(data: Dictionary) -> InputEventKey:
 	var key_event := InputEventKey.new()
-	key_event.keycode = int(data.get("keycode", 0))
-	key_event.physical_keycode = int(data.get("physical_keycode", 0))
+	key_event.keycode = int(data.get("keycode", 0)) as Key
+	key_event.physical_keycode = int(data.get("physical_keycode", 0)) as Key
 	key_event.unicode = int(data.get("unicode", 0))
-	key_event.location = int(data.get("location", 0))
+	key_event.location = int(data.get("location", 0)) as KeyLocation
 	key_event.shift_pressed = bool(data.get("shift_pressed", false))
 	key_event.ctrl_pressed = bool(data.get("ctrl_pressed", false))
 	key_event.alt_pressed = bool(data.get("alt_pressed", false))
@@ -229,18 +308,40 @@ func _serialize_keybindings() -> Dictionary:
 	return bindings
 
 func _save_settings() -> void:
+	if not _settings_loaded:
+		return
+
 	var file := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
 	if file == null:
 		push_error("Could not save settings: %s" % error_string(FileAccess.get_open_error()))
 		return
 
-	var settings := {
+	var settings := _settings_data.duplicate(true)
+	var saved_replay_settings: Variant = settings.get("replay_settings", {})
+	var replay_settings_to_save: Dictionary = (
+		saved_replay_settings.duplicate(true)
+		if saved_replay_settings is Dictionary
+		else {}
+	)
+	replay_settings_to_save.merge(replay_settings, true)
+	settings.merge({
 		"master_volume": master_volume,
 		"music_volume": music_volume,
 		"sfx_volume": sfx_volume,
 		"sfx_pitch_scales_with_time_scale": sfx_pitch_scales_with_time_scale,
 		"player_debug_ui_visible": player_debug_ui_visible,
 		"vfx": vfx_enabled,
-		"keybindings": _serialize_keybindings()
-	}
+		"keybindings": _serialize_keybindings(),
+		"replay_settings": replay_settings_to_save
+	}, true)
 	file.store_string(JSON.stringify(settings, "\t"))
+	_settings_data = settings
+
+func _is_supported_replay_speed(speed: float) -> bool:
+	for supported_speed in REPLAY_PLAYBACK_SPEEDS:
+		if is_equal_approx(speed, supported_speed):
+			return true
+	return false
+
+func _is_number(value: Variant) -> bool:
+	return typeof(value) == TYPE_INT or typeof(value) == TYPE_FLOAT

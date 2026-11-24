@@ -35,7 +35,7 @@ func _on_body_entered(body: Node2D) -> void:
 	var rot: float = 45.0
 	var time: float = 0.3
 	if body.has_method("crouch_anim"):
-		SFX.play(SFX.Boost)
+		SFX.play(SFX.Boost, 0.0, &"jump_pad")
 		match jump_pad_type:
 			0: body.velocity.y = body.jump_velocity / 1.5
 			1: 

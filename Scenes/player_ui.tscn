@@ -88,7 +88,7 @@ offset_bottom = 258.0
 
 [node name="velocity" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1423133567]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.49768078, 0.81229275, 0.7770982, 1)
+theme_override_constants/line_spacing = -9
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 12
 text = "gravity = 

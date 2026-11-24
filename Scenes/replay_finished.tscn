@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="FontFile" path="res://Resources/Fonts/augiepixel.ttf" id="1_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.123473026, 0.12347307, 0.123472966, 1)
+border_color = Color(0.0013967261, 0.0013967265, 0.0013967243, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.12591082, 0.12591085, 0.12591076, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
+
+[node name="ReplayFinished" type="CanvasLayer"]
+layer = 10
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(460, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 32
+text = "Replay Finished"
+horizontal_alignment = 1
+
+[node name="RestartReplay" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Restart Replay"
+
+[node name="PlayAnotherReplay" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Play Another Replay"
+
+[node name="BackToLevelSelect" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Back to Level Select"
