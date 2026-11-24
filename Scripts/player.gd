@@ -6,6 +6,7 @@ var speed: float = 650.0
 @export var friction: float = 1000.0
 var jump_velocity: float = -745.0
 const CHARGED_JUMP_MULT: float = 1.3
+const CHARGED_JUMP_THRESHOLD:float = 0.5
 var direction: float
 @export var fall_gravity_multiplier: float = 1.8
 @export var jump_release_gravity_multiplier: float = 1.8
@@ -50,6 +51,12 @@ var times_wall_jumped: int = 0
 var times_charged_wall_jumped: int = 0
 var pixels_ran_while_sprinting: float = 0.0
 
+var jump_charge:float = 0.0
+var max_jump_charge:float = 10
+var jump_charge_speed:float = 1.0
+var is_charging_jump:bool = false
+
+
 var crouching: bool = false
 var crouching_sprite_scale_y: float = 0.1
 var sprite_scale_y: float = 0.159
@@ -75,6 +82,11 @@ var can_wall_jump: bool = false
 var is_in_wall_jump_area: bool = false
 var wall_jump_direction: float = 0.0
 var current_wall_jump_area: Area2D
+
+
+var is_wall_sliding: bool = false
+var wall_slide_velocity: float = 100.0
+
 var jump_orb_velocity: float = 0.0
 
 # Track coins helium and run totals
@@ -159,10 +171,18 @@ func _process(delta: float) -> void:
 		if crouching:
 			crouching = false
 			crouch_anim()
+			
+	if Input.is_action_just_pressed("jump"):
+		is_charging_jump = true
+		jump_charge = 0.0
+		
+	if is_charging_jump and Input.is_action_pressed("jump"):
+		jump_charge = minf(jump_charge + jump_charge_speed * delta, max_jump_charge)
+
 
 	if Input.is_action_just_released("jump"):
-		jump_buffered = false
-		jump_buffer_used = false
+		is_charging_jump = false
+
 	
 	if Input.is_action_just_pressed("sprint"): 
 		sprinting = true
@@ -242,7 +262,17 @@ func _physics_process(delta: float) -> void:
 		jump_buffered = true
 	# Activate buffered crouching when player reaches a surface
 	_activate_crouch_buffer()
-
+	
+# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	direction = Input.get_axis("left", "right")
+	# Figure out if the player should be wall sliding
+	
+	if is_on_wall() and !is_on_floor() and velocity.y > 0 and direction != 0 and direction *get_wall_normal().x < 0:
+		is_wall_sliding = true
+	else:
+		is_wall_sliding = false
+		
 	# Add the gravity.
 	var current_gravity = gravity
 	if helium_time_remaining > 0.0:
@@ -252,10 +282,23 @@ func _physics_process(delta: float) -> void:
 	elif velocity.y > 0:
 		current_gravity *= fall_gravity_multiplier
 		
+	if is_wall_sliding:
+		current_gravity *= 0.3
+		
+		
 	velocity.y += current_gravity.y * delta
 	
+	#cap wall sliding
+	if is_wall_sliding:
+		velocity.y = minf(velocity.y, wall_slide_velocity)
+	
+	var should_charge_jump := (
+		jump_charge >= CHARGED_JUMP_THRESHOLD
+		and (is_on_floor() or is_wall_sliding) 
+	)
+	
 	# Handle jump.
-	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
+	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump) and !is_charging_jump:
 		roll_particles.emitting = false
 		jump_buffered = false
 		jump_buffer_used = Input.is_action_pressed("jump")
@@ -266,7 +309,7 @@ func _physics_process(delta: float) -> void:
 			crouching = false
 			if is_on_floor():
 				crouch_anim()
-		elif can_wall_jump and crouching:
+		elif can_wall_jump and should_charge_jump:
 			_record_jump(true, true)
 			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_wall_jump")
 			_spawn_wall_jump_burst()
@@ -276,7 +319,7 @@ func _physics_process(delta: float) -> void:
 			crouching = false
 			crouch_anim()
 			crouch_wall_jump = true
-		elif crouching:
+		elif should_charge_jump:
 			_record_jump(true)
 			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_jump")
 			_spawn_surface_jump_burst(true)
@@ -300,9 +343,7 @@ func _physics_process(delta: float) -> void:
 			var t = create_tween()
 			t.tween_property(player_sprite_child, "rotation_degrees", player_sprite_child.rotation_degrees + 90.0 * direction, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	direction = Input.get_axis("left", "right")
+	
 	# Slow down crouching movement on a floor
 	var movement_speed := speed * 0.7 if crouching and is_on_floor() else speed
 	if crouch_wall_jump:
