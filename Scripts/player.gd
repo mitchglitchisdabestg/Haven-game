@@ -164,7 +164,9 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("crouch"):
 		crouch_buffered = true
-	
+		is_charging_jump = true
+		jump_charge = 0.0
+		
 	if Input.is_action_just_released("crouch"):
 		crouch_buffered = false
 		crouch_buffer_used = false
@@ -172,15 +174,20 @@ func _process(delta: float) -> void:
 			crouching = false
 			crouch_anim()
 			
-	if Input.is_action_just_pressed("jump"):
-		is_charging_jump = true
-		jump_charge = 0.0
-		
+
 	if is_charging_jump and Input.is_action_pressed("jump"):
+		is_charging_jump = false
 		jump_charge = minf(jump_charge + jump_charge_speed * delta, max_jump_charge)
+		crouch_anim()
+
+		
+		if Input.is_action_just_pressed("crouch") and velocity.y == 0 and is_on_floor():
+			crouch_buffered = true
+			is_charging_jump = true
+			jump_charge = 0.0
 
 
-	if Input.is_action_just_released("jump"):
+	if Input.is_action_just_released("crouch"):
 		is_charging_jump = false
 
 	

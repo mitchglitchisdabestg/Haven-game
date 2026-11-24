@@ -1,0 +1,274 @@
+[gd_scene format=3 uid="uid://c0n1jlecf0u43"]
+
+[ext_resource type="Script" uid="uid://bh2ny8e8mw6v0" path="res://Scripts/player_ui.gd" id="1_ohrjl"]
+[ext_resource type="PackedScene" uid="uid://y3mj4f706aia" path="res://Scenes/fps.tscn" id="2_dxtgh"]
+
+[node name="player_ui" type="Control" unique_id=962825389]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ohrjl")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=186695144]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.73333335)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=785907215]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Control" type="Control" parent="MarginContainer" unique_id=1835769061]
+layout_mode = 2
+
+[node name="fps" parent="MarginContainer/Control" unique_id=2129854148 instance=ExtResource("2_dxtgh")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -37.0
+offset_right = 0.0
+offset_bottom = 23.0
+grow_horizontal = 0
+horizontal_alignment = 2
+
+[node name="hp" type="ProgressBar" parent="MarginContainer/Control" unique_id=1683704746]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -272.0
+offset_top = 32.0
+offset_right = -1.0
+offset_bottom = 81.0
+grow_horizontal = 0
+value = 100.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Control" unique_id=1056880214]
+layout_mode = 0
+offset_right = 313.0
+offset_bottom = 155.0
+
+[node name="coins" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=1520703331]
+layout_mode = 2
+text = "Coins: 0"
+
+[node name="helium" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=1563989908]
+layout_mode = 2
+text = "Helium Cans: 0"
+
+[node name="deaths" type="Label" parent="MarginContainer/Control/VBoxContainer" unique_id=128293775]
+layout_mode = 2
+text = "Deaths: 0"
+
+[node name="debug" type="Control" parent="MarginContainer" unique_id=610157372]
+layout_mode = 2
+
+[node name="text_cont" type="VBoxContainer" parent="MarginContainer/debug" unique_id=1593596982]
+layout_mode = 0
+offset_top = 78.0
+offset_right = 162.0
+offset_bottom = 258.0
+
+[node name="velocity" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1423133567]
+layout_mode = 2
+theme_override_constants/line_spacing = -9
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "gravity = 
+velocity x = 
+velocity y = 
+direction = 
+crouching = 
+player_sprite pos y = 
+can complete with orb = "
+
+[node name="delta" type="Label" parent="MarginContainer/debug/text_cont" unique_id=1953319714]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "delta = "
+
+[node name="debug_actions" type="PanelContainer" parent="MarginContainer/debug" unique_id=1091198452]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -212.0
+offset_top = -320.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/debug/debug_actions" unique_id=178028291]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="title" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=512966539]
+layout_mode = 2
+text = "Debug Actions"
+horizontal_alignment = 1
+
+[node name="position_controls" type="HBoxContainer" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1249110722]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="x_label" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=10444474]
+layout_mode = 2
+text = "X"
+
+[node name="x_position" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=709749651]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+placeholder_text = "X"
+select_all_on_focus = true
+
+[node name="y_label" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=1351556318]
+layout_mode = 2
+text = "Y"
+
+[node name="y_position" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/position_controls" unique_id=864611524]
+custom_minimum_size = Vector2(82, 0)
+layout_mode = 2
+placeholder_text = "Y"
+select_all_on_focus = true
+
+[node name="set_position" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=677141478]
+layout_mode = 2
+text = "Set Player Position"
+
+[node name="health_potion" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1400257670]
+layout_mode = 2
+text = "Give Health Potion"
+
+[node name="health_barrel" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1251515230]
+layout_mode = 2
+text = "Give Health Barrel"
+
+[node name="helium" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1994915907]
+layout_mode = 2
+text = "Give Helium"
+
+[node name="coin" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1777048294]
+layout_mode = 2
+text = "Give Coin"
+
+[node name="damage" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1061561528]
+layout_mode = 2
+text = "Take 10 Damage"
+
+[node name="speedhack_controls" type="HBoxContainer" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=1068449692]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="mult" type="Label" parent="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls" unique_id=487751782]
+layout_mode = 2
+text = "Game speed"
+
+[node name="mult_edit" type="LineEdit" parent="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls" unique_id=1710635959]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "1.0"
+placeholder_text = "1.0x"
+select_all_on_focus = true
+
+[node name="speedhack" type="Button" parent="MarginContainer/debug/debug_actions/VBoxContainer" unique_id=286687002]
+layout_mode = 2
+text = "Set Speed"
+
+[node name="pause" type="Control" parent="MarginContainer" unique_id=310085563]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/pause" unique_id=1077496293]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.5
+offset_top = 110.0
+offset_right = 84.5
+offset_bottom = 177.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 48
+text = "Paused"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/pause" unique_id=333821339]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 230.0
+offset_right = 689.0
+offset_bottom = 460.0
+theme_override_constants/separation = 12
+
+[node name="main_menu" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=483167293]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="back_to_lvl_select" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=161336582]
+layout_mode = 2
+text = "Level Select"
+
+[node name="restart" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=1524957934]
+layout_mode = 2
+text = "Restart Level"
+
+[node name="quit" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=1747233385]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="unpause" type="Button" parent="MarginContainer/pause/VBoxContainer" unique_id=997438141]
+layout_mode = 2
+text = "Unpause"
+
+[node name="FallDamageFlash" type="ColorRect" parent="." unique_id=962699165]
+modulate = Color(1, 1, 1, 0)
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/position_controls/x_position" to="." method="_on_x_position_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/position_controls/y_position" to="." method="_on_y_position_text_submitted"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/set_position" to="." method="_on_debug_set_position_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_potion" to="." method="_on_debug_health_potion_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/health_barrel" to="." method="_on_debug_health_barrel_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/helium" to="." method="_on_debug_helium_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/coin" to="." method="_on_debug_coin_pressed"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/damage" to="." method="_on_debug_damage_pressed"]
+[connection signal="text_submitted" from="MarginContainer/debug/debug_actions/VBoxContainer/speedhack_controls/mult_edit" to="." method="_on_mult_edit_text_submitted"]
+[connection signal="pressed" from="MarginContainer/debug/debug_actions/VBoxContainer/speedhack" to="." method="_on_debug_speedhack_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/main_menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/back_to_lvl_select" to="." method="_on_back_to_lvl_select_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MarginContainer/pause/VBoxContainer/unpause" to="." method="_on_unpause_pressed"]
