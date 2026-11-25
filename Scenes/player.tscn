@@ -63,6 +63,12 @@ gravity = Vector2(0, 1000)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1207525321]
 shape = SubResource("CircleShape2D_6t5aa")
 
+[node name="left_wall_ray" type="RayCast2D" parent="." unique_id=1018844712]
+target_position = Vector2(-66.0098, 0)
+
+[node name="right_wall_ray" type="RayCast2D" parent="." unique_id=1018844713]
+target_position = Vector2(66.0098, 0)
+
 [node name="sprite_parent" type="Sprite2D" parent="." unique_id=1827462053]
 self_modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.159, 0.159)

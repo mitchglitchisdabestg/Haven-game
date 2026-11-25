@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d3lm8miq3ei5y"]
+
+[ext_resource type="TileSet" path="res://Resources/Prototype/prototype_tileset.tres" id="1_tileset"]
+
+[node name="Terrain" type="TileMapLayer" unique_id=1786692444]
+tile_set = ExtResource("1_tileset")

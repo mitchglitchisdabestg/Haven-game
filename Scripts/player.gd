@@ -7,6 +7,8 @@ var speed: float = 650.0
 var jump_velocity: float = -745.0
 const CHARGED_JUMP_MULT: float = 1.3
 const CHARGED_JUMP_THRESHOLD:float = 0.5
+const WALL_JUMP_DETECTION_MARGIN: float = 15.0
+const WALL_JUMP_MIN_HORIZONTAL_NORMAL: float = 0.7
 var direction: float
 @export var fall_gravity_multiplier: float = 1.8
 @export var jump_release_gravity_multiplier: float = 1.8
@@ -17,6 +19,8 @@ var min_speed: float = 650.0
 @onready var roll_particles: GPUParticles2D = $sprite_parent/roll_particles_pos/roll_particles
 @onready var wall_right_particles: GPUParticles2D = $sprite_parent/wall_right_pos/wall_particles
 @onready var wall_left_particles: GPUParticles2D = $sprite_parent/wall_left_pos/wall_particles
+@onready var left_wall_ray: RayCast2D = $left_wall_ray
+@onready var right_wall_ray: RayCast2D = $right_wall_ray
 const PARTICLE_BURST_SCENE: PackedScene = preload("res://Scenes/Particles/particle_burst.tscn")
 
 var dash_speed: float = 1000
@@ -79,9 +83,9 @@ var squashed_scale_y: float = 0.0
 var squashed_position_y: float = 0.0
 
 var can_wall_jump: bool = false
-var is_in_wall_jump_area: bool = false
+var is_near_wall_jump_surface: bool = false
 var wall_jump_direction: float = 0.0
-var current_wall_jump_area: Area2D
+var wall_jump_rearm_blocked: bool = false
 
 
 var is_wall_sliding: bool = false
@@ -112,6 +116,11 @@ var _end_flow_started: bool = false
 var _replay_save_prompt: ReplaySavePrompt
 
 func _ready() -> void:
+	left_wall_ray.target_position = Vector2(-ball_radius - WALL_JUMP_DETECTION_MARGIN, 0.0)
+	right_wall_ray.target_position = Vector2(ball_radius + WALL_JUMP_DETECTION_MARGIN, 0.0)
+	left_wall_ray.collision_mask = collision_mask
+	right_wall_ray.collision_mask = collision_mask
+
 	if ReplayManager.is_playback_active():
 		return
 
@@ -193,7 +202,7 @@ func _process(delta: float) -> void:
 
 
 func crouch_anim() -> void:
-	if crouching and not (is_on_floor() or can_wall_jump or is_wall_sliding):
+	if crouching and not (is_on_floor() or is_near_wall_jump_surface or is_wall_sliding):
 		crouching = false
 	
 	if crouching_tween and crouching_tween.is_running():
@@ -248,6 +257,8 @@ func hit_floor_anim(impact_velocity_y: float, restore_after_squash: bool = true)
 var deteriorate_amount_mult: float = 1.0
 
 func _physics_process(delta: float) -> void:
+	_update_wall_jump_probes()
+
 	var crouch_wall_jump := false
 	var was_on_floor := is_on_floor()
 
@@ -257,6 +268,9 @@ func _physics_process(delta: float) -> void:
 			complete(delta)
 			return
 		jump_buffered = true
+	if not Input.is_action_pressed("jump"):
+		jump_buffered = false
+		jump_buffer_used = false
 	# Activate buffered crouching when player reaches a surface
 	_activate_crouch_buffer()
 	
@@ -306,6 +320,7 @@ func _physics_process(delta: float) -> void:
 		jump_charge = 0.0
 		is_charging_jump = false
 		jump_buffer_used = Input.is_action_pressed("jump")
+		var wall_jump_used := false
 		if jump_orb_velocity != 0.0:
 			_record_jump()
 			SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH, &"player_jump")
@@ -314,6 +329,7 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				crouch_anim()
 		elif can_wall_jump and should_charge_jump:
+			wall_jump_used = true
 			_record_jump(true, true)
 			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_wall_jump")
 			_spawn_wall_jump_burst()
@@ -334,6 +350,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			_record_jump(false, can_wall_jump)
 			if can_wall_jump:
+				wall_jump_used = true
 				SFX.play(SFX.WallJump, SFX.DEFAULT_SFX_PITCH, &"player_wall_jump")
 				_spawn_wall_jump_burst()
 			else:
@@ -343,6 +360,8 @@ func _physics_process(delta: float) -> void:
 			if crouching:
 				crouching = false
 				crouch_anim()
+		if wall_jump_used:
+			wall_jump_rearm_blocked = true
 		can_wall_jump = false
 		
 		if SettingsManager.is_vfx_enabled("jumping_rotation"):
@@ -384,7 +403,7 @@ func _physics_process(delta: float) -> void:
 		pixels_ran_while_sprinting += absf(global_position.x - sprint_start_x)
 
 	_activate_crouch_buffer()
-	if crouching and not (is_on_floor() or can_wall_jump):
+	if crouching and not (is_on_floor() or is_near_wall_jump_surface):
 		crouching = false
 		crouch_anim()
 	if not was_on_floor and is_on_floor() and impact_velocity_y > 0.0:
@@ -413,7 +432,7 @@ func _physics_process(delta: float) -> void:
 			return
 
 	# Apply wear based on movement and nearby surfaces
-	if is_in_wall_jump_area:
+	if is_near_wall_jump_surface:
 		deteriorate_amount_mult = 0.5 if movement_distance > 0.1 else 0.0
 	elif is_zero_approx(direction):
 		deteriorate_amount_mult = 0.0
@@ -497,11 +516,38 @@ func stop_wall_particle_emission() -> void:
 func _update_wall_particles(movement_distance: float) -> void:
 	var should_emit = (
 		SettingsManager.is_vfx_enabled("wall_rolling_particles")
-		and is_in_wall_jump_area
+		and is_near_wall_jump_surface
 		and movement_distance > 0.1
 	)
 	wall_left_particles.emitting = should_emit and wall_jump_direction > 0.0
 	wall_right_particles.emitting = should_emit and wall_jump_direction < 0.0
+
+
+func _update_wall_jump_probes() -> void:
+	left_wall_ray.force_raycast_update()
+	right_wall_ray.force_raycast_update()
+
+	var closest_normal := Vector2.ZERO
+	var closest_distance := INF
+	if left_wall_ray.is_colliding():
+		var left_normal := left_wall_ray.get_collision_normal()
+		if absf(left_normal.x) >= WALL_JUMP_MIN_HORIZONTAL_NORMAL:
+			closest_normal = left_normal
+			closest_distance = global_position.distance_to(left_wall_ray.get_collision_point())
+
+	if right_wall_ray.is_colliding():
+		var right_normal := right_wall_ray.get_collision_normal()
+		if (
+			absf(right_normal.x) >= WALL_JUMP_MIN_HORIZONTAL_NORMAL
+			and global_position.distance_to(right_wall_ray.get_collision_point()) < closest_distance
+		):
+			closest_normal = right_normal
+
+	is_near_wall_jump_surface = not closest_normal.is_zero_approx()
+	if not is_near_wall_jump_surface:
+		wall_jump_rearm_blocked = false
+	can_wall_jump = is_near_wall_jump_surface and not wall_jump_rearm_blocked
+	wall_jump_direction = signf(closest_normal.x) if is_near_wall_jump_surface else 0.0
 
 
 func _spawn_surface_jump_burst(charged: bool) -> void:
@@ -526,15 +572,24 @@ func _spawn_surface_jump_burst(charged: bool) -> void:
 func _spawn_wall_jump_burst() -> void:
 	if not SettingsManager.is_vfx_enabled("wall_jump_burst"):
 		return
-	if not is_instance_valid(current_wall_jump_area):
+
+	var effect := PARTICLE_BURST_SCENE.instantiate() as ParticleBurst
+	if effect == null:
+		push_error("Could not instantiate wall jump particle effect.")
 		return
 
+	effect.particle_color = Color(0.77, 0.62, 0.42, 1.0)
+	effect.emission_direction = Vector3(wall_jump_direction, -0.2, 0.0)
+	effect.particle_amount = 22
+	effect.particle_speed_min = 70.0
+	effect.particle_speed_max = 220.0
 	var effect_position := global_position - Vector2(wall_jump_direction * ball_radius, 0.0)
-	current_wall_jump_area.call("spawn_wall_jump_effect", effect_position, wall_jump_direction)
+	get_tree().current_scene.add_child(effect)
+	effect.global_position = effect_position
 
 
 func _activate_crouch_buffer() -> void:
-	if not crouch_buffered or not (is_on_floor() or can_wall_jump):
+	if not crouch_buffered or not (is_on_floor() or is_near_wall_jump_surface):
 		return
 
 	# Consume one crouch press on contact

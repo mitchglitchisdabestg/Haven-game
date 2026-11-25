@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c2qfjep3w1uep" path="res://Scripts/basic_platform.gd" id="1_q7hxk"]
 [ext_resource type="Texture2D" uid="uid://bfahx7wkkrgkm" path="res://Resources/Prototype/Orange/texture_01.png" id="2_q7hxk"]
-[ext_resource type="PackedScene" uid="uid://cb8syerojevpy" path="res://Scenes/wall_jump_area.tscn" id="3_t6d03"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t6d03"]
 size = Vector2(456, 297)
@@ -18,5 +17,3 @@ texture = ExtResource("2_q7hxk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2092970980]
 shape = SubResource("RectangleShape2D_t6d03")
-
-[node name="wall_jump_area" parent="." unique_id=1617807810 instance=ExtResource("3_t6d03")]

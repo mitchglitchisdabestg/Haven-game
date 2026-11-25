@@ -1,0 +1,29 @@
+[gd_resource type="TileSet" format=3 uid="uid://rdykhkasy671"]
+
+[ext_resource type="Texture2D" uid="uid://c6rrrharrspyp" path="res://Resources/Prototype/Orange/texture_13.png" id="1_orange"]
+[ext_resource type="Texture2D" uid="uid://duvhd5mafxeqj" path="res://Resources/Prototype/Light/texture_02.png" id="2_light"]
+[ext_resource type="Texture2D" uid="uid://kviupn54vvse" path="res://Resources/Prototype/Green/texture_02.png" id="3_green"]
+
+[sub_resource type="TileSetAtlasSource" id="OrangeSolid"]
+texture = ExtResource("1_orange")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[sub_resource type="TileSetAtlasSource" id="LightSolid"]
+texture = ExtResource("2_light")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[sub_resource type="TileSetAtlasSource" id="GreenDecoration"]
+texture = ExtResource("3_green")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("OrangeSolid")
+sources/1 = SubResource("LightSolid")
+sources/2 = SubResource("GreenDecoration")

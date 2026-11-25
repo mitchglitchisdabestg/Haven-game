@@ -11,6 +11,7 @@
 script = ExtResource("1_e14uv")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1931234125]
+visible = false
 offset_left = -853.0
 offset_top = -2162.0
 offset_right = 1257.5889
