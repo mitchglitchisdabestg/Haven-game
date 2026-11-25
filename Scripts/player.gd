@@ -225,7 +225,7 @@ func hit_floor_anim(impact_velocity_y: float, restore_after_squash: bool = true)
 		return
 
 	impact_strength = clampf(impact_velocity_y / MAX_LANDING_IMPACT_SPEED, 0.0, 1.0)
-	var visually_crouching := crouching and SettingsManager.is_vfx_enabled("crouch_squish")
+	var visually_crouching = crouching and SettingsManager.is_vfx_enabled("crouch_squish")
 	target_scale_y = crouching_sprite_scale_y if visually_crouching else sprite_scale_y
 	target_position_y = crouching_sprite_y_pos if visually_crouching else 0.0
 	squashed_scale_y = lerpf(target_scale_y, target_scale_y * LANDING_SQUASH_SCALE_FACTOR, impact_strength)
@@ -248,7 +248,6 @@ func hit_floor_anim(impact_velocity_y: float, restore_after_squash: bool = true)
 var deteriorate_amount_mult: float = 1.0
 
 func _physics_process(delta: float) -> void:
-	
 	var crouch_wall_jump := false
 	var was_on_floor := is_on_floor()
 
@@ -294,6 +293,11 @@ func _physics_process(delta: float) -> void:
 		jump_charge >= CHARGED_JUMP_THRESHOLD
 		and (is_on_floor() or is_wall_sliding) 
 	)
+	var charged_jump_multiplier := lerpf(
+		1.0,
+		CHARGED_JUMP_MULT,
+		clampf(jump_charge / max_jump_charge, 0.0, 1.0)
+	)
 	
 	# Handle jump.
 	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
@@ -314,7 +318,7 @@ func _physics_process(delta: float) -> void:
 			SFX.play(SFX.ChargedWallJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_wall_jump")
 			_spawn_wall_jump_burst()
 			# Launch away from the wall with a stronger jump
-			velocity.y = jump_velocity * CHARGED_JUMP_MULT
+			velocity.y = jump_velocity * charged_jump_multiplier
 			velocity.x = wall_jump_direction * speed * 1.175
 			crouching = false
 			crouch_anim()
@@ -323,7 +327,7 @@ func _physics_process(delta: float) -> void:
 			_record_jump(true)
 			SFX.play(SFX.ChargedJump, SFX.DEFAULT_SFX_PITCH, &"player_charged_jump")
 			_spawn_surface_jump_burst(true)
-			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
+			velocity.y = jump_velocity * charged_jump_multiplier
 			crouching = false
 			crouch_anim()
 
@@ -491,7 +495,7 @@ func stop_wall_particle_emission() -> void:
 
 
 func _update_wall_particles(movement_distance: float) -> void:
-	var should_emit := (
+	var should_emit = (
 		SettingsManager.is_vfx_enabled("wall_rolling_particles")
 		and is_in_wall_jump_area
 		and movement_distance > 0.1
@@ -602,7 +606,7 @@ func _on_vfx_setting_changed(setting: String, enabled: bool) -> void:
 	elif setting == "land_squish" and not enabled:
 		if hit_floor_tween and hit_floor_tween.is_running():
 			hit_floor_tween.kill()
-		var visually_crouching := crouching and SettingsManager.is_vfx_enabled("crouch_squish")
+		var visually_crouching = crouching and SettingsManager.is_vfx_enabled("crouch_squish")
 		var restore_scale_y := crouching_sprite_scale_y if visually_crouching else sprite_scale_y
 		var restore_position_y := crouching_sprite_y_pos if visually_crouching else 0.0
 		player_sprite_parent.scale.y = restore_scale_y

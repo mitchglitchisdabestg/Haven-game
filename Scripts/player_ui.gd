@@ -4,10 +4,14 @@ var player_parent: CharacterBody2D
 
 var paused: bool = false
 
+const JUMP_CHARGE_BAR_MAX := 1.25
+
 @onready var debug_container: Control = $MarginContainer/debug
 @onready var d_velocity: Label = $MarginContainer/debug/text_cont/velocity
 @onready var d_delta: Label = $MarginContainer/debug/text_cont/delta
 @onready var hp: ProgressBar = $MarginContainer/Control/hp
+@onready var jump_charge_ui: Control = $MarginContainer/Control/jump_charge
+@onready var jump_charge_bar: ProgressBar = $MarginContainer/Control/jump_charge/bar
 @onready var coins: Label = $MarginContainer/Control/VBoxContainer/coins
 @onready var helium: Label = $MarginContainer/Control/VBoxContainer/helium
 @onready var deaths: Label = $MarginContainer/Control/VBoxContainer/deaths
@@ -103,7 +107,7 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event.is_action_pressed("toggle_debug") and not (event is InputEventKey and event.echo):
-		var should_show_debug := not SettingsManager.player_debug_ui_visible
+		var should_show_debug = not SettingsManager.player_debug_ui_visible
 		SettingsManager.set_player_debug_ui_visible(should_show_debug)
 		debug_container.visible = should_show_debug
 		get_viewport().set_input_as_handled()
@@ -143,6 +147,8 @@ func _process(delta: float) -> void:
 	velocity y = %.2f
 	pos x = %.2f
 	pos y = %.2f
+	crouch jump charge = %.2f
+	jump strength = %.2f
 	max vertical velocity y = %.2f
 	direction = %d
 	jump velocity = %.2f
@@ -170,6 +176,8 @@ func _process(delta: float) -> void:
 	player_parent.velocity.x, player_parent.velocity.y,                         \
 	player_parent.global_position.x,                                            \
 	player_parent.global_position.y,                                            \
+	player_parent.jump_charge,                                                  \
+	player_parent.jump_release_gravity_multiplier,                              \
 	player_parent.max_vertical_velocity_y,                                      \
 	player_parent.direction,                                                    \
 	player_parent.jump_velocity, str(player_parent.can_wall_jump),              \
@@ -189,6 +197,12 @@ func _process(delta: float) -> void:
 	_update_position_placeholders()
 	
 	hp.value = player_parent.hp
+	jump_charge_bar.max_value = JUMP_CHARGE_BAR_MAX
+	jump_charge_bar.value = minf(player_parent.jump_charge, JUMP_CHARGE_BAR_MAX)
+	jump_charge_ui.visible = (
+		player_parent.is_charging_jump
+		and (player_parent.is_on_floor() or player_parent.is_wall_sliding)
+	)
 	coins.text = "Coins: " + str(player_parent.collectible_stats["Coins"])
 	helium.text = "Helium Cans: " + str(player_parent.collectible_stats["Helium"])
 	deaths.text = "Deaths: " + str(Constants.deaths)

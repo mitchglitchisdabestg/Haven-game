@@ -52,7 +52,7 @@ func _ready() -> void:
 
 func setup(playback_controller: ReplayPlaybackController) -> void:
 	_playback_controller = playback_controller
-	var replay_settings := SettingsManager.get_replay_settings()
+	var replay_settings = SettingsManager.get_replay_settings()
 
 	smoothing_toggle.set_pressed_no_signal(bool(replay_settings["camera_smoothing_enabled"]))
 	smoothing_slider.set_value_no_signal(float(replay_settings["camera_smoothing_speed"]))
