@@ -168,6 +168,7 @@ func _process(delta: float) -> void:
 		jump_charge = 0.0
 		
 	if Input.is_action_just_released("crouch"):
+		is_charging_jump = false
 		crouch_buffered = false
 		crouch_buffer_used = false
 		if crouching:
@@ -175,20 +176,10 @@ func _process(delta: float) -> void:
 			crouch_anim()
 			
 
-	if is_charging_jump and Input.is_action_pressed("jump"):
+	if is_charging_jump and Input.is_action_pressed("crouch") and (is_on_floor() or is_wall_sliding):
 		jump_charge = minf(jump_charge + jump_charge_speed * delta, max_jump_charge)
-		crouch_anim()
-		
-
-		
-		if Input.is_action_just_pressed("crouch") and velocity.y == 0 and is_on_floor():
-			crouch_buffered = true
-			is_charging_jump = true
-			jump_charge = 0.0
 
 
-	if Input.is_action_just_released("jump"):
-		is_charging_jump = false
 
 	
 	if Input.is_action_just_pressed("sprint"): 
@@ -202,7 +193,7 @@ func _process(delta: float) -> void:
 
 
 func crouch_anim() -> void:
-	if crouching and not (is_on_floor() or can_wall_jump):
+	if crouching and not (is_on_floor() or can_wall_jump or is_wall_sliding):
 		crouching = false
 	
 	if crouching_tween and crouching_tween.is_running():
@@ -305,9 +296,11 @@ func _physics_process(delta: float) -> void:
 	)
 	
 	# Handle jump.
-	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump) and !is_charging_jump:
+	if jump_buffered and (jump_orb_velocity != 0.0 or is_on_floor() or can_wall_jump):
 		roll_particles.emitting = false
 		jump_buffered = false
+		jump_charge = 0.0
+		is_charging_jump = false
 		jump_buffer_used = Input.is_action_pressed("jump")
 		if jump_orb_velocity != 0.0:
 			_record_jump()
@@ -333,8 +326,7 @@ func _physics_process(delta: float) -> void:
 			velocity.y = jump_velocity * CHARGED_JUMP_MULT #if holding crouch and jump do charged
 			crouching = false
 			crouch_anim()
-			_record_replay_state(delta)
-			return
+
 		else:
 			_record_jump(false, can_wall_jump)
 			if can_wall_jump:
@@ -344,6 +336,9 @@ func _physics_process(delta: float) -> void:
 				SFX.play(SFX.Jump, SFX.DEFAULT_SFX_PITCH, &"player_jump")
 				_spawn_surface_jump_burst(false)
 			velocity.y = jump_velocity
+			if crouching:
+				crouching = false
+				crouch_anim()
 		can_wall_jump = false
 		
 		if SettingsManager.is_vfx_enabled("jumping_rotation"):
@@ -389,6 +384,11 @@ func _physics_process(delta: float) -> void:
 		crouching = false
 		crouch_anim()
 	if not was_on_floor and is_on_floor() and impact_velocity_y > 0.0:
+		if Input.is_action_pressed("crouch") and not crouching:
+			crouching = true
+			is_charging_jump = true
+			jump_buffer_used = 0.0
+			crouch_anim()
 		if not landing_jump_buffered:
 			hit_floor_anim(impact_velocity_y, not landing_crouch_buffered)
 		var damage_dealt := _apply_fall_damage(impact_velocity_y, delta)
